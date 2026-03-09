@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap");
+
+@font-face {
+  font-family: "Faith";
+  src: url("/Assets/Header/faith.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root{
+  --bg:#0a0a0a;
+  --accent:#CD3075;
+  --neon:#d4ff59;
+}
+
+html, body, #root{
+  min-height:100%;
+}
+
+body{
+  background: var(--bg);
+  color:#fff;
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  overflow-x:hidden;
+}
+
+.font-faith{
+  font-family:"Faith", serif;
+  font-weight:400;
+}
+
+.hero-gradient-text{
+  background: linear-gradient(
+    180deg,
+    #CD3075 0%,
+    #da2677 35%,
+    #ffffff 65%,
+    #ffffff 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.btn-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.5rem;
+  padding:0.75rem 1.2rem;
+  border-radius:9999px;
+  font-size:0.9rem;
+  font-weight:600;
+  background: var(--neon);
+  color:#0a0a0a;
+  transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+}
+
+.btn-cta:hover{
+  transform: translateY(-1px);
+  background:#fff;
+  color:#0a0a0a;
+  box-shadow: 0 16px 40px rgba(212,255,89,.12);
+}
+
+.nav-link-tubelight{
+  position:relative;
+}
+
+.nav-link-tubelight::before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:0;
+  width:0%;
+  height:2px;
+  background: var(--neon);
+  transition: width .35s ease;
+}
+
+.nav-link-tubelight:hover::before,
+.nav-link-tubelight.active::before{
+  width:100%;
+}
+
+.video-vignette{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 18%),
+    linear-gradient(0deg, rgba(0,0,0,.24) 0%, rgba(0,0,0,0) 22%),
+    linear-gradient(90deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 22%),
+    linear-gradient(270deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 22%),
+    radial-gradient(120% 90% at 50% 50%, rgba(0,0,0,0) 66%, rgba(0,0,0,.18) 100%);
+  opacity:1;
+}
+
+.hero-scroll{
+  user-select:none;
+  text-align:center;
+}
+
+.hero-chevrons{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  animation: heroChevronPulse 1.6s infinite;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.35));
+}
+
+@keyframes heroChevronPulse{
+  0%{ transform: translateY(0); opacity:.45; }
+  50%{ transform: translateY(6px); opacity:1; }
+  100%{ transform: translateY(0); opacity:.45; }
+}
+
+.eyebrow{
+  font-size:0.7rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.45);
+}
+
+/* ABOUT ORB SYSTEM */
+.about-orb-wrap{
+  position:absolute;
+  inset:-26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+}
+
+.about-orb{
+  position:absolute;
+  border-radius:9999px;
+  filter:blur(64px);
+  mix-blend-mode:screen;
+}
+
+.about-orb-green{
+  width:320px;
+  height:320px;
+  background:radial-gradient(circle at 32% 34%, rgba(212,255,89,1), rgba(212,255,89,0.18) 56%, transparent 74%);
+  opacity:0.78;
+  animation:orbDriftGreen 10s linear infinite;
+}
+
+.about-orb-pink{
+  width:350px;
+  height:350px;
+  background:radial-gradient(circle at 68% 68%, rgba(205,48,117,1), rgba(205,48,117,0.22) 58%, transparent 76%);
+  opacity:0.82;
+  animation:orbDriftPink 11s linear infinite;
+}
+
+.about-orb-ring{
+  position:absolute;
+  width:372px;
+  height:372px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,0.12);
+  opacity:0.32;
+}
+
+@keyframes orbDriftGreen{
+  0%   { transform: rotate(0deg) translateX(-10px) scale(1); }
+  50%  { transform: rotate(180deg) translateX(20px) scale(1.12); }
+  100% { transform: rotate(360deg) translateX(-10px) scale(1); }
+}
+
+@keyframes orbDriftPink{
+  0%   { transform: rotate(360deg) translateX(12px) scale(1.04); }
+  50%  { transform: rotate(180deg) translateX(-22px) scale(1.14); }
+  100% { transform: rotate(0deg) translateX(12px) scale(1.04); }
+}
+
+.stack-marquee{
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.stack-track{
+  display:inline-flex;
+  gap:1rem;
+  min-width:max-content;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
+
+.career-card{
+  backdrop-filter: blur(18px);
+}
