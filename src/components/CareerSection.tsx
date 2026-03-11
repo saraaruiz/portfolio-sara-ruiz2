@@ -1,13 +1,28 @@
+﻿// src/components/CareerSection.tsx
 import { useState } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink, Eye, X } from "lucide-react";
 
-const driveFolder =
-  "https://drive.google.com/drive/folders/1KLKSbOdauBZczlnJOXxI1jNrasbqCKQV?dmr=1&ec=wgc-drive-%5Bmodule%5D-goto";
+type CareerItem = {
+  title: string;
+  meta: string;
+  dates?: string;
+  year?: string;
+  description?: string;
+  bullets?: string[];
+  certFiles?: string[];
+  externalUrl?: string;
+};
 
-const categories = [
+type CareerCategory = {
+  id: string;
+  label: string;
+  items: CareerItem[];
+};
+
+const categories: CareerCategory[] = [
   {
     id: "educacion",
-    label: "Educación",
+    label: "EDUCACIÓN",
     items: [
       {
         title: "Diseño UX/UI",
@@ -15,24 +30,25 @@ const categories = [
         dates: "Ago. 2023 – Ene. 2026",
         description:
           "Con foco en metodologías ágiles, investigación de usuarios y prototipado avanzado en Figma.",
+        certFiles: ["/Assets/Carrera/diploma-diseño-ux-ui.pdf"],
       },
       {
         title: "Diseño Industrial",
         meta: "Politécnico Grancolombiano · Bogotá",
         dates: "Feb. 2019 – Abr. 2023",
-        description: "",
+        certFiles: ["/Assets/Carrera/diploma-diseño-industrial.pdf"],
       },
       {
         title: "Desarrolladora Full Stack Java Junior",
         meta: "BIT & Generation Colombia",
         dates: "Ago. – Nov. 2023",
-        description: "",
+        certFiles: ["/Assets/Carrera/diploma-fullstack.pdf"],
       },
     ],
   },
   {
     id: "experiencia",
-    label: "Experiencia laboral",
+    label: "EXPERIENCIA LABORAL",
     items: [
       {
         title: "Bliss Companies (EE.UU.) · Asistente Virtual",
@@ -61,98 +77,143 @@ const categories = [
         bullets: [
           "Produje contenido visual adaptado a múltiples plataformas, reforzando identidad visual e interacción en redes sociales.",
         ],
+        externalUrl: "https://www.instagram.com/reel/C1CzyTwso3D/?igsh=OHQxbjFyNXdocWZt",
       },
     ],
   },
   {
     id: "certificaciones",
-    label: "Certificaciones & logros",
+    label: "CERTIFICACIONES & LOGROS",
     items: [
-      {
-        title: "Google UX Design Certificate",
-        meta: "Prototipado y Diseño de Alta Fidelidad (En curso)",
-        dates: "2025",
-        description: "",
-      },
       {
         title: "SCRUM Foundation Professional Certificate",
         meta: "CertiProf",
-        dates: "",
-        description: "",
+        year: "2024",
+        certFiles: ["/Assets/Carrera/certificado-scrum.pdf"],
       },
+      
       {
-        title: "Public Speaking & Workplace Communication",
-        meta: "Colombo Americano",
-        dates: "",
-        description: "",
-      },
+  title: "Workplace Communication + Public Speaking",
+  meta: "Colombo Americano",
+  year: "2023",
+  certFiles: [
+    "/Assets/Carrera/certificado-workplace-communication.pdf",
+    "/Assets/Carrera/certificado-public-speaking.pdf"
+  ],
+}
     ],
   },
 ];
 
+type ModalState = {
+  title: string;
+  files: string[];
+} | null;
+
 export default function CareerSection() {
   const [open, setOpen] = useState("educacion");
+  const [modal, setModal] = useState<ModalState>(null);
+
+  const openPdfModal = (title: string, files: string[]) => {
+    setModal({ title, files });
+  };
 
   return (
-    <section id="career" className="bg-[#F9F6E5] py-24 text-[#1A1A1A] md:py-28">
-      <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
-        <div className="max-w-3xl">
-          <p className="eyebrow text-[#1A1A1A]/55">DESCUBRE MI CAMINO PROFESIONAL</p>
-          <h2 className="mt-6 text-balance text-4xl font-medium leading-tight md:text-5xl">
-            Formación, experiencia y una trayectoria construida entre diseño, estrategia y ejecución.
-          </h2>
-        </div>
+    <>
+      <section id="career" className="scroll-mt-28 bg-[#0a0a0a] py-16 text-white md:py-20">
+        <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
+          <div className="max-w-4xl">
+            <h2 className="section-title">
+              DESCUBRE MI
+              <br />
+              <span className="section-title-accent">CAMINO PROFESIONAL</span>
+            </h2>
+          </div>
 
-        <div className="mt-14 grid gap-8 xl:grid-cols-[minmax(0,1fr)_340px]">
-          <div className="space-y-5">
+          <div className="mt-14 space-y-5">
             {categories.map((category) => {
               const isOpen = category.id === open;
 
               return (
-                <div key={category.id} className="career-card rounded-[28px] border border-black/10 bg-white/45 p-5 md:p-7">
+                <div
+                  key={category.id}
+                  className="lux-glass lux-card rounded-[28px] p-5 md:p-7"
+                >
                   <button
+                    type="button"
                     className="flex w-full items-center justify-between gap-6 text-left"
-                    onClick={() => setOpen(isOpen ? "" : category.id)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setOpen(isOpen ? "" : category.id);
+                    }}
+                    aria-expanded={isOpen}
                   >
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.22em] text-[#1A1A1A]/55">Categoría</p>
-                      <h3 className="mt-2 text-2xl font-medium">{category.label}</h3>
-                    </div>
-
+                    <h3 className="text-2xl font-medium tracking-wide md:text-4xl">
+                      {category.label}
+                    </h3>
                     <ChevronDown
-                      size={22}
-                      className={`shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      size={24}
+                      className={`shrink-0 text-white/70 transition-transform duration-300 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
                   {isOpen && (
-                    <div className="mt-6 space-y-6">
+                    <div className="mt-7 space-y-4">
                       {category.items.map((item) => (
-                        <article key={item.title} className="rounded-[24px] border border-black/8 bg-white/70 p-5">
-                          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                            <div className="max-w-3xl">
-                              <h4 className="text-lg font-semibold">{item.title}</h4>
-                              <p className="mt-1 text-sm text-[#1A1A1A]/70">{item.meta}</p>
+                        <article
+                          key={item.title}
+                          className="lux-glass-soft lux-card rounded-2xl p-5"
+                        >
+                          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                            <div className="max-w-4xl">
+                              <h4 className="text-base font-semibold md:text-lg">{item.title}</h4>
+                              <p className="mt-1 text-sm text-white/65">{item.meta}</p>
                             </div>
 
-                            <div className="flex items-center gap-4 text-sm text-[#1A1A1A]/60">
-                              {item.dates && <span>{item.dates}</span>}
-                              <a
-                                href={driveFolder}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 transition-colors hover:bg-black hover:text-white"
-                                aria-label="Abrir carpeta de certificados"
-                              >
-                                <ExternalLink size={15} />
-                              </a>
+                            <div className="flex flex-col items-start gap-2 md:items-end">
+                              <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                                {item.certFiles && item.certFiles.length > 0 && (
+                                  <button
+                                    onClick={() => openPdfModal(item.title, item.certFiles!)}
+                                    className="cert-cta-attention inline-flex items-center gap-2 rounded-full border border-[#9cc02c] bg-[#d4ff59]/18 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#e9f8b6] transition-all duration-300 hover:-translate-y-[1px] hover:border-[#d4ff59] hover:bg-[#d4ff59]/28 hover:text-[#f5ffd8]"
+                                    aria-label={`Ver diploma de ${item.title}`}
+                                  >
+                                    <Eye size={15} />
+                                    Ver certificado
+                                  </button>
+                                )}
+
+                                {item.externalUrl && (
+                                  <a
+                                    href={item.externalUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-full border border-[#9cc02c] bg-[#d4ff59]/18 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#e9f8b6] transition-all duration-300 hover:-translate-y-[1px] hover:border-[#d4ff59] hover:bg-[#d4ff59]/28 hover:text-[#f5ffd8]"
+                                    aria-label={`Abrir enlace de ${item.title}`}
+                                  >
+                                    <ExternalLink size={15} />
+                                    Ver evidencia
+                                  </a>
+                                )}
+                              </div>
+
+                              {(item.dates || item.year) && (
+                                <div className="space-y-1 text-[11px] font-medium tracking-[0.12em] text-white/55 md:text-right">
+                                  {item.dates && <p>{item.dates}</p>}
+                                  {item.year && <p>{item.year}</p>}
+                                </div>
+                              )}
                             </div>
                           </div>
 
-                          {item.description && <p className="mt-4 text-sm leading-7 text-[#1A1A1A]/78">{item.description}</p>}
+                          {item.description && (
+                            <p className="mt-4 text-sm leading-7 text-white/75">{item.description}</p>
+                          )}
 
                           {item.bullets && (
-                            <ul className="mt-4 space-y-3 text-sm leading-7 text-[#1A1A1A]/78">
+                            <ul className="mt-4 space-y-3 text-sm leading-7 text-white/75">
                               {item.bullets.map((bullet) => (
                                 <li key={bullet} className="flex gap-3">
                                   <span className="mt-[11px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[#CD3075]" />
@@ -169,26 +230,34 @@ export default function CareerSection() {
               );
             })}
           </div>
-
-          <aside className="rounded-[32px] border border-black/10 bg-white/65 p-6 md:p-8">
-            <p className="eyebrow text-[#1A1A1A]/55">Certificados</p>
-            <h3 className="mt-4 text-2xl font-medium">Estructura preparada para tus cargas de Google Drive</h3>
-            <p className="mt-4 text-sm leading-7 text-[#1A1A1A]/72">
-              Mantengo un solo acceso base mientras completas la carpeta con PDFs o enlaces individuales. Cuando tengas
-              los documentos finales, solo reemplazamos cada link por certificado sin tocar el layout.
-            </p>
-
-            <a
-              href={driveFolder}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/15 px-4 py-3 text-sm font-medium transition-colors hover:bg-black hover:text-white"
-            >
-              Abrir carpeta base <ExternalLink size={14} />
-            </a>
-          </aside>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {modal && (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
+          <div className="lux-glass w-full max-w-5xl overflow-hidden rounded-[28px] p-4 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm font-medium text-white/80">{modal.title}</p>
+              <button
+                onClick={() => setModal(null)}
+                className="lux-chip inline-flex h-9 w-9 items-center justify-center rounded-full text-white/70 transition-colors hover:text-white"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="h-[70vh] overflow-y-auto rounded-[22px] bg-black p-2">
+              {modal.files.map((file) => (
+                <div key={file} className="mb-4 h-[68vh] overflow-hidden rounded-xl border border-white/10">
+                  <iframe className="h-full w-full" src={file} title={file} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
+
+

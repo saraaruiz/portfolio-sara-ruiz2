@@ -1,4 +1,4 @@
-const cards = [
+﻿const cards = [
   {
     title: "Estructura & UX",
     eyebrow: "Comprender antes de crear.",
@@ -27,26 +27,32 @@ const cards = [
 
 export default function ServicesSection() {
   return (
-    <section id="services" className="bg-[#0a0a0a] py-24 md:py-32">
+    <section id="services" className="scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
-        <div className="max-w-3xl">
-          <p className="eyebrow">QUÉ PUEDO HACER POR TI</p>
-          <h2 className="mt-6 text-balance text-4xl font-medium leading-tight text-white md:text-5xl">
-            Transformo ideas en productos digitales claros, funcionales y listos para crecer.
+        <div className="max-w-4xl">
+          <h2 className="section-title">
+            QUÉ PUEDO
+            <br />
+            <span className="section-title-accent">HACER POR TI</span>
           </h2>
+          <p className="section-lead mt-5 max-w-[620px]">
+            Transformo ideas en productos digitales claros, funcionales y listos para crecer.
+          </p>
         </div>
 
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           {cards.map((card) => (
             <article
               key={card.title}
-              className="group rounded-[32px] border border-white/10 bg-white/[0.03] p-7 transition-transform duration-300 hover:-translate-y-1 hover:border-white/15"
+              className="lux-glass lux-card group relative rounded-[28px] p-7"
             >
-              <p className="text-sm font-medium text-[#d4ff59]">{card.eyebrow}</p>
-              <h3 className="mt-5 text-2xl font-medium text-white">{card.title}</h3>
-              <p className="mt-4 max-w-[36ch] text-sm leading-7 text-white/72">{card.body}</p>
+              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "radial-gradient(1000px 220px at 0% 0%, rgba(205,48,117,0.14), transparent 60%)" }} />
 
-              <ul className="mt-8 space-y-3 text-sm text-white/82">
+              <p className="relative text-sm font-medium text-[#d4ff59]">{card.eyebrow}</p>
+              <h3 className="relative mt-4 text-2xl font-semibold text-white md:text-[30px]">{card.title}</h3>
+              <p className="relative mt-4 max-w-[38ch] text-sm leading-7 text-white/76 md:text-[15px]">{card.body}</p>
+
+              <ul className="relative mt-8 space-y-3 text-sm text-white/82">
                 {card.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-3">
                     <span className="inline-block h-2 w-2 rounded-full bg-[#CD3075]" />
