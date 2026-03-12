@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Copy, Mail, ExternalLink, Link as LinkIcon, X, MapPin } from "lucide-react";
 
 const socials = [
@@ -36,34 +36,44 @@ const socials = [
   },
 ];
 
-const skills = [
-  "PROACTIVA",
-  "EMPÁTICA",
-  "CREATIVA",
-  "RESOLUTIVA",
-  "ESTRATÉGICA",
-  "ANALÍTICA",
-  "MENTALIDAD DE CRECIMIENTO",
+const skillRows = [
+  ["PROACTIVA", "EMPÁTICA", "CREATIVA"],
+  ["MENTALIDAD DE CRECIMIENTO"],
 ];
+
+const SkillStar = () => (
+  <svg
+    width="9"
+    height="9"
+    viewBox="0 0 24 24"
+    fill="#F9F6E5"
+    aria-hidden="true"
+    className="shrink-0 opacity-85"
+  >
+    <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
+  </svg>
+);
 
 const certificatePreview =
   "https://drive.google.com/file/d/15khPgycybFJI1rGCRMT1AKr3ZbMZuoE6/preview";
 
 export default function AboutSection() {
   const portraitRef = useRef<HTMLDivElement>(null);
+  const socialsWrapRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
   const [inView, setInView] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [certificateOpen, setCertificateOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [openSocialId, setOpenSocialId] = useState<string | null>(null);
 
   useEffect(() => {
     const node = portraitRef.current;
     if (!node) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.35 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.35,
+    });
 
     observer.observe(node);
     return () => observer.disconnect();
@@ -75,6 +85,50 @@ export default function AboutSection() {
     return () => window.clearTimeout(timeout);
   }, [copied]);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (socialsWrapRef.current && !socialsWrapRef.current.contains(target)) {
+        setOpenSocialId(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const openSocialMenu = (id: string) => {
+    clearCloseTimer();
+    setOpenSocialId(id);
+  };
+
+  const scheduleSocialClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpenSocialId(null);
+    }, 180);
+  };
+
+  const toggleSocialMenu = (id: string) => {
+    clearCloseTimer();
+    setOpenSocialId((prev) => (prev === id ? null : id));
+  };
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText("saruizdi@gmail.com");
@@ -84,47 +138,12 @@ export default function AboutSection() {
     }
   };
 
-  const skillNodes = useMemo(
-    () =>
-      skills.map((skill, index) => (
-        <div key={skill} className="flex items-center gap-3">
-          <span
-            className="uppercase text-[#F199B9]"
-            style={{
-              fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-              fontWeight: 300,
-              fontSize: "15px",
-              letterSpacing: "0.13em",
-              lineHeight: 1,
-            }}
-          >
-            {skill}
-          </span>
-
-          {index < skills.length - 1 && (
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="#F9F6E5"
-              aria-hidden="true"
-              className="shrink-0 opacity-90"
-            >
-              <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
-            </svg>
-          )}
-        </div>
-      )),
-    []
-  );
-
   return (
     <>
-      <section id="about" className="relative bg-[#0a0a0a] py-24 md:py-32">
-        <div className="mx-auto grid max-w-[1280px] gap-20 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-32 xl:px-16">
-          {/* LEFT COLUMN */}
-          <div className="flex flex-col items-center xl:items-start">
-            <div className="relative mb-10 flex h-[350px] w-[350px] items-center justify-center md:h-[390px] md:w-[390px]">
+      <section id="about" className="relative scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
+        <div className="mx-auto grid max-w-[1280px] items-stretch gap-12 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-20 xl:px-16">
+          <div className="flex h-full flex-col items-center">
+            <div className="relative mb-8 flex h-[300px] w-[300px] items-center justify-center md:h-[330px] md:w-[330px]">
               <div className="about-orb-wrap" aria-hidden="true">
                 <div className="about-orb about-orb-green" />
                 <div className="about-orb about-orb-pink" />
@@ -133,76 +152,78 @@ export default function AboutSection() {
 
               <div
                 ref={portraitRef}
-                className="relative z-10 h-[325px] w-[325px] overflow-visible rounded-full md:h-[360px] md:w-[360px]"
+                className="relative z-10 h-[274px] w-[274px] overflow-visible rounded-full shadow-[0_20px_46px_rgba(205,48,117,0.4)] md:h-[306px] md:w-[306px]"
               >
                 <img
                   src="/Assets/Body/FotoSara.png"
                   alt="Sara Ruiz"
-                  className={`h-full w-full object-cover object-top transition-[filter,transform] duration-[1800ms] ease-out ${
-                    inView ? "grayscale-0 scale-[1.015]" : "grayscale"
+                  className={`h-full w-full object-cover object-top transition-[filter,transform] ease-out ${
+                    inView ? "grayscale-0 scale-[1.05]" : "grayscale scale-[1.01]"
                   }`}
-                  style={{
-                    clipPath: "circle(50% at 50% 50%)",
-                  }}
+                  style={{ clipPath: "circle(50% at 50% 50%)", transitionDuration: "1600ms" }}
                 />
               </div>
             </div>
 
-            <div className="w-full max-w-[420px]">
-              <div className="space-y-2 pl-1">
-                <div className="flex items-center gap-3 text-white/55">
+            <div className="flex w-full max-w-[420px] flex-1 flex-col items-center">
+              <div className="mt-2 flex flex-col items-center justify-center space-y-2 text-center">
+                <div className="flex items-center justify-center gap-2 text-white/60">
                   <MapPin size={14} className="shrink-0 text-white/55" />
-                  <span
-                    className="uppercase"
-                    style={{
-                      fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                      fontWeight: 300,
-                      fontSize: "11px",
-                      letterSpacing: "0.22em",
-                    }}
-                  >
+                  <span className="text-[11px] font-normal uppercase tracking-[0.22em]">
                     Bogotá, Colombia
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 text-[#d4ff59]">
-                  <span className="h-2 w-2 rounded-full bg-[#d4ff59] animate-pulse" />
-                  <span
-                    className="uppercase"
-                    style={{
-                      fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                      fontWeight: 600,
-                      fontSize: "11px",
-                      letterSpacing: "0.22em",
-                    }}
-                  >
+                <div className="flex items-center justify-center gap-2 text-[#d4ff59]">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#d4ff59]" />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.22em]">
                     Open to work
                   </span>
                 </div>
               </div>
 
-              {/* socials aligned higher */}
-              <div className="mt-8 flex items-center gap-4 pl-1">
+              <div ref={socialsWrapRef} className="mt-7 flex w-full max-w-[292px] items-center justify-center gap-2">
                 {socials.map((social) => (
-                  <div key={social.id} className="group relative">
+                  <div
+                    key={social.id}
+                    className="relative"
+                    onMouseEnter={() => openSocialMenu(social.id)}
+                    onMouseLeave={scheduleSocialClose}
+                  >
                     <button
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-[14px] border border-white/10 bg-white/[0.02] transition-all duration-300 hover:border-[#d4ff59]/35 hover:bg-white/[0.05]"
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
                       aria-label={social.label}
+                      aria-expanded={openSocialId === social.id}
+                      aria-controls={`social-menu-${social.id}`}
+                      onClick={() => toggleSocialMenu(social.id)}
+                      onFocus={() => openSocialMenu(social.id)}
+                      onBlur={scheduleSocialClose}
                     >
-                      <img src={social.icon} alt={social.label} className="h-5 w-5 opacity-90" />
+                      <img
+                        src={social.icon}
+                        alt={social.label}
+                        className="h-[23px] w-[23px] opacity-80 transition-opacity duration-300 hover:opacity-100"
+                      />
                     </button>
 
-                    <div className="pointer-events-none absolute bottom-[125%] left-1/2 z-30 w-[176px] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(12,12,12,0.98)] p-4 opacity-0 shadow-2xl backdrop-blur-[15px] transition-all duration-300 group-hover:pointer-events-auto group-hover:opacity-100">
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/38">
-                        {social.label}
-                      </p>
+                    <div
+                      id={`social-menu-${social.id}`}
+                      className={`absolute bottom-[125%] left-1/2 z-30 w-[178px] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(12,12,12,0.98)] p-4 shadow-2xl backdrop-blur-[16px] transition-all duration-200 ${
+                        openSocialId === social.id
+                          ? "pointer-events-auto translate-y-0 opacity-100"
+                          : "pointer-events-none translate-y-1 opacity-0"
+                      }`}
+                      onMouseEnter={() => openSocialMenu(social.id)}
+                      onMouseLeave={scheduleSocialClose}
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/38">{social.label}</p>
                       <p className="mt-2 text-xs text-white/82">{social.meta}</p>
 
                       {social.id === "email" ? (
                         <div className="mt-4 flex flex-col gap-2">
                           <button
                             onClick={handleCopy}
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Copy size={12} />
                             {copied ? "Copiado" : "Copiar"}
@@ -210,7 +231,7 @@ export default function AboutSection() {
 
                           <a
                             href={social.href}
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Mail size={12} />
                             Enviar rápido
@@ -221,7 +242,7 @@ export default function AboutSection() {
                           href={social.href}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                         >
                           <ExternalLink size={12} />
                           {social.actionLabel}
@@ -232,133 +253,93 @@ export default function AboutSection() {
                 ))}
               </div>
 
-              {/* separate presentation button */}
-              <button
-                onClick={() => setVideoOpen(true)}
-                className="mt-9 inline-flex items-center gap-4 rounded-full border border-[#d4ff59]/22 bg-[#d4ff59]/4 px-6 py-4 text-[#d4ff59] transition-all duration-300 hover:bg-[#d4ff59]/10"
-              >
-                <img src="/Assets/Body/VideoGreen.svg" alt="" className="h-9 w-9" />
-                <span
-                  style={{
-                    fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                    fontWeight: 500,
-                    fontSize: "12px",
-                  }}
+              <div className="mt-8 flex w-full justify-center pb-0 pt-4 md:mt-auto md:pt-6">
+                <button
+                  onClick={() => setVideoOpen(true)}
+                  className="inline-flex w-full max-w-[292px] items-center justify-center gap-3 rounded-full border border-[#d4ff59]/25 bg-[#d4ff59]/6 px-5 py-2.5 text-[#d4ff59] transition-all duration-300 hover:bg-[#d4ff59]/12"
                 >
-                  Ver video presentación
-                </span>
-              </button>
+                  <img src="/Assets/Body/VideoGreen.svg" alt="" className="h-7 w-7" />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.09em]">
+                    Ver video presentación
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="flex flex-col">
-            <h2
-              className="mb-10 uppercase leading-none"
-              style={{
-                fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                fontWeight: 500,
-                fontSize: "clamp(56px, 6.2vw, 90px)",
-                letterSpacing: "-0.03em",
-                color: "#F7F3EA",
-              }}
-            >
-              SOBRE <span className="text-[#F199B9]">MÍ</span>
+          <div className="flex h-full flex-col">
+            <h2 className="section-title">
+              SOBRE <span className="section-title-accent">MÍ</span>
             </h2>
 
-            <div
-              className="space-y-9 text-white/84"
-              style={{
-                fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                fontWeight: 300,
-                fontSize: "clamp(22px, 2vw, 32px)",
-                lineHeight: 1.52,
-              }}
-            >
-              <p className="max-w-[830px]">
-                Diseño experiencias digitales con{" "}
-                <span className="font-medium text-[#F199B9]">visión estratégica</span>, materializando ideas en{" "}
-                <span className="font-medium text-[#F199B9]">interfaces reales y escalables</span>.
+            <div className="mt-6 space-y-7 text-[15px] font-light leading-[1.52] text-white/72 md:text-[18px] xl:text-[22px]">
+              <p className="max-w-[820px]">
+                Diseño experiencias digitales con <span className="font-medium text-white/98">visión estratégica</span>,
+                materializando ideas en{" "}
+                <span className="font-medium text-white/98">interfaces reales y escalables</span>.
               </p>
 
-              <p className="max-w-[830px]">
-                Trabajo de forma{" "}
-                <span className="font-medium text-[#F199B9]">estructurada e iterativa</span>, equilibrando{" "}
-                <span className="font-medium text-[#F199B9]">experiencia de usuario</span>,{" "}
-                <span className="font-medium text-[#F199B9]">objetivos del negocio</span> y{" "}
-                <span className="font-medium text-[#F199B9]">viabilidad</span> para construir soluciones con impacto real.
+              <p className="max-w-[820px]">
+                Trabajo de forma <span className="font-medium text-white/98">estructurada e iterativa</span>,
+                equilibrando
+                <span className="font-medium text-white/98"> experiencia de usuario</span>,
+                <span className="font-medium text-white/98"> objetivos del negocio</span> y
+                <span className="font-medium text-white/98"> viabilidad</span> para construir soluciones con impacto
+                real.
               </p>
             </div>
 
-            <div className="mt-12 flex max-w-[900px] flex-wrap gap-x-6 gap-y-6">
-              {skillNodes}
+            <div className="mt-12 w-full max-w-[840px] space-y-5 pt-5 pb-5">
+              <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 px-1 md:flex-nowrap md:justify-center md:gap-x-5 md:px-2">
+                <SkillStar />
+                {skillRows[0].flatMap((skill) => [
+                  <span
+                    key={`${skill}-label`}
+                    className="text-[14px] font-light uppercase tracking-[0.48em] text-[#F199B9] md:text-[16px] md:tracking-[0.52em]"
+                  >
+                    {skill}
+                  </span>,
+                  <SkillStar key={`${skill}-star`} />,
+                ])}
+              </div>
+
+              <div className="flex w-full items-center justify-center px-1 md:px-2">
+                <div className="inline-flex w-full max-w-[680px] items-center justify-between gap-3">
+                  <SkillStar />
+
+                  <span className="flex-1 text-center text-[14px] font-light uppercase tracking-[0.52em] text-[#F199B9] md:text-[16px] md:tracking-[0.58em]">
+                    {skillRows[1][0]}
+                  </span>
+
+                  <SkillStar />
+                </div>
+              </div>
             </div>
 
-            {/* smaller, higher language box */}
-            <div className="mt-10 w-full max-w-[730px] rounded-[26px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_100%)] px-8 py-4 backdrop-blur-[20px]">
-              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+            <div className="lux-glass language-glass mt-8 w-full max-w-[840px] rounded-[22px] px-8 py-2 md:mt-auto">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-5">
                 <div className="text-center">
-                  <p
-                    className="uppercase text-white/30"
-                    style={{
-                      fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                      fontWeight: 400,
-                      fontSize: "8px",
-                      letterSpacing: "0.45em",
-                    }}
-                  >
-                    Nativo
-                  </p>
-                  <p
-                    className="mt-2 text-white"
-                    style={{
-                      fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "0.18em",
-                    }}
-                  >
-                    ESPAÑOL
-                  </p>
+                  <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Nativo</p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">ESPAÑOL</p>
                 </div>
 
-                <div className="h-11 w-px bg-white/10" />
+                <div className="h-9 w-px bg-white/10" />
 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <p
-                      className="uppercase text-white/30"
-                      style={{
-                        fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                        fontWeight: 400,
-                        fontSize: "8px",
-                        letterSpacing: "0.45em",
-                      }}
-                    >
-                      Fluidez
-                    </p>
+                    <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Fluidez</p>
 
                     <button
                       onClick={() => setCertificateOpen(true)}
-                      className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-[#d4ff59]/35 hover:text-[#d4ff59]"
+                      className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-[#d4ff59]/35 hover:text-[#d4ff59]"
                       aria-label="Ver certificado de inglés"
                       title="Ver certificado"
                     >
-                      <LinkIcon size={10} />
+                      <LinkIcon size={9} />
                     </button>
                   </div>
 
-                  <p
-                    className="mt-2 text-white"
-                    style={{
-                      fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "0.18em",
-                    }}
-                  >
-                    INGLÉS (B2+)
-                  </p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">INGLÉS (B2+)</p>
                 </div>
               </div>
             </div>
@@ -366,7 +347,6 @@ export default function AboutSection() {
         </div>
       </section>
 
-      {/* VIDEO MODAL */}
       {videoOpen && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
           <div className="w-full max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-[#080808] p-4 shadow-2xl">
@@ -393,7 +373,6 @@ export default function AboutSection() {
         </div>
       )}
 
-      {/* CERTIFICATE MODAL */}
       {certificateOpen && (
         <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
           <div className="w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#080808] p-4 shadow-2xl">

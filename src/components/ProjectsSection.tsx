@@ -1,3 +1,5 @@
+﻿import { useState } from "react";
+
 const projects = [
   {
     title: "Fuerza Interior",
@@ -14,40 +16,65 @@ const projects = [
 ];
 
 export default function ProjectsSection() {
+  const [active, setActive] = useState(1);
+
   return (
-    <section id="projects" className="bg-[#0a0a0a] py-24 md:py-32">
+    <section id="projects" className="scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="eyebrow">MIS PROYECTOS</p>
-          <h2 className="mt-6 text-balance text-4xl font-medium leading-tight text-white md:text-5xl">
-            Casos donde estrategia, UX y detalle se encuentran.
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="section-title">
+            MIS <span className="section-title-accent">PROYECTOS</span>
           </h2>
+          <p className="section-lead mt-5">Casos donde estrategia, UX y detalle se encuentran.</p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-2">
-          {projects.map((project) => (
-            <a
-              key={project.title}
-              href={project.href}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative block overflow-hidden rounded-[36px] border border-white/10 bg-white/[0.03] transition-transform duration-300 hover:-translate-y-1"
-            >
-              <div className="aspect-[16/11] overflow-hidden">
+        <div className="lux-glass mt-12 flex h-auto w-full flex-col gap-3 overflow-hidden rounded-[28px] p-2 md:h-[520px] md:flex-row md:gap-4">
+          {projects.map((project, index) => {
+            const isActive = active === index;
+
+            return (
+              <a
+                key={project.title}
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                onMouseEnter={() => setActive(index)}
+                onFocus={() => setActive(index)}
+                onClick={() => setActive(index)}
+                className={`lux-card group relative h-[260px] w-full overflow-hidden rounded-[24px] border border-white/10 transition-[flex,transform] duration-500 ease-out md:h-full ${
+                  isActive ? "md:flex-[5]" : "md:flex-[1.6]"
+                }`}
+              >
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  className={`h-full w-full object-cover transition-transform duration-500 ${
+                    isActive ? "scale-[1.02]" : "md:scale-100 md:grayscale"
+                  }`}
                 />
-              </div>
 
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-7 pb-7 pt-16">
-                <p className="text-sm uppercase tracking-[0.2em] text-white/55">Proyecto</p>
-                <h3 className="mt-2 text-3xl font-medium text-white">{project.title}</h3>
-                <p className="mt-2 text-sm text-white/72">{project.subtitle}</p>
-              </div>
-            </a>
-          ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                <div
+                  className={`absolute bottom-0 left-0 w-full p-4 transition-all duration-500 md:p-6 ${
+                    isActive ? "md:translate-y-0 md:opacity-100" : "md:translate-y-4 md:opacity-0"
+                  } translate-y-0 opacity-100`}
+                >
+                  <div className="lux-glass-soft rounded-2xl p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/60">Proyecto</p>
+                  <h3 className="mt-2 text-2xl font-semibold text-white md:text-3xl">{project.title}</h3>
+                  <p className="mt-2 max-w-[40ch] text-sm text-white/78">{project.subtitle}</p>
+                  </div>
+                </div>
+
+                {!isActive && (
+                  <p className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 -rotate-90 whitespace-nowrap text-xs uppercase tracking-[0.25em] text-white/70 md:block">
+                    {project.title}
+                  </p>
+                )}
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>

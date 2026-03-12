@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+﻿import { useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -12,96 +12,96 @@ export default function Hero() {
 
   useEffect(() => {
     let raf = 0;
-    let current = 0;
 
     const update = () => {
       const section = sectionRef.current;
       const mask = maskRef.current;
       const intro = introRef.current;
       const video = videoRef.current;
-
-      if (!section || !mask || !intro || !video) {
-        raf = requestAnimationFrame(update);
-        return;
-      }
+      if (!section || !mask || !intro || !video) return;
 
       const rect = section.getBoundingClientRect();
-      const maxScroll = window.innerHeight * 1.35;
+      const maxScroll = window.innerHeight * 1.18;
       const scrollAmount = -rect.top;
-      const raw = clamp01(scrollAmount / maxScroll);
+      const progress = clamp01(scrollAmount / maxScroll);
 
-      current = lerp(current, raw, 0.075);
+      const isMobile = window.innerWidth < 768;
+      const startW = isMobile ? 92 : 85;
+      const startH = isMobile ? 54 : 56;
+      const startR = isMobile ? 22 : 30;
+      const startTop = isMobile ? 81 : 76;
 
-      const w = lerp(85, 100, current);
-      const h = lerp(55, 100, current);
-      const r = lerp(24, 0, current);
-      const top = lerp(72, 50, current);
+      const w = lerp(startW, 100, progress);
+      const h = lerp(startH, 100, progress);
+      const r = lerp(startR, 0, progress);
+      const top = lerp(startTop, 50, progress);
 
-      mask.style.width = `${w}vw`;
-      mask.style.height = `${h}svh`;
-      mask.style.borderRadius = `${r}px`;
-      mask.style.position = "absolute";
-      mask.style.left = "50%";
-      mask.style.top = `${top}%`;
-      mask.style.transform = "translate(-50%, -50%)";
+      mask.style.setProperty("--hero-w", `${w}vw`);
+      mask.style.setProperty("--hero-h", `${h}svh`);
+      mask.style.setProperty("--hero-r", `${r}px`);
+      mask.style.setProperty("--hero-top", `${top}%`);
 
-      const introOpacity = Math.max(0, 1 - current * 2.15);
-      intro.style.opacity = String(introOpacity);
-      intro.style.transform = `translateY(${current * -18}px)`;
+      const introOpacity = Math.max(0, 1 - progress * 2.05);
+      intro.style.setProperty("--hero-intro-opacity", String(introOpacity));
+      intro.style.setProperty("--hero-intro-y", `${progress * -10}px`);
 
-      const microZoom = lerp(1.02, 1.09, current);
-      const microParallax = lerp(0, -12, current);
-      video.style.transform = `scale(${microZoom}) translateY(${microParallax}px)`;
+      const microZoom = lerp(1.02, 1.085, progress);
+      const microParallax = lerp(0, -10, progress);
+      video.style.setProperty("--hero-video-zoom", String(microZoom));
+      video.style.setProperty("--hero-video-y", `${microParallax}px`);
+    };
 
+    const onScroll = () => {
+      if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
 
-    raf = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(raf);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
-    <section
-      id="top"
-      ref={sectionRef}
-      className="relative isolate bg-black"
-      style={{ height: "230svh" }}
-    >
+    <section id="top" ref={sectionRef} className="relative isolate bg-black" style={{ height: "220svh" }}>
       <div className="sticky top-0 h-svh overflow-hidden">
         <div className="relative h-svh w-full">
-          <div
-            ref={introRef}
-            className="absolute inset-x-0 top-0 z-20 text-center pointer-events-none"
-            style={{ paddingTop: "96px" }}
-          >
+          <div ref={introRef} className="hero-intro pointer-events-none absolute inset-x-0 top-0 z-20 px-4 text-center">
             <h1
               className="font-faith hero-gradient-text leading-none"
               style={{
-                fontSize: "clamp(3.5rem, 10vw, 143px)",
+                fontSize: "clamp(3.3rem, 16.2vw, 154px)",
                 lineHeight: 1.12,
-                paddingBottom: "0.14em",
+                paddingBottom: "0.09em",
               }}
             >
               Sara Ruiz
             </h1>
 
             <p
-              className="mt-1 uppercase text-white/92"
+              className="mt-1 md:-mt-4 uppercase text-white/92"
               style={{
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                fontSize: "clamp(14px, 2.5vw, 26.61px)",
-                letterSpacing: "0.30em",
+                fontWeight: 400,
+                fontSize: "clamp(12px, 2.05vw, 22px)",
+                letterSpacing: "clamp(0.24em, 0.45vw, 0.48em)",
               }}
             >
               DISEÑADORA UX/UI
             </p>
 
             <p
-              className="mt-1 text-white/72"
+              className="mt-2 text-white/76"
               style={{
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                fontSize: "clamp(12px, 1.5vw, 16px)",
-                letterSpacing: "0.35em",
+                fontWeight: 400,
+                fontSize: "clamp(11px, 1.25vw, 14px)",
+                letterSpacing: "clamp(0.14em, 0.3vw, 0.36em)",
               }}
             >
               Research · Flows · Product Strategy
@@ -109,35 +109,22 @@ export default function Hero() {
           </div>
 
           <div className="absolute inset-0 z-10">
-            <div
-              ref={maskRef}
-              className="relative overflow-hidden"
-              style={{ width: "85vw", height: "55svh", borderRadius: "24px" }}
-            >
-              <video
-                ref={videoRef}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              >
+            <div ref={maskRef} className="hero-mask">
+              <video ref={videoRef} autoPlay muted loop playsInline className="hero-video absolute inset-0 h-full w-full object-cover">
                 <source src="/Assets/Header/VideoBanner.mp4" type="video/mp4" />
               </video>
 
-              <div className="video-vignette" aria-hidden="true" />
-
-              <div className="hero-scroll absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2">
+              <div className="hero-scroll absolute bottom-9 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-10">
                 <div className="hero-chevrons" aria-hidden="true">
                   <ChevronDown size={22} className="text-white/85" />
-                  <ChevronDown size={22} className="text-white/85 -mt-3" />
+                  <ChevronDown size={22} className="-mt-3 text-white/85" />
                 </div>
 
                 <span
                   className="text-[11px] uppercase"
                   style={{
                     fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
-                    letterSpacing: "0.22em",
+                    letterSpacing: "0.2em",
                     color: "rgba(255,255,255,0.62)",
                   }}
                 >
@@ -146,13 +133,6 @@ export default function Hero() {
               </div>
             </div>
           </div>
-
-          <div
-            className="pointer-events-none absolute left-0 right-0 top-0 z-30 h-40"
-            style={{
-              background: "linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,0) 100%)",
-            }}
-          />
         </div>
       </div>
     </section>
