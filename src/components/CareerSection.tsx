@@ -137,7 +137,7 @@ export default function CareerSection() {
               return (
                 <div
                   key={category.id}
-                  className="lux-glass lux-card rounded-[28px] p-5 md:p-7"
+                  className="lux-glass lux-card framer-glow-sweep rounded-[28px] p-5 md:p-7"
                 >
                   <button
                     type="button"

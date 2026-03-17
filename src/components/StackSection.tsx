@@ -151,7 +151,7 @@ export default function StackSection() {
 
   return (
     <section
-      className="stack-theme-glass relative z-30 mt-3 overflow-x-hidden overflow-y-visible py-6 md:mt-4 md:py-8"
+      className="stack-theme-glass framer-glow-sweep relative z-30 mt-3 overflow-x-hidden overflow-y-visible py-6 md:mt-4 md:py-8"
       style={stackThemeVars}
     >
       <h3 className="relative z-20 px-6 text-center text-[20px] font-medium tracking-[0.01em] text-white/96 md:px-10 md:text-[28px] xl:px-16">

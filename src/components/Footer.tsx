@@ -1,5 +1,5 @@
 const quickLinks = [
-  { label: "Sobre mi", href: "#about" },
+  { label: "Sobre mí", href: "#about" },
   { label: "Carrera", href: "#career" },
   { label: "Servicios", href: "#services" },
   { label: "Mis proyectos", href: "#projects" },
@@ -23,13 +23,13 @@ export default function Footer() {
             <div className="max-w-sm">
               <img src="/Assets/Header/LogoSari.png" alt="Logo Sara Ruiz" className="h-10 w-auto" />
               <p className="mt-5 text-sm leading-7 text-white/62">
-                Portfolio UX/UI orientado a estrategia, diseno y experiencias digitales con criterio de producto.
+                Portfolio UX/UI orientado a estrategia, diseño y experiencias digitales con criterio de producto.
               </p>
             </div>
 
             <div className="grid gap-10 md:grid-cols-2 lg:gap-16">
               <div>
-                <p className="eyebrow">Navegacion</p>
+                <p className="eyebrow">Navegación</p>
                 <ul className="mt-5 space-y-3">
                   {quickLinks.map((link) => (
                     <li key={link.href}>

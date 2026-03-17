@@ -26,6 +26,15 @@ body{
   color:#fff;
   font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   overflow-x:hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+video{
+  display:block;
+  max-width:100%;
 }
 
 .font-faith{
@@ -118,7 +127,7 @@ body{
 .hero-intro{
   --hero-intro-opacity: 1;
   --hero-intro-y: 0px;
-  padding-top: 110px;
+  padding-top: clamp(108px, 13vh, 136px);
   opacity: var(--hero-intro-opacity);
   transform: translateY(var(--hero-intro-y));
   will-change: transform, opacity;
@@ -126,7 +135,7 @@ body{
 
 @media (min-width: 768px){
   .hero-intro{
-    padding-top: 96px;
+    padding-top: clamp(94px, 11vh, 116px);
   }
 }
 
@@ -149,6 +158,7 @@ body{
   background: #0a0a0a;
   box-shadow: none;
   will-change: width, height, border-radius, top, transform;
+  contain: layout paint style;
   transform: translate(-50%, -50%) translateZ(0);
   /* Fade as alpha-only mask: all edges dissolve into black without tinting video color. */
   -webkit-mask-image: radial-gradient(
@@ -196,6 +206,7 @@ body{
   transform: translate3d(0, var(--hero-video-y), 0) scale(var(--hero-video-zoom));
   transform-origin: center;
   will-change: transform;
+  contain: paint;
   border: 0;
   outline: none;
   backface-visibility: hidden;
@@ -235,6 +246,7 @@ body{
   letter-spacing: -0.018em;
   text-transform: uppercase;
   color: #F7F3EA;
+  text-wrap: balance;
 }
 
 .section-title-accent{
@@ -247,6 +259,7 @@ body{
   font-size: clamp(1rem, 2.1vw, 1.5rem);
   line-height: 1.45;
   color: rgba(255,255,255,0.8);
+  text-wrap: balance;
 }
 
 /* ABOUT ORB SYSTEM */
@@ -490,6 +503,7 @@ body{
   position: relative;
   overflow: hidden;
   transition: transform .45s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .35s ease, background .35s ease;
+  will-change: transform;
 }
 
 .lux-card::after{
@@ -534,6 +548,44 @@ body{
 
 .lux-float{
   animation: luxFloat 6.8s ease-in-out infinite;
+}
+
+.framer-fade-up{
+  animation: framerFadeUp .7s cubic-bezier(.22,1,.36,1) both;
+}
+
+.framer-soft-float{
+  animation: framerSoftFloat 6.2s ease-in-out infinite;
+}
+
+.framer-glow-sweep{
+  position: relative;
+  overflow: hidden;
+}
+
+.framer-glow-sweep::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 70% at 12% 0%, rgba(205,48,117,0.16) 0%, transparent 65%),
+    radial-gradient(75% 55% at 88% 100%, rgba(212,255,89,0.1) 0%, transparent 70%);
+  animation: framerAmbientPulse 5.2s ease-in-out infinite;
+}
+
+.framer-glow-sweep::after{
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -35%;
+  width: 40%;
+  height: 180%;
+  pointer-events: none;
+  background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(241,153,185,0.24) 38%, rgba(255,255,255,0.12) 54%, rgba(212,255,89,0.12) 66%, rgba(255,255,255,0) 100%);
+  transform: translateX(-140%) rotate(8deg);
+  animation: framerGlowSweep 4.8s ease-in-out infinite;
+  opacity: .55;
 }
 
 .lux-ambient{
@@ -581,6 +633,63 @@ body{
 @keyframes luxShimmer{
   0%{ transform: translateX(-140%) rotate(8deg); }
   100%{ transform: translateX(320%) rotate(8deg); }
+}
+
+@keyframes framerFadeUp{
+  from{
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes framerSoftFloat{
+  0%, 100%{ transform: translateY(0px); }
+  50%{ transform: translateY(-6px); }
+}
+
+@keyframes framerGlowSweep{
+  0%, 100%{
+    transform: translateX(-140%) rotate(8deg);
+    opacity: 0;
+  }
+  14%{
+    opacity: .18;
+  }
+  55%{
+    transform: translateX(300%) rotate(8deg);
+    opacity: .3;
+  }
+  68%{
+    opacity: 0;
+  }
+}
+
+@keyframes framerAmbientPulse{
+  0%, 100%{
+    opacity: .45;
+    transform: scale(1);
+  }
+  50%{
+    opacity: .82;
+    transform: scale(1.03);
+  }
+}
+
+@media (max-width: 768px){
+  .section-title{
+    font-size: clamp(1.95rem, 10vw, 2.8rem);
+    line-height: 1.04;
+    letter-spacing: -0.012em;
+  }
+
+  .section-lead{
+    font-size: clamp(.96rem, 4.1vw, 1.1rem);
+    line-height: 1.5;
+  }
 }
 
 .contact-msg,

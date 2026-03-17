@@ -67,29 +67,51 @@ export default function Hero() {
     };
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.08 },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="top" ref={sectionRef} className="relative isolate bg-black" style={{ height: "220svh" }}>
       <div className="sticky top-0 h-svh overflow-hidden">
         <div className="relative h-svh w-full">
-          <div ref={introRef} className="hero-intro pointer-events-none absolute inset-x-0 top-0 z-20 px-4 text-center">
+          <div
+            ref={introRef}
+            className="hero-intro pointer-events-none absolute inset-x-0 top-0 z-20 px-4 text-center motion-safe:animate-[framerFadeUp_.75s_cubic-bezier(.22,1,.36,1)]"
+          >
             <h1
               className="font-faith hero-gradient-text leading-none"
               style={{
                 fontSize: "clamp(3.3rem, 16.2vw, 154px)",
-                lineHeight: 1.12,
-                paddingBottom: "0.09em",
+                lineHeight: 1.14,
+                paddingBottom: "0.14em",
               }}
             >
               Sara Ruiz
             </h1>
 
             <p
-              className="mt-1 md:-mt-4 uppercase text-white/92"
+              className="mt-0.5 md:-mt-3 uppercase text-white/92"
               style={{
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
                 fontWeight: 400,
                 fontSize: "clamp(12px, 2.05vw, 22px)",
-                letterSpacing: "clamp(0.24em, 0.45vw, 0.48em)",
+                letterSpacing: "clamp(0.26em, 0.48vw, 0.52em)",
               }}
             >
               DISEÑADORA UX/UI
@@ -101,7 +123,7 @@ export default function Hero() {
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
                 fontWeight: 400,
                 fontSize: "clamp(11px, 1.25vw, 14px)",
-                letterSpacing: "clamp(0.14em, 0.3vw, 0.36em)",
+                letterSpacing: "clamp(0.16em, 0.32vw, 0.38em)",
               }}
             >
               Research · Flows · Product Strategy
@@ -110,7 +132,15 @@ export default function Hero() {
 
           <div className="absolute inset-0 z-10">
             <div ref={maskRef} className="hero-mask">
-              <video ref={videoRef} autoPlay muted loop playsInline className="hero-video absolute inset-0 h-full w-full object-cover">
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="hero-video absolute inset-0 h-full w-full object-cover"
+              >
                 <source src="/Assets/Header/VideoBanner.mp4" type="video/mp4" />
               </video>
 

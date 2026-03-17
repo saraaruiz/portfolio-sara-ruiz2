@@ -141,7 +141,7 @@ export default function AboutSection() {
   return (
     <>
       <section id="about" className="relative scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
-        <div className="mx-auto grid max-w-[1280px] items-stretch gap-12 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-20 xl:px-16">
+        <div className="framer-fade-up mx-auto grid max-w-[1280px] items-stretch gap-12 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-20 xl:px-16">
           <div className="flex h-full flex-col items-center">
             <div className="relative mb-8 flex h-[300px] w-[300px] items-center justify-center md:h-[330px] md:w-[330px]">
               <div className="about-orb-wrap" aria-hidden="true">
@@ -157,6 +157,8 @@ export default function AboutSection() {
                 <img
                   src="/Assets/Body/FotoSara.png"
                   alt="Sara Ruiz"
+                  loading="lazy"
+                  decoding="async"
                   className={`h-full w-full object-cover object-top transition-[filter,transform] ease-out ${
                     inView ? "grayscale-0 scale-[1.05]" : "grayscale scale-[1.01]"
                   }`}
@@ -202,6 +204,8 @@ export default function AboutSection() {
                       <img
                         src={social.icon}
                         alt={social.label}
+                        loading="lazy"
+                        decoding="async"
                         className="h-[23px] w-[23px] opacity-80 transition-opacity duration-300 hover:opacity-100"
                       />
                     </button>
@@ -290,12 +294,12 @@ export default function AboutSection() {
             </div>
 
             <div className="mt-12 w-full max-w-[840px] space-y-5 pt-5 pb-5">
-              <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 px-1 md:flex-nowrap md:justify-center md:gap-x-5 md:px-2">
+              <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-3 px-1 md:flex-nowrap md:justify-center md:gap-x-5 md:px-2">
                 <SkillStar />
                 {skillRows[0].flatMap((skill) => [
                   <span
                     key={`${skill}-label`}
-                    className="text-[14px] font-light uppercase tracking-[0.48em] text-[#F199B9] md:text-[16px] md:tracking-[0.52em]"
+                    className="text-[12px] font-light uppercase tracking-[0.28em] text-[#F199B9] sm:text-[13px] sm:tracking-[0.34em] md:text-[15px] md:tracking-[0.44em]"
                   >
                     {skill}
                   </span>,
@@ -307,7 +311,7 @@ export default function AboutSection() {
                 <div className="inline-flex w-full max-w-[680px] items-center justify-between gap-3">
                   <SkillStar />
 
-                  <span className="flex-1 text-center text-[14px] font-light uppercase tracking-[0.52em] text-[#F199B9] md:text-[16px] md:tracking-[0.58em]">
+                  <span className="flex-1 text-center text-[12px] font-light uppercase tracking-[0.28em] text-[#F199B9] sm:text-[13px] sm:tracking-[0.35em] md:text-[15px] md:tracking-[0.5em]">
                     {skillRows[1][0]}
                   </span>
 

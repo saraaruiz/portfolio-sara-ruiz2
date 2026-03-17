@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
           </h2>
         </div>
 
-        <div className="lux-glass lux-card mt-12 overflow-hidden rounded-[30px] bg-[radial-gradient(1000px_380px_at_15%_0%,rgba(205,48,117,0.26),transparent_65%),linear-gradient(180deg,#171025_0%,#0c0c10_100%)] p-6 md:p-8">
+        <div className="lux-glass lux-card framer-glow-sweep mt-12 overflow-hidden rounded-[30px] bg-[radial-gradient(1000px_380px_at_15%_0%,rgba(205,48,117,0.26),transparent_65%),linear-gradient(180deg,#171025_0%,#0c0c10_100%)] p-6 md:p-8">
           <div className="flex items-start justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#CD3075] to-[#d4ff59] text-lg font-semibold text-black">

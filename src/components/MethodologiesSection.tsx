@@ -23,7 +23,7 @@ export default function MethodologiesSection() {
   }, []);
 
   return (
-    <section className="methods-theme-glass py-10 md:py-12" style={methodsThemeVars}>
+    <section className="methods-theme-glass framer-glow-sweep py-10 md:py-12" style={methodsThemeVars}>
       <p className="relative z-20 px-6 text-center text-[1.1rem] font-normal leading-relaxed text-white md:px-10 md:text-2xl xl:px-16">
         No sigo una única metodología, elijo el marco según el problema:
       </p>

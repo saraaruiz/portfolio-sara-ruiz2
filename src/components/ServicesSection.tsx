@@ -44,7 +44,7 @@ export default function ServicesSection() {
           {cards.map((card) => (
             <article
               key={card.title}
-              className="lux-glass lux-card group relative rounded-[28px] p-7"
+              className="lux-glass lux-card framer-glow-sweep group relative rounded-[28px] p-7"
             >
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "radial-gradient(1000px 220px at 0% 0%, rgba(205,48,117,0.14), transparent 60%)" }} />
 

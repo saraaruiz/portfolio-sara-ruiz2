@@ -43,11 +43,13 @@ export default function ProjectsSection() {
                 onClick={() => setActive(index)}
                 className={`lux-card group relative h-[260px] w-full overflow-hidden rounded-[24px] border border-white/10 transition-[flex,transform] duration-500 ease-out md:h-full ${
                   isActive ? "md:flex-[5]" : "md:flex-[1.6]"
-                }`}
+                } framer-glow-sweep`}
               >
                 <img
                   src={project.image}
                   alt={project.title}
+                  loading="lazy"
+                  decoding="async"
                   className={`h-full w-full object-cover transition-transform duration-500 ${
                     isActive ? "scale-[1.02]" : "md:scale-100 md:grayscale"
                   }`}
