@@ -1,5 +1,7 @@
 ﻿import { useState } from "react";
 
+import { usePreferences } from "@/context/PreferencesContext";
+
 const projects = [
   {
     title: "Fuerza Interior",
@@ -16,6 +18,19 @@ const projects = [
 ];
 
 export default function ProjectsSection() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
+
+  const localizedProjects = isEnglish
+    ? projects.map((project) => ({
+        ...project,
+        subtitle:
+          project.title === "Fuerza Interior"
+            ? "Wellness and meditation app"
+            : "Strategic landing page focused on conversion",
+      }))
+    : projects;
+
   const [active, setActive] = useState(1);
 
   return (
@@ -23,13 +38,17 @@ export default function ProjectsSection() {
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="section-title">
-            MIS <span className="section-title-accent">PROYECTOS</span>
+            {isEnglish ? "MY " : "MIS "}<span className="section-title-accent">{isEnglish ? "PROJECTS" : "PROYECTOS"}</span>
           </h2>
-          <p className="section-lead mt-5">Casos donde estrategia, UX y detalle se encuentran.</p>
+          <p className="section-lead mt-5">
+            {isEnglish
+              ? "Cases where strategy, UX, and detail come together."
+              : "Casos donde estrategia, UX y detalle se encuentran."}
+          </p>
         </div>
 
         <div className="lux-glass mt-12 flex h-auto w-full flex-col gap-3 overflow-hidden rounded-[28px] p-2 md:h-[520px] md:flex-row md:gap-4">
-          {projects.map((project, index) => {
+          {localizedProjects.map((project, index) => {
             const isActive = active === index;
 
             return (
@@ -63,7 +82,7 @@ export default function ProjectsSection() {
                   } translate-y-0 opacity-100`}
                 >
                   <div className="lux-glass-soft rounded-2xl p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/60">Proyecto</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/60">{isEnglish ? "Project" : "Proyecto"}</p>
                   <h3 className="mt-2 text-2xl font-semibold text-white md:text-3xl">{project.title}</h3>
                   <p className="mt-2 max-w-[40ch] text-sm text-white/78">{project.subtitle}</p>
                   </div>

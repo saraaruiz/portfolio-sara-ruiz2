@@ -1,10 +1,13 @@
 ﻿import { useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export default function Hero() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
   const sectionRef = useRef<HTMLElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
@@ -114,7 +117,7 @@ export default function Hero() {
                 letterSpacing: "clamp(0.26em, 0.48vw, 0.52em)",
               }}
             >
-              DISEÑADORA UX/UI
+              {isEnglish ? "UX/UI DESIGNER" : "DISEÑADORA UX/UI"}
             </p>
 
             <p
@@ -158,7 +161,7 @@ export default function Hero() {
                     color: "rgba(255,255,255,0.62)",
                   }}
                 >
-                  Desliza para ver más
+                  {isEnglish ? "Scroll to explore" : "Desliza para ver más"}
                 </span>
               </div>
             </div>

@@ -1,6 +1,6 @@
-﻿// src/components/CareerSection.tsx
-import { useState } from "react";
+﻿import { useState } from "react";
 import { ChevronDown, ExternalLink, Eye, X } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 type CareerItem = {
   title: string;
@@ -19,91 +19,176 @@ type CareerCategory = {
   items: CareerItem[];
 };
 
-const categories: CareerCategory[] = [
-  {
-    id: "educacion",
-    label: "EDUCACIÓN",
-    items: [
-      {
-        title: "Diseño UX/UI",
-        meta: "Bogotá Institute of Technology & Corp. Univ. Iberoamericana",
-        dates: "Ago. 2023 – Ene. 2026",
-        description:
-          "Con foco en metodologías ágiles, investigación de usuarios y prototipado avanzado en Figma.",
-        certFiles: ["/Assets/Carrera/diploma-diseño-ux-ui.pdf"],
-      },
-      {
-        title: "Diseño Industrial",
-        meta: "Politécnico Grancolombiano · Bogotá",
-        dates: "Feb. 2019 – Abr. 2023",
-        certFiles: ["/Assets/Carrera/diploma-diseño-industrial.pdf"],
-      },
-      {
-        title: "Desarrolladora Full Stack Java Junior",
-        meta: "BIT & Generation Colombia",
-        dates: "Ago. – Nov. 2023",
-        certFiles: ["/Assets/Carrera/diploma-fullstack.pdf"],
-      },
-    ],
-  },
-  {
-    id: "experiencia",
-    label: "EXPERIENCIA LABORAL",
-    items: [
-      {
-        title: "Bliss Companies (EE.UU.) · Asistente Virtual",
-        meta: "Clínica estética líder · Remoto · Atención en inglés",
-        dates: "Abr. 2024 – Jul. 2025",
-        bullets: [
-          "Identifiqué patrones de fricción en el flujo de agendamiento a partir de interacción directa con pacientes.",
-          "Analicé comportamientos para optimizar procesos en entorno de alto volumen y diseñé materiales de onboarding estructurados.",
-          "Reduje consultas repetidas de pacientes al proponer mejoras al flujo de atención.",
-          "Logré incorporación funcional de nuevos agentes en menos de una semana.",
-        ],
-      },
-      {
-        title: "Teleperformance · Representante de Soporte — Cuenta PlayStation",
-        meta: "Bogotá, Colombia · Atención a usuarios de EE.UU. y Canadá en inglés",
-        dates: "Feb. – Abr. 2024",
-        bullets: [
-          "Analicé y resolví problemas de usabilidad en software, hardware y accesos; identifiqué puntos críticos en la experiencia de usuario.",
-          "Gestioné casos bajo métricas SLA manteniendo tiempos de resolución óptimos del equipo.",
-        ],
-      },
-      {
-        title: "International Business School Américas · Creadora de Contenido",
-        meta: "California, EE.UU. · Marketing Digital",
-        dates: "Dic. 2022 – Ene. 2023",
-        bullets: [
-          "Produje contenido visual adaptado a múltiples plataformas, reforzando identidad visual e interacción en redes sociales.",
-        ],
-        externalUrl: "https://www.instagram.com/reel/C1CzyTwso3D/?igsh=OHQxbjFyNXdocWZt",
-      },
-    ],
-  },
-  {
-    id: "certificaciones",
-    label: "CERTIFICACIONES & LOGROS",
-    items: [
-      {
-        title: "SCRUM Foundation Professional Certificate",
-        meta: "CertiProf",
-        year: "2024",
-        certFiles: ["/Assets/Carrera/certificado-scrum.pdf"],
-      },
-      
-      {
-  title: "Workplace Communication + Public Speaking",
-  meta: "Colombo Americano",
-  year: "2023",
-  certFiles: [
-    "/Assets/Carrera/certificado-workplace-communication.pdf",
-    "/Assets/Carrera/certificado-public-speaking.pdf"
+const categoriesByLanguage: Record<"es" | "en", CareerCategory[]> = {
+  es: [
+    {
+      id: "educacion",
+      label: "EDUCACIÓN",
+      items: [
+        {
+          title: "Diseño UX/UI",
+          meta: "Bogotá Institute of Technology & Corp. Univ. Iberoamericana",
+          dates: "Ago. 2023 – Ene. 2026",
+          description:
+            "Con foco en metodologías ágiles, investigación de usuarios y prototipado avanzado en Figma.",
+          certFiles: ["/Assets/Carrera/diploma-diseño-ux-ui.pdf"],
+        },
+        {
+          title: "Diseño Industrial",
+          meta: "Politécnico Grancolombiano · Bogotá",
+          dates: "Feb. 2019 – Abr. 2023",
+          certFiles: ["/Assets/Carrera/diploma-diseño-industrial.pdf"],
+        },
+        {
+          title: "Desarrolladora Full Stack Java Junior",
+          meta: "BIT & Generation Colombia",
+          dates: "Ago. – Nov. 2023",
+          certFiles: ["/Assets/Carrera/diploma-fullstack.pdf"],
+        },
+      ],
+    },
+    {
+      id: "experiencia",
+      label: "EXPERIENCIA LABORAL",
+      items: [
+        {
+          title: "Bliss Companies (EE.UU.) · Asistente Virtual",
+          meta: "Clínica estética líder · Remoto · Atención en inglés",
+          dates: "Abr. 2024 – Jul. 2025",
+          bullets: [
+            "Identifiqué patrones de fricción en el flujo de agendamiento a partir de interacción directa con pacientes.",
+            "Analicé comportamientos para optimizar procesos en entorno de alto volumen y diseñé materiales de onboarding estructurados.",
+            "Reduje consultas repetidas de pacientes al proponer mejoras al flujo de atención.",
+            "Logré incorporación funcional de nuevos agentes en menos de una semana.",
+          ],
+        },
+        {
+          title: "Teleperformance · Representante de Soporte — Cuenta PlayStation",
+          meta: "Bogotá, Colombia · Atención a usuarios de EE.UU. y Canadá en inglés",
+          dates: "Feb. – Abr. 2024",
+          bullets: [
+            "Analicé y resolví problemas de usabilidad en software, hardware y accesos; identifiqué puntos críticos en la experiencia de usuario.",
+            "Gestioné casos bajo métricas SLA manteniendo tiempos de resolución óptimos del equipo.",
+          ],
+        },
+        {
+          title: "International Business School Américas · Creadora de Contenido",
+          meta: "California, EE.UU. · Marketing Digital",
+          dates: "Dic. 2022 – Ene. 2023",
+          bullets: [
+            "Produje contenido visual adaptado a múltiples plataformas, reforzando identidad visual e interacción en redes sociales.",
+          ],
+          externalUrl: "https://www.instagram.com/reel/C1CzyTwso3D/?igsh=OHQxbjFyNXdocWZt",
+        },
+      ],
+    },
+    {
+      id: "certificaciones",
+      label: "CERTIFICACIONES & LOGROS",
+      items: [
+        {
+          title: "SCRUM Foundation Professional Certificate",
+          meta: "CertiProf",
+          year: "2024",
+          certFiles: ["/Assets/Carrera/certificado-scrum.pdf"],
+        },
+        {
+          title: "Workplace Communication + Public Speaking",
+          meta: "Colombo Americano",
+          year: "2023",
+          certFiles: [
+            "/Assets/Carrera/certificado-workplace-communication.pdf",
+            "/Assets/Carrera/certificado-public-speaking.pdf",
+          ],
+        },
+      ],
+    },
   ],
-}
-    ],
-  },
-];
+  en: [
+    {
+      id: "educacion",
+      label: "EDUCATION",
+      items: [
+        {
+          title: "UX/UI Design",
+          meta: "Bogotá Institute of Technology & Corp. Univ. Iberoamericana",
+          dates: "Aug. 2023 – Jan. 2026",
+          description:
+            "Focused on agile methodologies, user research, and advanced prototyping in Figma.",
+          certFiles: ["/Assets/Carrera/diploma-diseño-ux-ui.pdf"],
+        },
+        {
+          title: "Industrial Design",
+          meta: "Politécnico Grancolombiano · Bogotá",
+          dates: "Feb. 2019 – Apr. 2023",
+          certFiles: ["/Assets/Carrera/diploma-diseño-industrial.pdf"],
+        },
+        {
+          title: "Junior Full Stack Java Developer",
+          meta: "BIT & Generation Colombia",
+          dates: "Aug. – Nov. 2023",
+          certFiles: ["/Assets/Carrera/diploma-fullstack.pdf"],
+        },
+      ],
+    },
+    {
+      id: "experiencia",
+      label: "WORK EXPERIENCE",
+      items: [
+        {
+          title: "Bliss Companies (U.S.) · Virtual Assistant",
+          meta: "Leading aesthetic clinic · Remote · English support",
+          dates: "Apr. 2024 – Jul. 2025",
+          bullets: [
+            "Identified friction patterns in the scheduling flow through direct interaction with patients.",
+            "Analyzed behavior to optimize high-volume processes and designed structured onboarding materials.",
+            "Reduced repeated patient inquiries by proposing improvements to the service flow.",
+            "Enabled new agents to become fully operational in under one week.",
+          ],
+        },
+        {
+          title: "Teleperformance · Support Representative — PlayStation Account",
+          meta: "Bogotá, Colombia · English support for U.S. and Canada users",
+          dates: "Feb. – Apr. 2024",
+          bullets: [
+            "Analyzed and resolved usability issues in software, hardware, and access flows; identified critical UX pain points.",
+            "Managed cases under SLA metrics while maintaining optimal team resolution times.",
+          ],
+        },
+        {
+          title: "International Business School Américas · Content Creator",
+          meta: "California, U.S. · Digital Marketing",
+          dates: "Dec. 2022 – Jan. 2023",
+          bullets: [
+            "Produced visual content adapted for multiple platforms, reinforcing visual identity and social engagement.",
+          ],
+          externalUrl: "https://www.instagram.com/reel/C1CzyTwso3D/?igsh=OHQxbjFyNXdocWZt",
+        },
+      ],
+    },
+    {
+      id: "certificaciones",
+      label: "CERTIFICATIONS & ACHIEVEMENTS",
+      items: [
+        {
+          title: "SCRUM Foundation Professional Certificate",
+          meta: "CertiProf",
+          year: "2024",
+          certFiles: ["/Assets/Carrera/certificado-scrum.pdf"],
+        },
+        {
+          title: "Workplace Communication + Public Speaking",
+          meta: "Colombo Americano",
+          year: "2023",
+          certFiles: [
+            "/Assets/Carrera/certificado-workplace-communication.pdf",
+            "/Assets/Carrera/certificado-public-speaking.pdf",
+          ],
+        },
+      ],
+    },
+  ],
+};
 
 type ModalState = {
   title: string;
@@ -111,6 +196,10 @@ type ModalState = {
 } | null;
 
 export default function CareerSection() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
+  const categories = categoriesByLanguage[language];
+
   const [open, setOpen] = useState("educacion");
   const [modal, setModal] = useState<ModalState>(null);
 
@@ -124,9 +213,9 @@ export default function CareerSection() {
         <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
           <div className="max-w-4xl">
             <h2 className="section-title">
-              DESCUBRE MI
+              {isEnglish ? "DISCOVER MY" : "DESCUBRE MI"}
               <br />
-              <span className="section-title-accent">CAMINO PROFESIONAL</span>
+              <span className="section-title-accent">{isEnglish ? "PROFESSIONAL PATH" : "CAMINO PROFESIONAL"}</span>
             </h2>
           </div>
 
@@ -178,10 +267,10 @@ export default function CareerSection() {
                                   <button
                                     onClick={() => openPdfModal(item.title, item.certFiles!)}
                                     className="cert-cta-attention inline-flex items-center gap-2 rounded-full border border-[#9cc02c] bg-[#d4ff59]/18 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#e9f8b6] transition-all duration-300 hover:-translate-y-[1px] hover:border-[#d4ff59] hover:bg-[#d4ff59]/28 hover:text-[#f5ffd8]"
-                                    aria-label={`Ver diploma de ${item.title}`}
+                                    aria-label={`${isEnglish ? "View certificate for" : "Ver diploma de"} ${item.title}`}
                                   >
                                     <Eye size={15} />
-                                    Ver certificado
+                                    {isEnglish ? "View certificate" : "Ver certificado"}
                                   </button>
                                 )}
 
@@ -191,10 +280,10 @@ export default function CareerSection() {
                                     target="_blank"
                                     rel="noreferrer"
                                     className="inline-flex items-center gap-2 rounded-full border border-[#9cc02c] bg-[#d4ff59]/18 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#e9f8b6] transition-all duration-300 hover:-translate-y-[1px] hover:border-[#d4ff59] hover:bg-[#d4ff59]/28 hover:text-[#f5ffd8]"
-                                    aria-label={`Abrir enlace de ${item.title}`}
+                                    aria-label={`${isEnglish ? "Open link for" : "Abrir enlace de"} ${item.title}`}
                                   >
                                     <ExternalLink size={15} />
-                                    Ver evidencia
+                                    {isEnglish ? "View proof" : "Ver evidencia"}
                                   </a>
                                 )}
                               </div>
@@ -247,9 +336,9 @@ export default function CareerSection() {
             </div>
 
             <div className="h-[70vh] overflow-y-auto rounded-[22px] bg-black p-2">
-              {modal.files.map((file) => (
+              {modal.files.map((file, fileIndex) => (
                 <div key={file} className="mb-4 h-[68vh] overflow-hidden rounded-xl border border-white/10">
-                  <iframe className="h-full w-full" src={file} title={file} />
+                  <iframe className="h-full w-full" src={file} title={`${modal.title}-${fileIndex + 1}`} />
                 </div>
               ))}
             </div>
@@ -259,5 +348,3 @@ export default function CareerSection() {
     </>
   );
 }
-
-

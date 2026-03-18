@@ -1,30 +1,62 @@
 ﻿import { useState } from "react";
 import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
-const testimonials = [
-  {
-    name: "Steven Mendez Velandia",
-    role: "Bootcamp Full-stack Java Jr.",
-    body: "He tenido la oportunidad de compartir un mismo entorno de aprendizaje con Sara. Es una profesional destacable; sus capacidades técnicas y blandas la llevan a desempeñar papeles fundamentales en cada equipo de trabajo.",
-    tags: ["Creatividad", "Trabajo en equipo", "Aprendizaje continuo"],
-  },
-  {
-    name: "Laura Gómez",
-    role: "Product Manager · Fintech",
-    body: "Sara tiene una mirada estratégica muy clara. Propone soluciones viables sin perder sensibilidad por la experiencia del usuario y cuida cada detalle visual con criterio de negocio.",
-    tags: ["Estrategia", "UX", "Comunicación"],
-  },
-  {
-    name: "Andrés Castillo",
-    role: "Tech Lead · SaaS",
-    body: "Trabajar con Sara fue muy fluido. Documenta, itera rápido y mantiene foco en impacto. Sus decisiones de diseño siempre llegan con argumentos y una ejecución consistente.",
-    tags: ["Iteración", "Colaboración", "Calidad"],
-  },
-];
+const testimonialsByLanguage = {
+  es: [
+    {
+      name: "Steven Mendez Velandia",
+      role: "Bootcamp Full-stack Java Jr.",
+      body: "He tenido la oportunidad de compartir un mismo entorno de aprendizaje con Sara. Es una profesional destacable; sus capacidades técnicas y blandas la llevan a desempeñar papeles fundamentales en cada equipo de trabajo.",
+      tags: ["Creatividad", "Trabajo en equipo", "Aprendizaje continuo"],
+    },
+    {
+      name: "Laura Gómez",
+      role: "Product Manager · Fintech",
+      body: "Sara tiene una mirada estratégica muy clara. Propone soluciones viables sin perder sensibilidad por la experiencia del usuario y cuida cada detalle visual con criterio de negocio.",
+      tags: ["Estrategia", "UX", "Comunicación"],
+    },
+    {
+      name: "Andrés Castillo",
+      role: "Tech Lead · SaaS",
+      body: "Trabajar con Sara fue muy fluido. Documenta, itera rápido y mantiene foco en impacto. Sus decisiones de diseño siempre llegan con argumentos y una ejecución consistente.",
+      tags: ["Iteración", "Colaboración", "Calidad"],
+    },
+  ],
+  en: [
+    {
+      name: "Steven Mendez Velandia",
+      role: "Full-stack Java Jr. Bootcamp",
+      body: "I had the opportunity to share the same learning environment with Sara. She is an outstanding professional; her technical and soft skills allow her to play key roles in every team she joins.",
+      tags: ["Creativity", "Teamwork", "Continuous learning"],
+    },
+    {
+      name: "Laura Gómez",
+      role: "Product Manager · Fintech",
+      body: "Sara has a very clear strategic perspective. She proposes viable solutions without losing sensitivity to user experience and takes care of every visual detail with business criteria.",
+      tags: ["Strategy", "UX", "Communication"],
+    },
+    {
+      name: "Andrés Castillo",
+      role: "Tech Lead · SaaS",
+      body: "Working with Sara was very smooth. She documents, iterates fast, and stays focused on impact. Her design decisions always come with clear reasoning and consistent execution.",
+      tags: ["Iteration", "Collaboration", "Quality"],
+    },
+  ],
+} as const;
+
+const sectionTitles = {
+  es: { line1: "CÓMO ES", line2: "TRABAJAR CONMIGO", dot: "Ver testimonio" },
+  en: { line1: "WHAT IT'S LIKE", line2: "WORKING WITH ME", dot: "View testimonial" },
+} as const;
 
 export default function TestimonialsSection() {
+  const { language } = usePreferences();
   const [index, setIndex] = useState(0);
+
+  const testimonials = testimonialsByLanguage[language];
   const current = testimonials[index];
+  const labels = sectionTitles[language];
 
   const prev = () => setIndex((value) => (value - 1 + testimonials.length) % testimonials.length);
   const next = () => setIndex((value) => (value + 1) % testimonials.length);
@@ -34,9 +66,9 @@ export default function TestimonialsSection() {
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
         <div className="max-w-4xl">
           <h2 className="section-title">
-            CÓMO ES
+            {labels.line1}
             <br />
-            <span className="section-title-accent">TRABAJAR CONMIGO</span>
+            <span className="section-title-accent">{labels.line2}</span>
           </h2>
         </div>
 
@@ -77,24 +109,24 @@ export default function TestimonialsSection() {
                   type="button"
                   onClick={() => setIndex(dot)}
                   className={`h-2.5 rounded-full transition-all ${dot === index ? "w-6 bg-[#CD3075]" : "w-2.5 bg-white/35"}`}
-                  aria-label={`Ver testimonio ${dot + 1}`}
+                  aria-label={`${labels.dot} ${dot + 1}`}
                 />
               ))}
             </div>
 
             <div className="flex gap-2">
-                <button
-                  onClick={prev}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d4ff59]/45 bg-[#d4ff59]/12 text-[#d4ff59] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#d4ff59]/24 hover:text-[#f6ffd8]"
-                >
-                  <ArrowLeft size={16} />
-                </button>
-                <button
-                  onClick={next}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d4ff59]/45 bg-[#d4ff59]/12 text-[#d4ff59] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#d4ff59]/24 hover:text-[#f6ffd8]"
-                >
-                  <ArrowRight size={16} />
-                </button>
+              <button
+                onClick={prev}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d4ff59]/45 bg-[#d4ff59]/12 text-[#d4ff59] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#d4ff59]/24 hover:text-[#f6ffd8]"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                onClick={next}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d4ff59]/45 bg-[#d4ff59]/12 text-[#d4ff59] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#d4ff59]/24 hover:text-[#f6ffd8]"
+              >
+                <ArrowRight size={16} />
+              </button>
             </div>
           </div>
         </div>

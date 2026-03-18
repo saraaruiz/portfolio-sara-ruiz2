@@ -1,6 +1,7 @@
 ﻿import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Hand, MousePointer2 } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 type StackLogo = {
   file: string;
@@ -8,6 +9,7 @@ type StackLogo = {
 };
 
 type TooltipPlacement = "top" | "bottom";
+type TooltipSource = "hover" | "tap";
 
 type TooltipState = {
   id: string;
@@ -55,7 +57,11 @@ const logos: StackLogo[] = fileNames.map((file) => {
 const TOOLTIP_ID = "stack-tooltip-active";
 
 export default function StackSection() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
+  const [isTouchInteraction, setIsTouchInteraction] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeSource, setActiveSource] = useState<TooltipSource | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -96,31 +102,46 @@ export default function StackSection() {
     });
   };
 
-  const openTooltip = (id: string, label: string) => {
+  const openTooltip = (id: string, label: string, source: TooltipSource) => {
+    setActiveSource(source);
     setActiveId(id);
     updateTooltipPosition(id, label);
   };
 
   const closeTooltip = () => {
     setActiveId(null);
+    setActiveSource(null);
     setTooltip(null);
   };
 
   const handleToggleTap = (id: string, label: string) => {
-    if (activeId === id) {
+    if (!isTouchInteraction) return;
+
+    if (activeId === id && activeSource === "tap") {
       closeTooltip();
       return;
     }
 
-    openTooltip(id, label);
+    openTooltip(id, label, "tap");
+  };
+
+  const closeHoverTooltip = () => {
+    if (activeSource === "hover") {
+      closeTooltip();
+    }
   };
 
   useEffect(() => {
-    if (!activeId || !tooltip) return;
+    const mediaQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+    const updateInteraction = () => setIsTouchInteraction(mediaQuery.matches);
+    updateInteraction();
 
-    const refresh = () => {
-      updateTooltipPosition(activeId, tooltip.label);
-    };
+    mediaQuery.addEventListener("change", updateInteraction);
+    return () => mediaQuery.removeEventListener("change", updateInteraction);
+  }, []);
+
+  useEffect(() => {
+    if (!activeId || !tooltip) return;
 
     const handlePointerDownOutside = (event: PointerEvent) => {
       const target = event.target as Node;
@@ -136,18 +157,29 @@ export default function StackSection() {
       if (event.key === "Escape") closeTooltip();
     };
 
-    window.addEventListener("resize", refresh);
-    window.addEventListener("scroll", refresh, true);
+    const closeOnViewportChange = () => closeTooltip();
+
+    window.addEventListener("resize", closeOnViewportChange);
+    window.addEventListener("orientationchange", closeOnViewportChange);
+    window.addEventListener("scroll", closeOnViewportChange, true);
     document.addEventListener("pointerdown", handlePointerDownOutside);
     document.addEventListener("keydown", handleEscape);
 
     return () => {
-      window.removeEventListener("resize", refresh);
-      window.removeEventListener("scroll", refresh, true);
+      window.removeEventListener("resize", closeOnViewportChange);
+      window.removeEventListener("orientationchange", closeOnViewportChange);
+      window.removeEventListener("scroll", closeOnViewportChange, true);
       document.removeEventListener("pointerdown", handlePointerDownOutside);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [activeId, tooltip]);
+  }, [activeId, tooltip, activeSource]);
+
+  useEffect(() => {
+    if (activeSource !== "tap" || !activeId) return;
+
+    const timeoutId = window.setTimeout(() => closeTooltip(), 2600);
+    return () => window.clearTimeout(timeoutId);
+  }, [activeId, activeSource]);
 
   return (
     <section
@@ -155,20 +187,21 @@ export default function StackSection() {
       style={stackThemeVars}
     >
       <h3 className="relative z-20 px-6 text-center text-[20px] font-medium tracking-[0.01em] text-white/96 md:px-10 md:text-[28px] xl:px-16">
-        MI STACK DE HERRAMIENTAS
+        {isEnglish ? "MY TOOL STACK" : "MI STACK DE HERRAMIENTAS"}
       </h3>
 
       <div className="relative z-20 mt-2 flex items-center justify-center gap-2 px-6 text-white/62 md:px-10 xl:px-16">
         <MousePointer2 size={13} className="hidden shrink-0 md:block" aria-hidden="true" />
         <Hand size={13} className="shrink-0 md:hidden" aria-hidden="true" />
         <p className="text-center text-[10px] font-medium uppercase tracking-[0.14em] md:text-[11px]">
-          Pasa o toca los íconos
+          {isEnglish ? "Hover or tap the icons" : "Pasa o toca los íconos"}
         </p>
       </div>
       <div className="stack-fullbleed relative z-20 mt-5">
-        <div className="stack-marquee stack-fade-mask" aria-label="Herramientas y tecnologías">
+        <div className="stack-marquee stack-fade-mask" aria-label={isEnglish ? "Tools and technologies" : "Herramientas y tecnologías"}>
           <div
             className="stack-track stack-track-premium items-center gap-7 md:gap-9"
+            onMouseLeave={closeHoverTooltip}
             style={{ animationPlayState: isPaused ? "paused" : "running" }}
           >
             {track.map((tool, index) => {
@@ -182,10 +215,16 @@ export default function StackSection() {
                     itemRefs.current[id] = node;
                   }}
                   type="button"
-                  onMouseEnter={() => openTooltip(id, tool.label)}
-                  onMouseLeave={closeTooltip}
-                  onFocus={() => openTooltip(id, tool.label)}
-                  onBlur={closeTooltip}
+                  onMouseEnter={() => {
+                    if (isTouchInteraction) return;
+                    openTooltip(id, tool.label, "hover");
+                  }}
+                  onMouseLeave={closeHoverTooltip}
+                  onFocus={() => {
+                    if (isTouchInteraction) return;
+                    openTooltip(id, tool.label, "hover");
+                  }}
+                  onBlur={closeHoverTooltip}
                   onClick={() => handleToggleTap(id, tool.label)}
                   className="group relative inline-flex h-10 w-10 items-center justify-center transition-transform duration-300 hover:-translate-y-0.5 md:h-11 md:w-11"
                   aria-label={tool.label}
@@ -193,7 +232,8 @@ export default function StackSection() {
                 >
                   <img
                     src={`/Assets/Stack/${tool.file}`}
-                    alt={tool.label}
+                    alt=""
+                    aria-hidden="true"
                     className="stack-logo-hint h-8 w-8 object-contain opacity-95 transition-transform duration-300 group-hover:scale-110 md:h-9 md:w-9"
                     style={{ filter: "brightness(0) invert(1)", animationDelay: `${(index % logos.length) * 0.08}s` }}
                     loading="lazy"

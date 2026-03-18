@@ -1,5 +1,6 @@
 ﻿import { useEffect, useRef, useState } from "react";
 import { Copy, Mail, ExternalLink, Link as LinkIcon, X, MapPin } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 const socials = [
   {
@@ -7,7 +8,6 @@ const socials = [
     icon: "/Assets/Body/whatsapp.svg",
     label: "WhatsApp",
     meta: "+57 3024157219",
-    actionLabel: "Chatear ahora",
     href: "https://wa.me/573024157219",
   },
   {
@@ -15,7 +15,6 @@ const socials = [
     icon: "/Assets/Body/email.svg",
     label: "Email",
     meta: "saruizdi@gmail.com",
-    actionLabel: "Enviar rápido",
     href: "mailto:saruizdi@gmail.com",
   },
   {
@@ -23,7 +22,6 @@ const socials = [
     icon: "/Assets/Body/linkedin.svg",
     label: "LinkedIn",
     meta: "sararuiz-ux-ui",
-    actionLabel: "Conectemos",
     href: "https://www.linkedin.com/in/sararuiz-ux-ui/",
   },
   {
@@ -31,14 +29,8 @@ const socials = [
     icon: "/Assets/Body/instagram.svg",
     label: "Instagram",
     meta: "@saridesign__",
-    actionLabel: "Visitar",
     href: "https://instagram.com/saridesign__",
   },
-];
-
-const skillRows = [
-  ["PROACTIVA", "EMPÁTICA", "CREATIVA"],
-  ["MENTALIDAD DE CRECIMIENTO"],
 ];
 
 const SkillStar = () => (
@@ -58,6 +50,8 @@ const certificatePreview =
   "https://drive.google.com/file/d/15khPgycybFJI1rGCRMT1AKr3ZbMZuoE6/preview";
 
 export default function AboutSection() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
   const portraitRef = useRef<HTMLDivElement>(null);
   const socialsWrapRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<number | null>(null);
@@ -66,6 +60,17 @@ export default function AboutSection() {
   const [certificateOpen, setCertificateOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [openSocialId, setOpenSocialId] = useState<string | null>(null);
+
+  const skillRows = isEnglish
+    ? [["PROACTIVE", "EMPATHETIC", "CREATIVE"], ["GROWTH MINDSET"]]
+    : [["PROACTIVA", "EMPÁTICA", "CREATIVA"], ["MENTALIDAD DE CRECIMIENTO"]];
+
+  const getSocialActionLabel = (id: string) => {
+    if (id === "whatsapp") return isEnglish ? "Chat now" : "Chatear ahora";
+    if (id === "linkedin") return isEnglish ? "Connect" : "Conectemos";
+    if (id === "instagram") return isEnglish ? "Visit" : "Visitar";
+    return isEnglish ? "Open" : "Abrir";
+  };
 
   useEffect(() => {
     const node = portraitRef.current;
@@ -230,7 +235,7 @@ export default function AboutSection() {
                             className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Copy size={12} />
-                            {copied ? "Copiado" : "Copiar"}
+                            {copied ? (isEnglish ? "Copied" : "Copiado") : isEnglish ? "Copy" : "Copiar"}
                           </button>
 
                           <a
@@ -238,7 +243,7 @@ export default function AboutSection() {
                             className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Mail size={12} />
-                            Enviar rápido
+                            {isEnglish ? "Quick send" : "Enviar rápido"}
                           </a>
                         </div>
                       ) : (
@@ -249,7 +254,7 @@ export default function AboutSection() {
                           className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                         >
                           <ExternalLink size={12} />
-                          {social.actionLabel}
+                          {getSocialActionLabel(social.id)}
                         </a>
                       )}
                     </div>
@@ -264,7 +269,7 @@ export default function AboutSection() {
                 >
                   <img src="/Assets/Body/VideoGreen.svg" alt="" className="h-7 w-7" />
                   <span className="text-[11px] font-bold uppercase tracking-[0.09em]">
-                    Ver video presentación
+                    {isEnglish ? "Watch presentation video" : "Ver video presentación"}
                   </span>
                 </button>
               </div>
@@ -273,24 +278,45 @@ export default function AboutSection() {
 
           <div className="flex h-full flex-col">
             <h2 className="section-title">
-              SOBRE <span className="section-title-accent">MÍ</span>
+              {isEnglish ? "ABOUT " : "SOBRE "}
+              <span className="section-title-accent">{isEnglish ? "ME" : "MÍ"}</span>
             </h2>
 
             <div className="mt-6 space-y-7 text-[15px] font-light leading-[1.52] text-white/72 md:text-[18px] xl:text-[22px]">
-              <p className="max-w-[820px]">
-                Diseño experiencias digitales con <span className="font-medium text-white/98">visión estratégica</span>,
-                materializando ideas en{" "}
-                <span className="font-medium text-white/98">interfaces reales y escalables</span>.
-              </p>
+              {isEnglish ? (
+                <>
+                  <p className="max-w-[820px]">
+                    I design digital experiences with{" "}
+                    <span className="font-medium text-white/98">strategic vision</span>, turning ideas into{" "}
+                    <span className="font-medium text-white/98">real and scalable interfaces</span>.
+                  </p>
 
-              <p className="max-w-[820px]">
-                Trabajo de forma <span className="font-medium text-white/98">estructurada e iterativa</span>,
-                equilibrando
-                <span className="font-medium text-white/98"> experiencia de usuario</span>,
-                <span className="font-medium text-white/98"> objetivos del negocio</span> y
-                <span className="font-medium text-white/98"> viabilidad</span> para construir soluciones con impacto
-                real.
-              </p>
+                  <p className="max-w-[820px]">
+                    I work in a{" "}
+                    <span className="font-medium text-white/98">structured and iterative</span> way, balancing
+                    <span className="font-medium text-white/98"> user experience</span>,
+                    <span className="font-medium text-white/98"> business goals</span>, and
+                    <span className="font-medium text-white/98"> feasibility</span> to build solutions with real impact.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="max-w-[820px]">
+                    Diseño experiencias digitales con <span className="font-medium text-white/98">visión estratégica</span>,
+                    materializando ideas en{" "}
+                    <span className="font-medium text-white/98">interfaces reales y escalables</span>.
+                  </p>
+
+                  <p className="max-w-[820px]">
+                    Trabajo de forma <span className="font-medium text-white/98">estructurada e iterativa</span>,
+                    equilibrando
+                    <span className="font-medium text-white/98"> experiencia de usuario</span>,
+                    <span className="font-medium text-white/98"> objetivos del negocio</span> y
+                    <span className="font-medium text-white/98"> viabilidad</span> para construir soluciones con impacto
+                    real.
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="mt-12 w-full max-w-[840px] space-y-5 pt-5 pb-5">
@@ -323,27 +349,27 @@ export default function AboutSection() {
             <div className="lux-glass language-glass mt-8 w-full max-w-[840px] rounded-[22px] px-8 py-2 md:mt-auto">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-5">
                 <div className="text-center">
-                  <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Nativo</p>
-                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">ESPAÑOL</p>
+                  <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">{isEnglish ? "Native" : "Nativo"}</p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">{isEnglish ? "SPANISH" : "ESPAÑOL"}</p>
                 </div>
 
                 <div className="h-9 w-px bg-white/10" />
 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Fluidez</p>
+                    <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">{isEnglish ? "Fluency" : "Fluidez"}</p>
 
                     <button
                       onClick={() => setCertificateOpen(true)}
                       className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-[#d4ff59]/35 hover:text-[#d4ff59]"
-                      aria-label="Ver certificado de inglés"
-                      title="Ver certificado"
+                      aria-label={isEnglish ? "View English certificate" : "Ver certificado de inglés"}
+                      title={isEnglish ? "View certificate" : "Ver certificado"}
                     >
                       <LinkIcon size={9} />
                     </button>
                   </div>
 
-                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">INGLÉS (B2+)</p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">{isEnglish ? "ENGLISH (B2+)" : "INGLÉS (B2+)"}</p>
                 </div>
               </div>
             </div>
@@ -355,7 +381,7 @@ export default function AboutSection() {
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
           <div className="w-full max-w-3xl overflow-hidden rounded-[28px] border border-white/10 bg-[#080808] p-4 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-medium text-white/80">Video presentación</p>
+              <p className="text-sm font-medium text-white/80">{isEnglish ? "Presentation video" : "Video presentación"}</p>
               <button
                 onClick={() => setVideoOpen(false)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:text-white"
@@ -368,7 +394,7 @@ export default function AboutSection() {
               <iframe
                 className="h-full w-full"
                 src="https://www.youtube.com/embed/urnHh5QM6b4"
-                title="Video presentación Sara Ruiz"
+                title={isEnglish ? "Sara Ruiz presentation video" : "Video presentación Sara Ruiz"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
@@ -381,7 +407,7 @@ export default function AboutSection() {
         <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
           <div className="w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#080808] p-4 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-medium text-white/80">Certificado de inglés</p>
+              <p className="text-sm font-medium text-white/80">{isEnglish ? "English certificate" : "Certificado de inglés"}</p>
               <button
                 onClick={() => setCertificateOpen(false)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:text-white"
@@ -394,7 +420,7 @@ export default function AboutSection() {
               <iframe
                 className="h-full w-full"
                 src={certificatePreview}
-                title="Certificado de inglés"
+                title={isEnglish ? "English certificate" : "Certificado de inglés"}
                 allow="autoplay"
               />
             </div>

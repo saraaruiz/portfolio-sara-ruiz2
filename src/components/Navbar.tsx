@@ -1,13 +1,6 @@
-﻿import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { ExternalLink, Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "Sobre mí", href: "#about" },
-  { label: "Carrera", href: "#career" },
-  { label: "Servicios", href: "#services" },
-  { label: "Proyectos", href: "#projects" },
-  { label: "Testimonios", href: "#testimonials" },
-];
+import { usePreferences } from "@/context/PreferencesContext";
 
 const mobileSocials = [
   { label: "WhatsApp", href: "https://wa.me/573024157219", icon: "/Assets/Body/whatsapp.svg" },
@@ -21,6 +14,21 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showCvTip, setShowCvTip] = useState(false);
   const [activeHref, setActiveHref] = useState<string>("#about");
+
+  const { language, setLanguage, copy } = usePreferences();
+  const contactLabel = language === "en" ? "Contact me" : "Contáctame";
+
+  const navLinks = useMemo(
+    () => [
+      { label: copy.nav.about, href: "#about" },
+      { label: copy.nav.career, href: "#career" },
+      { label: copy.nav.services, href: "#services" },
+      { label: copy.nav.projects, href: "#projects" },
+      { label: copy.nav.testimonials, href: "#testimonials" },
+      { label: contactLabel, href: "#contact" },
+    ],
+    [contactLabel, copy.nav.about, copy.nav.career, copy.nav.projects, copy.nav.services, copy.nav.testimonials],
+  );
 
   const tipTimeoutRef = useRef<number | null>(null);
 
@@ -115,18 +123,25 @@ export default function Navbar() {
   };
 
   const shell = scrolled
-    ? "text-white border-b border-white/10 backdrop-blur-xl bg-[linear-gradient(90deg,rgba(8,8,12,0.96)_0%,rgba(34,12,26,0.9)_44%,rgba(8,8,12,0.96)_100%)]"
-    : "text-white backdrop-blur-md bg-[linear-gradient(90deg,rgba(8,8,12,0.78)_0%,rgba(43,15,32,0.64)_45%,rgba(8,8,12,0.78)_100%)]";
+    ? "text-white backdrop-blur-2xl bg-[linear-gradient(90deg,rgba(8,8,12,0.78)_0%,rgba(34,12,26,0.68)_44%,rgba(8,8,12,0.78)_100%)]"
+    : "text-white backdrop-blur-xl bg-[linear-gradient(90deg,rgba(8,8,12,0.58)_0%,rgba(43,15,32,0.48)_45%,rgba(8,8,12,0.58)_100%)]";
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only fixed left-4 top-4 z-[1200] rounded-full bg-[#d4ff59] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-black"
+      >
+        {copy.nav.skipToContent}
+      </a>
+
       <header className={`fixed inset-x-0 top-0 z-[990] transition-all duration-500 ${shell}`}>
-        <nav className="relative z-[995] mx-auto flex max-w-[1280px] items-center justify-between px-6 py-3 md:px-10 md:py-3.5 xl:px-16">
-          <a href="#top" className="shrink-0" onClick={() => setIsOpen(false)}>
+        <nav className="relative z-[995] mx-auto flex max-w-[1440px] items-center px-4 py-3 md:px-6 md:py-3.5 xl:px-8">
+          <a href="#top" className="shrink-0 lg:mr-8" onClick={() => setIsOpen(false)}>
             <img src="/Assets/Header/LogoSari.png" alt="Logo Sara Ruiz" className="h-7 w-auto md:h-8" />
           </a>
 
-          <ul className="hidden items-center gap-7 lg:flex">
+          <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
             {navLinks.map((link) => {
               const isActive = activeHref === link.href;
 
@@ -134,7 +149,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className={`nav-link-tubelight text-sm font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
+                    className={`nav-link-tubelight whitespace-nowrap text-[0.98rem] font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
                       isActive ? "active text-[#d4ff59]" : "text-white/75 hover:text-white"
                     }`}
                   >
@@ -145,7 +160,7 @@ export default function Navbar() {
             })}
           </ul>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="ml-auto hidden items-center gap-2.5 lg:flex">
             <div className="group relative">
               <a
                 href="/Assets/Header/CVSaraRuiz.pdf"
@@ -154,7 +169,7 @@ export default function Navbar() {
                 onClick={handleCvClick}
                 onFocus={() => setShowCvTip(true)}
                 onBlur={() => setShowCvTip(false)}
-                className="lux-chip inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white/80 transition-colors duration-300 hover:text-white"
+                className="lux-chip inline-flex h-10 items-center gap-2 rounded-full px-4 text-[15px] font-medium text-white/80 transition-colors duration-300 hover:text-white"
               >
                 CV <ExternalLink size={14} />
               </a>
@@ -164,19 +179,38 @@ export default function Navbar() {
                   showCvTip ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
                 }`}
               >
-                Se abre en nueva pestaña
+                {copy.nav.cvTip}
               </div>
             </div>
 
-            <a href="#contact" className="btn-cta">
-              Hablemos
-            </a>
+            <div className="lux-chip inline-flex h-10 items-center rounded-full p-1">
+              <button
+                type="button"
+                aria-label={language === "en" ? "Switch to Spanish" : "Cambiar a español"}
+                onClick={() => setLanguage("es")}
+                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.13em] transition-colors ${
+                  language === "es" ? "bg-white/85 text-black" : "text-white/75 hover:text-white"
+                }`}
+              >
+                ESP
+              </button>
+              <button
+                type="button"
+                aria-label={language === "en" ? "Switch to English" : "Cambiar a inglés"}
+                onClick={() => setLanguage("en")}
+                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.13em] transition-colors ${
+                  language === "en" ? "bg-white/85 text-black" : "text-white/75 hover:text-white"
+                }`}
+              >
+                ENG
+              </button>
+            </div>
           </div>
 
           <button
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-[rgba(255,255,255,0.04)] text-white backdrop-blur-md lg:hidden"
+            className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-[rgba(255,255,255,0.04)] text-white backdrop-blur-md lg:hidden"
             onClick={() => setIsOpen((value) => !value)}
-            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={isOpen ? copy.nav.menuClose : copy.nav.menuOpen}
             type="button"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -186,15 +220,37 @@ export default function Navbar() {
 
       {isOpen && (
         <div className="fixed inset-0 z-[980] lg:hidden">
-          {/* Fondo mobile más denso para que no se lea la página detrás */}
           <div className="absolute inset-0 bg-[rgba(6,6,9,0.76)] backdrop-blur-2xl" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,rgba(7,7,11,0.98)_0%,rgba(28,10,22,0.96)_38%,rgba(7,7,11,0.98)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(34%_60%_at_14%_0%,rgba(205,48,117,0.14),transparent_65%),radial-gradient(34%_60%_at_86%_0%,rgba(205,48,117,0.14),transparent_65%),radial-gradient(24%_40%_at_50%_0%,rgba(212,255,89,0.06),transparent_70%)]" />
 
-          {/* Panel debajo de la barra fija */}
           <div className="relative z-[981] flex h-full flex-col pt-[78px]">
             <div className="mx-auto flex h-full w-full max-w-[1280px] flex-col px-7 pb-9 md:px-12">
-              <div className="mx-auto w-full max-w-[680px] space-y-8 pt-6 text-center md:space-y-9">
+              <div className="mx-auto mt-1 flex items-center justify-center gap-2">
+                <div className="lux-chip inline-flex items-center rounded-full p-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("es")}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] ${
+                      language === "es" ? "bg-white text-black" : "text-white/75"
+                    }`}
+                  >
+                    ESP
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] ${
+                      language === "en" ? "bg-white text-black" : "text-white/75"
+                    }`}
+                  >
+                    ENG
+                  </button>
+                </div>
+
+              </div>
+
+              <div className="mx-auto w-full max-w-[680px] space-y-8 pt-8 text-center md:space-y-9">
                 {navLinks.map((link) => {
                   const isActive = activeHref === link.href;
 
@@ -248,13 +304,9 @@ export default function Navbar() {
                         showCvTip ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
                       }`}
                     >
-                      Se abre en nueva pestaña
+                      {copy.nav.cvTip}
                     </div>
                   </div>
-
-                  <a href="#contact" onClick={() => setIsOpen(false)} className="btn-cta">
-                    Hablemos
-                  </a>
                 </div>
               </div>
             </div>

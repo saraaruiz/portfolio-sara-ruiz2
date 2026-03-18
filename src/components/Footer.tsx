@@ -1,11 +1,4 @@
-const quickLinks = [
-  { label: "Sobre mí", href: "#about" },
-  { label: "Carrera", href: "#career" },
-  { label: "Servicios", href: "#services" },
-  { label: "Mis proyectos", href: "#projects" },
-  { label: "Testimonios", href: "#testimonials" },
-  { label: "Hablemos", href: "#contact" },
-];
+﻿import { usePreferences } from "@/context/PreferencesContext";
 
 const socialIcons = [
   { label: "WhatsApp", href: "https://wa.me/573024157219", icon: "/Assets/Body/whatsapp.svg" },
@@ -15,6 +8,17 @@ const socialIcons = [
 ];
 
 export default function Footer() {
+  const { language, setLanguage, copy } = usePreferences();
+
+  const quickLinks = [
+    { label: copy.footer.about, href: "#about" },
+    { label: copy.nav.career, href: "#career" },
+    { label: copy.nav.services, href: "#services" },
+    { label: copy.footer.projects, href: "#projects" },
+    { label: copy.nav.testimonials, href: "#testimonials" },
+    { label: copy.footer.talk, href: "#contact" },
+  ];
+
   return (
     <footer className="border-t border-white/10 bg-[#060606] py-16">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-6 md:px-10 xl:px-16">
@@ -22,14 +26,36 @@ export default function Footer() {
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-sm">
               <img src="/Assets/Header/LogoSari.png" alt="Logo Sara Ruiz" className="h-10 w-auto" />
-              <p className="mt-5 text-sm leading-7 text-white/62">
-                Portfolio UX/UI orientado a estrategia, diseño y experiencias digitales con criterio de producto.
-              </p>
+              <p className="mt-5 text-sm leading-7 text-white/62">{copy.footer.portfolioText}</p>
+
+              <div className="mt-5 flex items-center gap-2">
+                <div className="lux-chip inline-flex items-center rounded-full p-1">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("es")}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] ${
+                      language === "es" ? "bg-white text-black" : "text-white/75"
+                    }`}
+                  >
+                    ESP
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] ${
+                      language === "en" ? "bg-white text-black" : "text-white/75"
+                    }`}
+                  >
+                    ENG
+                  </button>
+                </div>
+
+              </div>
             </div>
 
             <div className="grid gap-10 md:grid-cols-2 lg:gap-16">
               <div>
-                <p className="eyebrow">Navegación</p>
+                <p className="eyebrow">{copy.footer.navigation}</p>
                 <ul className="mt-5 space-y-3">
                   {quickLinks.map((link) => (
                     <li key={link.href}>
@@ -42,7 +68,7 @@ export default function Footer() {
               </div>
 
               <div>
-                <p className="eyebrow">Redes</p>
+                <p className="eyebrow">{copy.footer.networks}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   {socialIcons.map((social) => (
                     <a
@@ -53,7 +79,7 @@ export default function Footer() {
                       className="lux-chip inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/[0.06]"
                       aria-label={social.label}
                     >
-                      <img src={social.icon} alt={social.label} className="h-5 w-5" />
+                      <img src={social.icon} alt={social.label} className="h-5 w-5" loading="lazy" decoding="async" />
                     </a>
                   ))}
                 </div>
@@ -63,10 +89,11 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.18em] text-white/35 md:flex-row md:items-center md:justify-between">
-          <span>Sara Ruiz - Portfolio UX/UI</span>
-          <span>ESP | ENG</span>
+          <span>{copy.footer.signature}</span>
+          <span>{language === "es" ? "ESP" : "ENG"}</span>
         </div>
       </div>
     </footer>
   );
 }
+

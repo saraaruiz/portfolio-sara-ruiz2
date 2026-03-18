@@ -1,9 +1,9 @@
 ﻿import { useEffect, useRef, useState, useCallback } from "react";
-import type { ComponentType } from "react";
 import {
   ArrowLeft, Camera, CheckCheck, Mic,
-  MoreVertical, Phone, Plus, RotateCcw, Video,
+  MoreVertical, Phone, Plus, RotateCcw, Video, type LucideIcon,
 } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 const DEBUG_SCREEN = false;
 const DESIGN_WIDTH = 224;
@@ -15,14 +15,52 @@ const screens: Record<"desktop" | "tablet" | "mobile", ScreenBox> = {
   mobile:  { left: 24, top: 6.8, width: 15.6, height: 79.9 },
 };
 
-const MSG1 = "¡Llegaste hasta aquí! 👀\nGracias por visitar mi portafolio";
-const MSG2 = "¿Qué te trajo por aquí? 🤔";
+const chatCopyByLanguage = {
+  es: {
+    msg1: "¡Llegaste hasta aquí! 👀\nGracias por visitar mi portafolio",
+    msg2: "¿Qué te trajo por aquí? 🤔",
+    replies: [
+      { id: "a", chip: "Tengo un proyecto 💡", response: ["¡Me lo imaginaba! 🔥", "Cuéntame todo 👇"] },
+      { id: "b", chip: "Solo espío 👀", response: ["Espiar está permitido aquí 👀✨", "¿Qué encontraste?"] },
+      { id: "c", chip: "Quiero saber más 🧩", response: ["¡Preguntá lo que quieras! 😊", "Estoy por aquí"] },
+    ],
+    online: "En línea",
+    typing: "escribiendo…",
+    startConversation: "Iniciar conversación",
+    restart: "Volver a empezar",
+    inputPlaceholder: "Escribe un mensaje…",
+    back: "Volver",
+    attach: "Adjuntar",
+    camera: "Cámara",
+    mic: "Micrófono",
+    resetAria: "Reiniciar conversación",
+    reactTitle: "Toca para reaccionar",
+    stickerAlt: "Sticker de gato con corazones",
+  },
+  en: {
+    msg1: "You made it this far! 👀\nThanks for visiting my portfolio",
+    msg2: "What brought you here? 🤔",
+    replies: [
+      { id: "a", chip: "I have a project 💡", response: ["I knew it! 🔥", "Tell me everything 👇"] },
+      { id: "b", chip: "Just browsing 👀", response: ["Browsing is welcome here 👀✨", "What caught your eye?"] },
+      { id: "c", chip: "I want to know more 🧩", response: ["Ask me anything! 😊", "I'm right here"] },
+    ],
+    online: "Online",
+    typing: "typing…",
+    startConversation: "Start conversation",
+    restart: "Start over",
+    inputPlaceholder: "Type a message…",
+    back: "Back",
+    attach: "Attach",
+    camera: "Camera",
+    mic: "Microphone",
+    resetAria: "Restart conversation",
+    reactTitle: "Tap to react",
+    stickerAlt: "Cat sticker with hearts",
+  },
+} as const;
 
-const REPLIES = [
-  { id: "a", chip: "Tengo un proyecto 💡", response: ["¡Me lo imaginaba! 🔥", "Cuéntame todo 👇"] },
-  { id: "b", chip: "Solo espío 👀",        response: ["Espiar está permitido aquí 👀✨", "¿Qué encontraste?"] },
-  { id: "c", chip: "Quiero saber más 🧩",  response: ["¡Preguntá lo que quieras! 😊", "Estoy por aquí"] },
-] as const;
+const REPLIES = chatCopyByLanguage.es.replies;
 type ReplyId = typeof REPLIES[number]["id"];
 
 const REACTIONS = ["❤️", "😂", "🔥", "👏"];
@@ -91,11 +129,11 @@ function HeartFloating() {
   );
 }
 
-function Bubble({ children, sent = false, reaction, onReact, delay = 0 }: {
-  children: React.ReactNode; sent?: boolean; reaction?: string; onReact?: () => void; delay?: number;
+function Bubble({ children, sent = false, reaction, onReact, delay = 0, reactTitle }: {
+  children: React.ReactNode; sent?: boolean; reaction?: string; onReact?: () => void; delay?: number; reactTitle?: string;
 }) {
   return (
-    <div className={`msg-in relative w-fit cursor-pointer select-none ${sent ? "ml-auto" : ""}`} style={{ animationDelay: `${delay}ms` }} onClick={onReact} title="Toca para reaccionar">
+    <div className={`msg-in relative w-fit cursor-pointer select-none ${sent ? "ml-auto" : ""}`} style={{ animationDelay: `${delay}ms` }} onClick={onReact} title={reactTitle}>
       <div className={`max-w-[88%] rounded-[14px] px-[9px] py-[7px] text-[11px] leading-[1.45] shadow-[0_2px_8px_rgba(0,0,0,.2)] transition-transform active:scale-[0.97] ${sent ? "rounded-br-[4px] bg-[#204b39] text-[#effff6]" : "rounded-bl-[4px] bg-[#1c262d] text-[#f2f5f7]"}`}>
         {children}
       </div>
@@ -108,7 +146,12 @@ function Bubble({ children, sent = false, reaction, onReact, delay = 0 }: {
   );
 }
 
-function PhoneScreenUI({ onReset }: { onReset: () => void }) {
+function PhoneScreenUI({ onReset, language }: { onReset: () => void; language: "es" | "en" }) {
+  const chatCopy = chatCopyByLanguage[language];
+  const REPLIES = chatCopy.replies;
+  const MSG1 = chatCopy.msg1;
+  const MSG2 = chatCopy.msg2;
+
   const [phase, setPhase]         = useState<Phase>(0);
   const [picked, setPicked]       = useState<ReplyId | null>(null);
   const [reactions, setReactions] = useState<Record<string, string>>({});
@@ -145,7 +188,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
 
   const pickedReply = REPLIES.find((r) => r.id === picked);
 
-  const iconBtns: ComponentType<{ size?: number }>[] = [Video, Phone, MoreVertical];
+  const iconBtns: LucideIcon[] = [Video, Phone, MoreVertical];
 
   return (
     <>
@@ -218,7 +261,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
 
       <div className="relative z-10 border-b border-white/[0.05] bg-[#111b21]/96 px-[4%] py-[2.4%] backdrop-blur-sm">
         <div className="flex items-center gap-[6px]">
-          <button aria-label="Volver" className="grid h-[22px] w-[22px] place-items-center rounded-full bg-white/[0.06] text-white/75 transition hover:bg-white/10">
+          <button aria-label={chatCopy.back} className="grid h-[22px] w-[22px] place-items-center rounded-full bg-white/[0.06] text-white/75 transition hover:bg-white/10">
             <ArrowLeft size={11} />
           </button>
           <div className="relative grid h-[27px] w-[27px] shrink-0 place-items-center rounded-full bg-[#CD3075] text-[10px] font-semibold text-white shadow-[0_0_0_2px_rgba(205,48,117,.28)]">
@@ -228,7 +271,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
           <div className="min-w-0 flex-1">
             <p className="truncate text-[12px] font-semibold leading-none text-white">Sara</p>
             <p className={`mt-[2px] text-[9px] leading-none transition-colors duration-300 ${phase === 7 ? "text-[#25D366]/80" : "text-white/50"}`}>
-              {phase === 7 ? "escribiendo…" : "En línea"}
+              {phase === 7 ? chatCopy.typing : chatCopy.online}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-[5px] text-white/60">
@@ -245,7 +288,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
         <div className="flex min-h-full flex-col justify-end gap-[8px]">
 
           {phase >= 2 && (
-            <Bubble reaction={reactions.m1} onReact={() => handleReact("m1")}>
+            <Bubble reaction={reactions.m1} onReact={() => handleReact("m1")} reactTitle={chatCopy.reactTitle}>
               {MSG1.split("\n").map((line, i) => <span key={i}>{line}{i === 0 && <br />}</span>)}
               <MessageMeta time="9:41" />
             </Bubble>
@@ -254,13 +297,13 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
           {phase >= 4 && (
             <div className="msg-in relative w-fit max-w-[52%]">
               <HeartFloating />
-              <img src="/Assets/Contactame/StickerGato.png" alt="Sticker de gato con corazones" className="block h-auto max-h-[72px] w-auto rounded-[8px] object-contain" loading="lazy" decoding="async" />
+              <img src="/Assets/Contactame/StickerGato.png" alt={chatCopy.stickerAlt} className="block h-auto max-h-[72px] w-auto rounded-[8px] object-contain" loading="lazy" decoding="async" />
               <span className="mt-[3px] block text-right text-[7px] leading-none text-white/36">9:41</span>
             </div>
           )}
 
           {phase >= 6 && (
-            <Bubble reaction={reactions.m2} onReact={() => handleReact("m2")}>
+            <Bubble reaction={reactions.m2} onReact={() => handleReact("m2")} reactTitle={chatCopy.reactTitle}>
               {MSG2}
               <MessageMeta time="9:41" />
             </Bubble>
@@ -277,7 +320,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
           )}
 
           {picked && (
-            <Bubble sent>
+            <Bubble sent reactTitle={chatCopy.reactTitle}>
               {pickedReply!.chip}
               <MessageMeta time="9:42" sent />
             </Bubble>
@@ -287,17 +330,17 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
 
           {phase === 8 && pickedReply && (
             <>
-              <Bubble reaction={reactions.m8} onReact={() => handleReact("m8")}>
+              <Bubble reaction={reactions.m8} onReact={() => handleReact("m8")} reactTitle={chatCopy.reactTitle}>
                 {pickedReply.response[0]}<br />{pickedReply.response[1]}
                 <MessageMeta time="9:42" />
               </Bubble>
               <a href="https://wa.me/573024157219" target="_blank" rel="noreferrer" className="heartbeat-cta msg-in ml-[1px] inline-flex w-fit items-center gap-[6px] rounded-full bg-[#25D366] px-[11px] py-[6px] text-[10px] font-semibold text-[#04140d] transition hover:scale-[1.02] active:scale-[0.97]" style={{ animationDelay: "120ms" }}>
                 <WhatsAppGlyph className="h-[11px] w-[11px]" />
-                Iniciar conversación
+                {chatCopy.startConversation}
               </a>
-              <button onClick={onReset} className="reset-btn msg-in ml-[1px] inline-flex w-fit items-center gap-[5px] rounded-full border border-white/14 bg-white/[0.05] px-[9px] py-[5px] text-[9px] text-white/45 transition" style={{ animationDelay: "220ms" }} aria-label="Reiniciar conversación">
+              <button onClick={onReset} className="reset-btn msg-in ml-[1px] inline-flex w-fit items-center gap-[5px] rounded-full border border-white/14 bg-white/[0.05] px-[9px] py-[5px] text-[9px] text-white/45 transition" style={{ animationDelay: "220ms" }} aria-label={chatCopy.resetAria}>
                 <RotateCcw size={8} strokeWidth={2} />
-                Volver a empezar
+                {chatCopy.restart}
               </button>
             </>
           )}
@@ -306,10 +349,10 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
 
       <div className="relative z-10 mt-auto border-t border-white/[0.05] bg-[#0f171d]/96 px-[4%] pb-[3%] pt-[2.2%] backdrop-blur-sm">
         <div className="flex items-center gap-[4px]">
-          <button aria-label="Adjuntar" className="grid h-[24px] w-[24px] place-items-center rounded-full bg-white/[0.06] text-white/70"><Plus size={9} /></button>
-          <div className="flex h-[24px] flex-1 items-center rounded-full bg-[#1d2a32] px-[8px] text-[9px] text-white/32">Escribe un mensaje…</div>
-          <button aria-label="Cámara" className="grid h-[24px] w-[24px] place-items-center rounded-full bg-white/[0.06] text-white/70"><Camera size={9} /></button>
-          <button aria-label="Micrófono" className="grid h-[24px] w-[24px] place-items-center rounded-full bg-[#25D366] text-black shadow-[0_5px_14px_rgba(37,211,102,.3)]"><Mic size={9} /></button>
+          <button aria-label={chatCopy.attach} className="grid h-[24px] w-[24px] place-items-center rounded-full bg-white/[0.06] text-white/70"><Plus size={9} /></button>
+          <div className="flex h-[24px] flex-1 items-center rounded-full bg-[#1d2a32] px-[8px] text-[9px] text-white/32">{chatCopy.inputPlaceholder}</div>
+          <button aria-label={chatCopy.camera} className="grid h-[24px] w-[24px] place-items-center rounded-full bg-white/[0.06] text-white/70"><Camera size={9} /></button>
+          <button aria-label={chatCopy.mic} className="grid h-[24px] w-[24px] place-items-center rounded-full bg-[#25D366] text-black shadow-[0_5px_14px_rgba(37,211,102,.3)]"><Mic size={9} /></button>
         </div>
       </div>
 
@@ -319,6 +362,7 @@ function PhoneScreenUI({ onReset }: { onReset: () => void }) {
 }
 
 export default function ContactSection() {
+  const { language } = usePreferences();
   const viewportWidth = useViewportWidth();
   const screenRef     = useRef<HTMLDivElement>(null);
   const { width: screenWidth, height: screenHeight } = useElementSize(screenRef as React.RefObject<HTMLElement>);
@@ -345,7 +389,7 @@ export default function ContactSection() {
           <div ref={screenRef} className="absolute z-0 overflow-hidden" style={{ left:`${activeScreen.left}%`, top:`${activeScreen.top}%`, width:`${activeScreen.width}%`, height:`${activeScreen.height}%`, borderRadius:"6.95%", outline: DEBUG_SCREEN ? "2px solid red" : "none" }}>
             {screenWidth > 0 && (
               <div key={resetKey} style={{ position:"absolute", top:0, left:0, width:innerWidth, height:innerHeight, transform:`scale(${scale})`, transformOrigin:"top left", background:"#0b141a", display:"flex", flexDirection:"column" }}>
-                <PhoneScreenUI onReset={handleReset} />
+                <PhoneScreenUI onReset={handleReset} language={language} />
               </div>
             )}
           </div>
