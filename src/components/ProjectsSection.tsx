@@ -7,7 +7,7 @@ const projects = [
     title: "Fuerza Interior",
     subtitle: "App de bienestar y meditación",
     image: "/Assets/Proyectos/CoverFuerzaInterior.svg",
-    href: "https://bcc96f97.fuerza-interior.pages.dev/",
+    href: "https://fuerza-interior.pages.dev/",
   },
   {
     title: "Sinergia",
