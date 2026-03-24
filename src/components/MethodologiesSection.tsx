@@ -45,7 +45,7 @@ export default function MethodologiesSection() {
   }, []);
 
   return (
-    <section className="methods-theme-glass framer-glow-sweep py-8 md:py-10" style={methodsThemeVars}>
+    <section className="methods-theme-glass framer-glow-sweep py-6 md:py-8" style={methodsThemeVars}>
       <div className="methods-layout relative z-20 mx-auto max-w-[980px] px-6 text-center md:px-10 xl:px-16">
         <p className="eyebrow methods-eyebrow">{isEnglish ? "METHODOLOGIES" : "METODOLOGÍAS"}</p>
 
@@ -55,7 +55,7 @@ export default function MethodologiesSection() {
             : "No sigo una única metodología, elijo el marco según el problema:"}
         </p>
 
-        <div className="methods-word-shell mx-auto mt-6 flex h-14 max-w-max items-center justify-center overflow-hidden rounded-full px-5 md:h-16 md:px-8">
+        <div className="methods-word-shell mx-auto mt-5 flex h-14 max-w-max items-center justify-center overflow-hidden rounded-full px-5 md:h-16 md:px-8">
           <div
             key={methods[index].label}
             className="methods-word-swap text-2xl font-semibold leading-none tracking-[0.018em] text-white md:text-[2.6rem]"
@@ -64,7 +64,7 @@ export default function MethodologiesSection() {
           </div>
         </div>
 
-        <div className="methods-icon-row mx-auto mt-6 flex w-full max-w-[460px] items-center justify-center gap-3">
+        <div className="methods-icon-row mx-auto mt-5 flex w-full max-w-[460px] items-center justify-center gap-3">
           {methods.map((method, iconIndex) => {
             const isActive = iconIndex === index;
             const Icon = method.Icon;
