@@ -128,8 +128,8 @@ export default function ServicesSection() {
       ];
 
   return (
-    <section id="services" className="scroll-mt-28 bg-[#0a0a0a] py-14 md:py-16">
-      <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
+    <section id="services" className="scroll-mt-28 bg-[#0a0a0a] py-12 md:py-14">
+      <div className="mx-auto max-w-[1220px] px-6 md:px-10 xl:px-14">
         <div className="max-w-4xl">
           <h2 className="section-title">
             {isEnglish ? "WHAT I CAN" : "QUÉ PUEDO"}
@@ -143,13 +143,13 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-5 md:mt-12 md:grid-cols-2 md:gap-6">
+        <div className="mt-10 grid gap-4 md:mt-11 md:grid-cols-2 md:items-start md:gap-x-10 md:gap-y-5 xl:gap-x-12">
           {cards.map((card, index) => {
             const look = cardLooks[index % cardLooks.length];
             return (
             <article
               key={card.title}
-              className="lux-glass lux-card framer-fade-up group relative flex flex-col overflow-hidden rounded-[26px] border border-white/12 p-6 transition-transform duration-300 hover:-translate-y-[3px] md:min-h-[340px] md:p-7"
+              className="lux-glass lux-card framer-fade-up group relative flex h-fit flex-col overflow-hidden rounded-[26px] border border-white/12 p-5 transition-transform duration-300 hover:-translate-y-[3px] md:p-6"
               style={{
                 animationDelay: `${index * 90}ms`,
                 background: "linear-gradient(160deg, rgba(10,10,14,0.92) 0%, rgba(10,10,14,0.8) 100%)",
@@ -174,51 +174,26 @@ export default function ServicesSection() {
                 </span>
               </div>
 
-              <h3 className="relative mt-3 text-[1.72rem] font-semibold leading-tight md:text-[1.9rem]" style={{ color: look.title }}>{card.title}</h3>
-              <p className="relative mt-3 max-w-[40ch] text-[14px] leading-6 text-white/78 md:text-[15px] md:leading-6">{card.body}</p>
+              <h3 className="relative mt-3 text-[1.68rem] font-semibold leading-tight md:text-[1.82rem]" style={{ color: look.title }}>{card.title}</h3>
+              <p className="relative mt-3 max-w-[37ch] text-[14px] leading-[1.55] text-white/80 md:text-[15px] md:leading-[1.6]">{card.body}</p>
 
-              <ul className="relative mt-5 grid grid-cols-3 gap-2 text-center text-[11px] uppercase tracking-[0.12em] text-white/76">
-                {card.keywords.map((keyword) => (
-                  <li
-                    key={keyword}
-                    className="rounded-full border border-[#44283a]/80 bg-[linear-gradient(180deg,rgba(22,26,18,0.95)_0%,rgba(31,12,24,0.95)_100%)] px-2 py-1.5 text-white/92 shadow-[0_8px_18px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#CD3075]/52 hover:shadow-[0_10px_22px_rgba(205,48,117,0.2),inset_0_1px_0_rgba(255,255,255,0.08)]"
-                    style={{
-                      textShadow: "0 0 8px rgba(255,255,255,0.12)",
-                    }}
-                  >
-                    {keyword}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="relative mt-auto border-t border-white/10 pt-3">
-                <p className="text-[10px] uppercase tracking-[0.14em] text-white/42">
-                  {isEnglish ? "Tools" : "Herramientas"}
-                </p>
-
-                <ul className="mt-2.5 flex flex-wrap items-center gap-2.5">
-                  {card.tools.map((tool) => (
-                    <li key={`${card.title}-${tool.label}`}>
-                      <span
-                        className="group/tool inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#412739]/82 bg-white/[0.03] transition-all duration-200 hover:-translate-y-[1px] hover:scale-[1.06] hover:border-[#d4ff59]/55 hover:shadow-[0_0_16px_rgba(212,255,89,0.22)]"
-                        style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
-                        title={tool.label}
-                        aria-label={tool.label}
-                      >
-                        <img
-                          src={`/Assets/Stack/${tool.file}`}
-                          alt=""
-                          aria-hidden="true"
-                          className="h-4 w-4 object-contain opacity-90 transition-transform duration-200 group-hover/tool:scale-110"
-                          style={{ filter: "brightness(0) invert(1)" }}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </span>
+              <div className="relative mt-4 pt-4">
+                <span className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-white/8" />
+                <ul className="relative grid grid-cols-3 gap-2 text-center text-[11px] uppercase tracking-[0.12em] text-white/76">
+                  {card.keywords.map((keyword) => (
+                    <li
+                      key={keyword}
+                      className="rounded-full border border-[#44283a]/80 bg-[linear-gradient(180deg,rgba(22,26,18,0.95)_0%,rgba(31,12,24,0.95)_100%)] px-2 py-1.5 text-white/92 shadow-[0_8px_18px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-200 hover:-translate-y-[1px] hover:border-[#CD3075]/52 hover:shadow-[0_10px_22px_rgba(205,48,117,0.2),inset_0_1px_0_rgba(255,255,255,0.08)]"
+                      style={{
+                        textShadow: "0 0 8px rgba(255,255,255,0.12)",
+                      }}
+                    >
+                      {keyword}
                     </li>
                   ))}
                 </ul>
               </div>
+
             </article>
             );
           })}
