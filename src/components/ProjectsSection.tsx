@@ -18,6 +18,11 @@ const projects = [
   },
 ];
 
+const toolLabelsByProject: Record<string, string[]> = {
+  "Fuerza Interior": ["Miro", "Figma", "Maze"],
+  Sinergia: ["HTML", "CSS", "React", "JavaScript", "MySQL", "Java", "Spring Boot", "Git & GitHub"],
+};
+
 export default function ProjectsSection() {
   const { language } = usePreferences();
   const isEnglish = language === "en";
@@ -58,6 +63,7 @@ export default function ProjectsSection() {
         <div className="lux-glass mt-12 flex h-auto w-full flex-col gap-3 overflow-hidden rounded-[28px] p-2 md:h-[520px] md:flex-row md:gap-4">
           {localizedProjects.map((project, index) => {
             const isActive = active === index;
+            const projectToolLabels = toolLabelsByProject[project.title] ?? [];
 
             return (
               <a
@@ -91,9 +97,25 @@ export default function ProjectsSection() {
                   } translate-y-0 opacity-100`}
                 >
                   <div className="lux-glass-soft mx-auto w-[98%] rounded-2xl p-2.5 md:w-[96.5%] md:p-3.5">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/60">{isEnglish ? "Project" : "Proyecto"}</p>
-                    <h3 className="mt-1.5 text-[1.55rem] font-semibold leading-tight text-white md:text-[1.9rem]">{project.title}</h3>
-                    <p className="mt-1.5 text-[13px] leading-[1.4] text-white/78 md:text-sm">{project.subtitle}</p>
+                    <div className="min-w-0">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/60">{isEnglish ? "Project" : "Proyecto"}</p>
+                      <h3 className="mt-1.5 text-[1.55rem] font-semibold leading-tight text-white md:text-[1.9rem]">{project.title}</h3>
+                      <p className="mt-1.5 text-[13px] leading-[1.4] text-white/78 md:text-sm">{project.subtitle}</p>
+
+                      {projectToolLabels.length > 0 && (
+                        <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                          {projectToolLabels.map((tool) => (
+                            <span
+                              key={tool}
+                              className="inline-flex items-center rounded-full border border-white/16 bg-[linear-gradient(145deg,rgba(255,255,255,0.09)_0%,rgba(255,255,255,0.02)_100%)] px-3 py-1 text-[10px] font-medium tracking-[0.04em] text-white/82 backdrop-blur-md"
+                              style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12), 0 8px 20px rgba(0,0,0,0.2)" }}
+                            >
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
