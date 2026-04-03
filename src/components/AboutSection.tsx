@@ -393,7 +393,7 @@ export default function AboutSection() {
             <div className="aspect-video overflow-hidden rounded-[22px]">
               <iframe
                 className="h-full w-full"
-                src="https://www.youtube.com/embed/dBjgAdOgkYk"
+                src="https://www.youtube.com/embed/enHbPDw8sVc?si=4frE7_LGOPtrgGhd"
                 title={isEnglish ? "Sara Ruiz presentation video" : "Video presentación Sara Ruiz"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
