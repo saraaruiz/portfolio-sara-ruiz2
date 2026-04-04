@@ -1,7 +1,7 @@
 ﻿import { usePreferences } from "@/context/PreferencesContext";
 
 const socialIcons = [
-  { label: "WhatsApp", href: "https://wa.me/573024157219", icon: "/Assets/Body/whatsapp.svg" },
+  { label: "WhatsApp", href: "https://wa.me/573021133071", icon: "/Assets/Body/whatsapp.svg" },
   { label: "Email", href: "mailto:saruizdi@gmail.com", icon: "/Assets/Body/email.svg" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/sararuiz-ux-ui/", icon: "/Assets/Body/linkedin.svg" },
   { label: "Instagram", href: "https://instagram.com/saridesign__", icon: "/Assets/Body/instagram.svg" },

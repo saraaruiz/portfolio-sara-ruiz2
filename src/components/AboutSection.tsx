@@ -7,8 +7,8 @@ const socials = [
     id: "whatsapp",
     icon: "/Assets/Body/whatsapp.svg",
     label: "WhatsApp",
-    meta: "+57 3024157219",
-    href: "https://wa.me/573024157219",
+    meta: "+57 302 1133071",
+    href: "https://wa.me/573021133071",
   },
   {
     id: "email",
