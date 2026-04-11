@@ -297,7 +297,7 @@ export default function AboutSection() {
                       Ver video presentación
                     </span>
 
-                    <span className="absolute left-1/2 top-[73%] inline-flex h-[74px] w-[74px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#d4ff59]/90 bg-[rgba(8,8,8,0.38)] shadow-[0_14px_28px_rgba(0,0,0,0.48)] backdrop-blur-md transition-all duration-300 animate-[playHeartbeat_12.5s_ease-in-out_infinite] group-hover:animate-none group-hover:scale-110 group-hover:bg-[rgba(8,8,8,0.62)]">
+                    <span className="play-cta-attention absolute left-1/2 top-[73%] inline-flex h-[74px] w-[74px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#d4ff59]/90 bg-[rgba(8,8,8,0.38)] shadow-[0_14px_28px_rgba(0,0,0,0.48)] backdrop-blur-md transition-all duration-300 group-hover:scale-[1.06] group-hover:bg-[rgba(8,8,8,0.62)]">
                       <Play size={30} strokeWidth={2.2} className="ml-[3px] text-[#d4ff59]" />
                     </span>
                   </button>
@@ -381,10 +381,10 @@ export default function AboutSection() {
 
                           <a
                             href={social.href}
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                            className="mt-0.5 grid w-full grid-cols-[14px_1fr_14px] items-center whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
-                            <Mail size={12} />
-                            Enviar rápido
+                            <Mail size={12} className="justify-self-center" />
+                            <span className="col-start-2 text-center">Enviar rápido</span>
                           </a>
                         </div>
                       ) : (
@@ -392,10 +392,10 @@ export default function AboutSection() {
                           href={social.href}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                          className="mt-4 grid w-full grid-cols-[14px_1fr_14px] items-center whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                         >
-                          <ExternalLink size={12} />
-                          {social.actionLabel}
+                          <ExternalLink size={12} className="justify-self-center" />
+                          <span className="col-start-2 text-center">{social.actionLabel}</span>
                         </a>
                       )}
                     </div>
