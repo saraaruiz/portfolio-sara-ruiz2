@@ -1,5 +1,5 @@
-﻿import { useState } from "react";
-import { Hand, MousePointer2 } from "lucide-react";
+import { useState } from "react";
+import { ExternalLink, Hand, MousePointer2, X } from "lucide-react";
 
 import { usePreferences } from "@/context/PreferencesContext";
 
@@ -38,6 +38,7 @@ export default function ProjectsSection() {
     : projects;
 
   const [active, setActive] = useState(0);
+  const [projectModal, setProjectModal] = useState<{ title: string; href: string } | null>(null);
 
   return (
     <section id="projects" className="scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
@@ -73,7 +74,11 @@ export default function ProjectsSection() {
                 rel="noreferrer"
                 onMouseEnter={() => setActive(index)}
                 onFocus={() => setActive(index)}
-                onClick={() => setActive(index)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  setActive(index);
+                  setProjectModal({ title: project.title, href: project.href });
+                }}
                 className={`lux-card group relative h-[260px] w-full overflow-hidden rounded-[24px] border border-white/10 transition-[flex,transform] duration-500 ease-out md:h-full ${
                   isActive ? "md:flex-[5]" : "md:flex-[1.6]"
                 } framer-glow-sweep`}
@@ -129,6 +134,53 @@ export default function ProjectsSection() {
           })}
         </div>
       </div>
+
+      {projectModal && (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/82 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/12 bg-[#090909] p-4 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm font-medium text-white/85">
+                {isEnglish ? "Project preview" : "Vista previa del proyecto"} · {projectModal.title}
+              </p>
+              <button
+                onClick={() => setProjectModal(null)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/75 transition-colors hover:text-white"
+                aria-label={isEnglish ? "Close preview" : "Cerrar vista previa"}
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="h-[70vh] overflow-hidden rounded-[20px] border border-white/10 bg-black">
+              <iframe
+                className="h-full w-full"
+                src={projectModal.href}
+                title={`${projectModal.title}-preview`}
+                allow="clipboard-write; encrypted-media; picture-in-picture; web-share"
+              />
+            </div>
+
+            <div className="mt-4 flex justify-end gap-3">
+              <a
+                href={projectModal.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/85 transition-colors hover:text-white"
+              >
+                <ExternalLink size={13} />
+                {isEnglish ? "Open in new tab" : "Abrir en nueva pestaña"}
+              </a>
+              <button
+                onClick={() => setProjectModal(null)}
+                className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/85 transition-colors hover:text-white"
+              >
+                {isEnglish ? "Close" : "Cerrar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+

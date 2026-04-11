@@ -1,5 +1,5 @@
-﻿import { useEffect, useMemo, useRef, useState } from "react";
-import { ExternalLink, Menu, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Download, ExternalLink, Menu, X } from "lucide-react";
 import { usePreferences } from "@/context/PreferencesContext";
 
 const mobileSocials = [
@@ -12,7 +12,7 @@ const mobileSocials = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showCvTip, setShowCvTip] = useState(false);
+  const [cvOpen, setCvOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string>("#about");
 
   const { language, setLanguage, copy } = usePreferences();
@@ -21,16 +21,14 @@ export default function Navbar() {
   const navLinks = useMemo(
     () => [
       { label: copy.nav.about, href: "#about" },
-      { label: copy.nav.career, href: "#career" },
-      { label: copy.nav.services, href: "#services" },
       { label: copy.nav.projects, href: "#projects" },
+      { label: copy.nav.services, href: "#services" },
+      { label: copy.nav.career, href: "#career" },
       { label: copy.nav.testimonials, href: "#testimonials" },
       { label: contactLabel, href: "#contact" },
     ],
     [contactLabel, copy.nav.about, copy.nav.career, copy.nav.projects, copy.nav.services, copy.nav.testimonials],
   );
-
-  const tipTimeoutRef = useRef<number | null>(null);
 
   const mobileChipColors = {
     background:
@@ -48,37 +46,29 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const getSection = (id: string) => document.getElementById(id);
+    const trackableSections = ["about", "career", "services", "projects", "testimonials", "contact"] as const;
 
     const updateActiveByRange = () => {
-      const career = getSection("career");
-      const services = getSection("services");
-      const projects = getSection("projects");
-      const testimonials = getSection("testimonials");
-      const contact = getSection("contact");
+      const sectionPositions = trackableSections
+        .map((id) => ({ id, node: document.getElementById(id) }))
+        .filter((entry): entry is { id: (typeof trackableSections)[number]; node: HTMLElement } => Boolean(entry.node))
+        .map((entry) => ({ id: entry.id, top: entry.node.offsetTop }))
+        .sort((a, b) => a.top - b.top);
 
-      if (!career || !services || !projects || !testimonials || !contact) {
+      if (sectionPositions.length === 0) {
         setActiveHref("#about");
         return;
       }
 
       const probeY = window.scrollY + window.innerHeight * 0.42;
-      const tolerance = 8;
+      let currentId = "about";
 
-      let nextActive = "#about";
-
-      if (probeY >= contact.offsetTop - tolerance) {
-        nextActive = "";
-      } else if (probeY >= testimonials.offsetTop - tolerance) {
-        nextActive = "#testimonials";
-      } else if (probeY >= projects.offsetTop - tolerance) {
-        nextActive = "#projects";
-      } else if (probeY >= services.offsetTop - tolerance) {
-        nextActive = "#services";
-      } else if (probeY >= career.offsetTop - tolerance) {
-        nextActive = "#career";
+      for (const section of sectionPositions) {
+        if (probeY >= section.top - 8) currentId = section.id;
+        else break;
       }
 
+      const nextActive = currentId === "contact" ? "" : `#${currentId}`;
       setActiveHref((previous) => (previous === nextActive ? previous : nextActive));
     };
 
@@ -95,32 +85,12 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    return () => {
-      if (tipTimeoutRef.current) window.clearTimeout(tipTimeoutRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    document.body.style.overflow = isOpen || cvOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = previousOverflow;
     };
-  }, [isOpen]);
-
-  const showTooltipTemporarily = () => {
-    setShowCvTip(true);
-    if (tipTimeoutRef.current) window.clearTimeout(tipTimeoutRef.current);
-    tipTimeoutRef.current = window.setTimeout(() => setShowCvTip(false), 1700);
-  };
-
-  const handleCvClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const isTouchLike = window.matchMedia("(hover: none)").matches;
-    if (isTouchLike && !showCvTip) {
-      event.preventDefault();
-      showTooltipTemporarily();
-    }
-  };
+  }, [isOpen, cvOpen]);
 
   const shell = scrolled
     ? "text-white backdrop-blur-2xl bg-[linear-gradient(90deg,rgba(8,8,12,0.78)_0%,rgba(34,12,26,0.68)_44%,rgba(8,8,12,0.78)_100%)]"
@@ -144,7 +114,6 @@ export default function Navbar() {
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
             {navLinks.map((link) => {
               const isActive = activeHref === link.href;
-
               return (
                 <li key={link.href}>
                   <a
@@ -161,34 +130,21 @@ export default function Navbar() {
           </ul>
 
           <div className="ml-auto hidden items-center gap-2.5 lg:flex">
-            <div className="group relative">
-              <a
-                href="/Assets/Header/CVSaraRuiz.pdf"
-                target="_blank"
-                rel="noreferrer"
-                onClick={handleCvClick}
-                onFocus={() => setShowCvTip(true)}
-                onBlur={() => setShowCvTip(false)}
-                className="lux-chip inline-flex h-10 items-center gap-2 rounded-full px-4 text-[15px] font-medium text-white/80 transition-colors duration-300 hover:text-white"
-              >
-                CV <ExternalLink size={14} />
-              </a>
-
-              <div
-                className={`pointer-events-none absolute left-1/2 top-[120%] z-20 w-max -translate-x-1/2 rounded-md border border-white/10 bg-black/90 px-3 py-1.5 text-[11px] text-white/75 backdrop-blur-md transition-all duration-200 ${
-                  showCvTip ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-                }`}
-              >
-                {copy.nav.cvTip}
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => setCvOpen(true)}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-[#c8ee5c] bg-[#d4ff59] px-4 text-[12px] font-semibold uppercase leading-none tracking-[0.11em] text-black shadow-[0_12px_28px_rgba(212,255,89,0.18)] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#e5ff90] hover:shadow-[0_16px_34px_rgba(212,255,89,0.24)]"
+              aria-label={language === "en" ? "Open CV preview" : "Abrir vista previa de CV"}
+            >
+              CV <ExternalLink size={13} />
+            </button>
 
             <div className="lux-chip inline-flex h-10 items-center rounded-full p-1">
               <button
                 type="button"
                 aria-label={language === "en" ? "Switch to Spanish" : "Cambiar a español"}
                 onClick={() => setLanguage("es")}
-                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.13em] transition-colors ${
+                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.12em] transition-colors ${
                   language === "es" ? "bg-white/85 text-black" : "text-white/75 hover:text-white"
                 }`}
               >
@@ -198,7 +154,7 @@ export default function Navbar() {
                 type="button"
                 aria-label={language === "en" ? "Switch to English" : "Cambiar a inglés"}
                 onClick={() => setLanguage("en")}
-                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.13em] transition-colors ${
+                className={`inline-flex h-8 items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.12em] transition-colors ${
                   language === "en" ? "bg-white/85 text-black" : "text-white/75 hover:text-white"
                 }`}
               >
@@ -247,13 +203,11 @@ export default function Navbar() {
                     ENG
                   </button>
                 </div>
-
               </div>
 
               <div className="mx-auto w-full max-w-[680px] space-y-8 pt-8 text-center md:space-y-9">
                 {navLinks.map((link) => {
                   const isActive = activeHref === link.href;
-
                   return (
                     <a
                       key={link.href}
@@ -287,28 +241,62 @@ export default function Navbar() {
                 </div>
 
                 <div className="mt-5 flex items-center justify-center gap-3">
-                  <div className="relative">
-                    <a
-                      href="/Assets/Header/CVSaraRuiz.pdf"
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={handleCvClick}
-                      className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:text-white"
-                      style={mobileChipColors}
-                    >
-                      CV <ExternalLink size={14} />
-                    </a>
-
-                    <div
-                      className={`pointer-events-none absolute left-1/2 top-[120%] z-20 w-max -translate-x-1/2 rounded-md border border-white/10 bg-black px-3 py-1.5 text-[11px] text-white/78 transition-all duration-200 ${
-                        showCvTip ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
-                      }`}
-                    >
-                      {copy.nav.cvTip}
-                    </div>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setCvOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#c8ee5c] bg-[#d4ff59] px-4 py-2.5 text-[11px] font-semibold uppercase leading-none tracking-[0.13em] text-black shadow-[0_10px_24px_rgba(212,255,89,0.18)] transition-all duration-300 hover:-translate-y-[1px] hover:bg-[#e5ff90]"
+                  >
+                    CV <ExternalLink size={12} />
+                  </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {cvOpen && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/82 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/12 bg-[#090909] p-4 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm font-medium text-white/85">{language === "en" ? "Curriculum preview" : "Vista previa de hoja de vida"}</p>
+              <button
+                onClick={() => setCvOpen(false)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/75 transition-colors hover:text-white"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="h-[70vh] overflow-hidden rounded-[20px] border border-white/10 bg-black">
+              <iframe
+                className="h-full w-full"
+                src="/Assets/Header/CVSaraRuiz.pdf"
+                title="CV Sara Ruiz"
+              />
+            </div>
+
+            <div className="mt-4 flex justify-end gap-3">
+              <a
+                href="/Assets/Header/CVSaraRuiz.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-[#d4ff59]/45 bg-[#d4ff59]/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#e9ffad] transition-colors hover:bg-[#d4ff59]/25"
+              >
+                <Download size={13} />
+                {language === "en" ? "Download" : "Descargar"}
+              </a>
+              <a
+                href="/Assets/Header/CVSaraRuiz.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/85 transition-colors hover:text-white"
+              >
+                <ExternalLink size={13} />
+                {language === "en" ? "Open in new tab" : "Abrir en nueva pestaña"}
+              </a>
             </div>
           </div>
         </div>

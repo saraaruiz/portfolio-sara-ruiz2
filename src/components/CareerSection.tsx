@@ -101,6 +101,26 @@ const categoriesByLanguage: Record<"es" | "en", CareerCategory[]> = {
             "/Assets/Carrera/certificado-public-speaking.pdf",
           ],
         },
+        {
+          title: "Design Thinking & Storytelling",
+          meta: "California State University Northridge · IBS International Business School Americas",
+          year: "Ene. 2023",
+        },
+        {
+          title: "Protagonistas del Futuro & Disney",
+          meta: "Chicas en Tecnología",
+          year: "2023",
+        },
+        {
+          title: "Red de Mentoras Voluntarias del Programa Chicas STEAM",
+          meta: "Corporación Maloka de Ciencia, Tecnología e Innovación",
+          year: "10 Nov. 2022",
+        },
+        {
+          title: "Crear prototipos y diseños de alta fidelidad en Figma",
+          meta: "Google · Coursera",
+          year: "En curso",
+        },
       ],
     },
   ],
@@ -185,6 +205,26 @@ const categoriesByLanguage: Record<"es" | "en", CareerCategory[]> = {
             "/Assets/Carrera/certificado-public-speaking.pdf",
           ],
         },
+        {
+          title: "Design Thinking & Storytelling",
+          meta: "California State University Northridge · IBS International Business School Americas",
+          year: "Jan. 2023",
+        },
+        {
+          title: "Future Protagonists & Disney",
+          meta: "Chicas en Tecnología",
+          year: "2023",
+        },
+        {
+          title: "Volunteer Mentors Network · Chicas STEAM Program",
+          meta: "Maloka Science, Technology and Innovation Corporation",
+          year: "Nov. 10, 2022",
+        },
+        {
+          title: "Create High-Fidelity Prototypes and Designs in Figma",
+          meta: "Google · Coursera",
+          year: "In progress",
+        },
       ],
     },
   ],
@@ -200,7 +240,7 @@ export default function CareerSection() {
   const isEnglish = language === "en";
   const categories = categoriesByLanguage[language];
 
-  const [open, setOpen] = useState("educacion");
+  const [open, setOpen] = useState("");
   const [modal, setModal] = useState<ModalState>(null);
 
   const openPdfModal = (title: string, files: string[]) => {
@@ -209,7 +249,7 @@ export default function CareerSection() {
 
   return (
     <>
-      <section id="career" className="scroll-mt-28 bg-[#0a0a0a] py-16 text-white md:py-20">
+      <section id="career" className="career-theme-glass scroll-mt-28 py-16 text-white md:py-20">
         <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
           <div className="max-w-4xl">
             <h2 className="section-title">

@@ -44,6 +44,8 @@ export default function MethodologiesSection() {
     return () => window.clearInterval(interval);
   }, []);
 
+  const ActiveIcon = methods[index].Icon;
+
   return (
     <section className="methods-theme-glass framer-glow-sweep py-6 md:py-8" style={methodsThemeVars}>
       <div className="methods-layout relative z-20 mx-auto max-w-[980px] px-6 text-center md:px-10 xl:px-16">
@@ -55,32 +57,16 @@ export default function MethodologiesSection() {
             : "No sigo una única metodología, elijo el marco según el problema:"}
         </p>
 
-        <div className="methods-word-shell mx-auto mt-5 flex h-14 max-w-max items-center justify-center overflow-hidden rounded-full px-5 md:h-16 md:px-8">
+        <div className="methods-word-shell mx-auto mt-5 flex max-w-max items-center justify-center px-3 md:px-5">
           <div
             key={methods[index].label}
-            className="methods-word-swap text-2xl font-semibold leading-none tracking-[0.018em] text-white md:text-[2.6rem]"
+            className="methods-word-swap inline-flex items-center justify-center gap-5 pl-1 pr-3 text-2xl font-semibold leading-none tracking-[0.018em] text-white md:gap-6 md:pr-4 md:text-[2.6rem]"
           >
-            {methods[index].label}
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d4ff59]/55 bg-[radial-gradient(130%_165%_at_18%_0%,rgba(212,255,89,0.22)_0%,rgba(38,52,30,0.72)_48%,rgba(11,16,13,0.86)_100%)] text-[#d4ff59] shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_6px_16px_rgba(0,0,0,0.28)] backdrop-blur-[12px] md:h-10 md:w-10">
+              <ActiveIcon size={18} />
+            </span>
+            <span>{methods[index].label}</span>
           </div>
-        </div>
-
-        <div className="methods-icon-row mx-auto mt-5 flex w-full max-w-[460px] items-center justify-center gap-3">
-          {methods.map((method, iconIndex) => {
-            const isActive = iconIndex === index;
-            const Icon = method.Icon;
-            return (
-              <span
-                key={method.label}
-                className={`methods-icon-chip inline-flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ${
-                  isActive ? "methods-icon-chip-active" : ""
-                }`}
-                title={method.label}
-                aria-hidden="true"
-              >
-                <Icon size={17} />
-              </span>
-            );
-          })}
         </div>
       </div>
     </section>
