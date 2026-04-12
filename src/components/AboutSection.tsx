@@ -358,7 +358,7 @@ export default function AboutSection() {
 
                     <div
                       id={`social-menu-${social.id}`}
-                      className={`absolute bottom-[125%] left-1/2 z-30 w-[178px] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(12,12,12,0.98)] p-4 shadow-2xl backdrop-blur-[16px] transition-all duration-200 ${
+                      className={`absolute bottom-[125%] left-1/2 z-30 w-[194px] -translate-x-1/2 rounded-2xl border border-white/10 bg-[rgba(12,12,12,0.98)] p-4 shadow-2xl backdrop-blur-[16px] transition-all duration-200 ${
                         openSocialId === social.id
                           ? "pointer-events-auto translate-y-0 opacity-100"
                           : "pointer-events-none translate-y-1 opacity-0"
@@ -373,18 +373,20 @@ export default function AboutSection() {
                         <div className="mt-4 flex flex-col gap-2">
                           <button
                             onClick={handleCopy}
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                            className="mt-0.5 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
-                            <Copy size={12} />
-                            {copied ? "Copiado" : "Copiar"}
+                            <Copy size={12} className="justify-self-center" />
+                            <span className="col-start-2 text-center">{copied ? "Copiado" : "Copiar"}</span>
+                            <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                           </button>
 
                           <a
                             href={social.href}
-                            className="mt-0.5 grid w-full grid-cols-[14px_1fr_14px] items-center whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                            className="mt-0.5 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Mail size={12} className="justify-self-center" />
                             <span className="col-start-2 text-center">Enviar rápido</span>
+                            <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                           </a>
                         </div>
                       ) : (
@@ -392,10 +394,11 @@ export default function AboutSection() {
                           href={social.href}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-4 grid w-full grid-cols-[14px_1fr_14px] items-center whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
+                          className="mt-4 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                         >
                           <ExternalLink size={12} className="justify-self-center" />
                           <span className="col-start-2 text-center">{social.actionLabel}</span>
+                          <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                         </a>
                       )}
                     </div>
