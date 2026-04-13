@@ -205,7 +205,11 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <div className="mx-auto w-full max-w-[680px] space-y-8 pt-8 text-center md:space-y-9">
+              <div className="mx-auto flex w-full max-w-[680px] items-center justify-center pt-6">
+                <img src="/Assets/Header/LogoSari.png" alt="Logo Sara Ruiz" className="h-9 w-auto opacity-95" />
+              </div>
+
+              <div className="mx-auto w-full max-w-[680px] space-y-7 pt-8 text-center md:space-y-9">
                 {navLinks.map((link) => {
                   const isActive = activeHref === link.href;
                   return (
@@ -213,7 +217,7 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`block text-center text-[1.46rem] font-semibold uppercase leading-none tracking-[0.24em] transition-colors duration-300 focus-visible:outline-none active:scale-[0.99] md:text-[1.62rem] ${
+                      className={`block text-center text-[1.26rem] font-semibold uppercase leading-none tracking-[0.18em] transition-colors duration-300 focus-visible:outline-none active:scale-[0.99] md:text-[1.5rem] md:tracking-[0.22em] ${
                         isActive ? "text-[#d4ff59]" : "text-white/95 hover:text-white"
                       }`}
                     >

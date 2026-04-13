@@ -1,10 +1,13 @@
 ﻿import { useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export default function Hero() {
+  const { language } = usePreferences();
+  const isEnglish = language === "en";
   const sectionRef = useRef<HTMLElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
@@ -95,41 +98,39 @@ export default function Hero() {
             className="hero-intro pointer-events-none absolute inset-x-0 top-0 z-20 px-4 text-center motion-safe:animate-[framerFadeUp_.75s_cubic-bezier(.22,1,.36,1)]"
           >
             <h1
-              className="mt-1 md:mt-3 font-faith hero-gradient-text leading-none"
+              className="mt-3 md:mt-3 font-faith hero-gradient-text leading-none"
               style={{
-                fontSize: "clamp(3.8rem, 18.2vw, 176px)",
-                lineHeight: 1.08,
-                paddingBottom: "0.11em",
+                fontSize: "clamp(3.3rem, 16vw, 176px)",
+                lineHeight: 1.1,
+                paddingBottom: "0.13em",
               }}
             >
               Sara Ruiz
             </h1>
 
             <p
-              className="-mt-10 md:-mt-[3.9rem] uppercase text-white/92"
+              className="-mt-7 md:-mt-[3.6rem] uppercase text-white/92 whitespace-normal md:whitespace-nowrap"
               style={{
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
                 fontWeight: 400,
-                fontSize: "clamp(13.5px, 2.3vw, 24px)",
-                letterSpacing: "clamp(0.46em, 0.98vw, 1.12em)",
+                fontSize: "clamp(13px, 2.2vw, 24px)",
+                letterSpacing: "clamp(0.34em, 0.9vw, 1.08em)",
                 display: "inline-block",
-                width: "clamp(260px, 82vw, 900px)",
-                whiteSpace: "nowrap",
+                width: "clamp(260px, 94vw, 900px)",
               }}
             >
-              DISEÑADORA UX/UI
+              {isEnglish ? "UX/UI DESIGNER" : "DISEÑADORA UX/UI"}
             </p>
 
             <p
-              className="-mt-3.5 text-white/76"
+              className="-mt-2 md:-mt-1 text-white/76 whitespace-normal md:whitespace-nowrap"
               style={{
                 fontFamily: "Montserrat, system-ui, -apple-system, sans-serif",
                 fontWeight: 400,
                 fontSize: "clamp(11.2px, 1.42vw, 15px)",
-                letterSpacing: "clamp(0.24em, 0.46vw, 0.56em)",
+                letterSpacing: "clamp(0.18em, 0.4vw, 0.52em)",
                 display: "inline-block",
-                width: "clamp(260px, 82vw, 900px)",
-                whiteSpace: "nowrap",
+                width: "clamp(260px, 94vw, 900px)",
               }}
             >
               Research · Flows · Product Strategy
@@ -164,7 +165,7 @@ export default function Hero() {
                     color: "rgba(255,255,255,0.62)",
                   }}
                 >
-                  Desliza para ver más
+                  {isEnglish ? "Scroll to explore" : "Desliza para ver más"}
                 </span>
               </div>
             </div>

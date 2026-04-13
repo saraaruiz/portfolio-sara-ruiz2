@@ -249,7 +249,7 @@ export default function CareerSection() {
 
   return (
     <>
-      <section id="career" className="career-theme-glass scroll-mt-28 py-16 text-white md:py-20">
+      <section id="career" className="career-theme-glass scroll-mt-28 py-14 text-white md:py-20">
         <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
           <div className="max-w-4xl">
             <h2 className="section-title">

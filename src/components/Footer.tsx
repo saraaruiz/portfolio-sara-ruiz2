@@ -20,7 +20,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-white/10 bg-[#060606] py-16">
+    <footer className="border-t border-white/10 bg-[#060606] py-12 md:py-16">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-6 md:px-10 xl:px-16">
         <div className="lux-glass rounded-[30px] p-7 md:p-8">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">

@@ -373,18 +373,22 @@ export default function ContactSection() {
   const innerWidth    = DESIGN_WIDTH;
   const innerHeight   = screenHeight > 0 ? screenHeight / scale : DESIGN_WIDTH * (79.9 / 15.6);
 
+  const isMobile = viewportWidth < 640;
   const minWidth =
-    viewportWidth < 640  ? "860px"  :
-    viewportWidth < 1024 ? "1300px" : "0px";
+    viewportWidth < 640 ? "760px" :
+    viewportWidth < 1024 ? "1220px" : "0px";
 
   const shiftX =
-    viewportWidth < 640  ? "-18%" :
-    viewportWidth < 1024 ? "-12%" : "0%";
+    viewportWidth < 640 ? "-10%" :
+    viewportWidth < 1024 ? "-8%" : "0%";
 
   return (
-    <section id="contact" className="relative w-full overflow-hidden bg-[#050505]">
+    <section id="contact" className="relative w-full overflow-hidden bg-[#050505] py-1 md:py-0">
       <div className="mx-auto w-full max-w-[1800px] px-0 md:px-4 xl:px-6">
-        <div className="relative isolate mx-auto w-full max-w-[1440px]" style={{ minWidth, transform: `translateX(${shiftX})` }}>
+        <div
+          className="relative isolate mx-auto w-full max-w-[1440px]"
+          style={{ minWidth, transform: `translateX(${shiftX})`, maxWidth: isMobile ? "none" : "1440px" }}
+        >
 
           <div ref={screenRef} className="absolute z-0 overflow-hidden" style={{ left:`${activeScreen.left}%`, top:`${activeScreen.top}%`, width:`${activeScreen.width}%`, height:`${activeScreen.height}%`, borderRadius:"6.95%", outline: DEBUG_SCREEN ? "2px solid red" : "none" }}>
             {screenWidth > 0 && (

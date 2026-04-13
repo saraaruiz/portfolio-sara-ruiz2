@@ -62,7 +62,7 @@ export default function TestimonialsSection() {
   const next = () => setIndex((value) => (value + 1) % testimonials.length);
 
   return (
-    <section id="testimonials" className="scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
+    <section id="testimonials" className="scroll-mt-28 bg-[#0a0a0a] py-14 md:py-20">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
         <div className="max-w-4xl">
           <h2 className="section-title">

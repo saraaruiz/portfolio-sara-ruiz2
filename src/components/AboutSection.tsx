@@ -10,6 +10,7 @@ import {
   Minimize2,
   Maximize2,
 } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 const socials = [
   {
@@ -46,8 +47,6 @@ const socials = [
   },
 ];
 
-const skillRows = [["PROACTIVA", "EMPÁTICA", "CREATIVA"], ["MENTALIDAD DE CRECIMIENTO"]];
-
 const SkillStar = () => (
   <svg
     width="9"
@@ -82,7 +81,96 @@ const buildProfileVideoSrc = (startAt = 0) => {
   return `https://www.youtube.com/embed/${profileVideoId}?${params.toString()}`;
 };
 
+const aboutCopyByLanguage = {
+  es: {
+    location: "Bogotá, Colombia",
+    availability: "Open to work",
+    playHint: "Ver video presentación",
+    sectionTitle: "SOBRE",
+    sectionTitleAccent: "MÍ",
+    p1a: "Diseño experiencias digitales con",
+    p1b: "visión estratégica",
+    p1c: "materializando ideas en",
+    p1d: "interfaces reales y escalables",
+    p2a: "Trabajo de forma",
+    p2b: "estructurada e iterativa",
+    p2c: "equilibrando",
+    p2d: "experiencia de usuario",
+    p2e: "objetivos del negocio",
+    p2f: "viabilidad",
+    p2g: "para construir soluciones con impacto real.",
+    skillsRow1: ["PROACTIVA", "EMPÁTICA", "CREATIVA"],
+    skillsRow2: "MENTALIDAD DE CRECIMIENTO",
+    native: "Nativo",
+    fluency: "Fluidez",
+    spanish: "ESPAÑOL",
+    english: "INGLÉS (B2+)",
+    socialActions: {
+      whatsapp: "Chatear ahora",
+      email: "Enviar rápido",
+      linkedin: "Conectemos",
+      instagram: "Visitar",
+      copy: "Copiar",
+      copied: "Copiado",
+    },
+    labels: {
+      videoTitle: "Video presentación",
+      videoAria: "Ver video de presentación",
+      floatingVideo: "Video presentación",
+      closeVideo: "Cerrar video",
+      minimizeVideo: "Minimizar video",
+      expandVideo: "Expandir video",
+      englishCertTitle: "Certificado de inglés",
+      englishCertAria: "Ver certificado de inglés",
+    },
+  },
+  en: {
+    location: "Bogotá, Colombia",
+    availability: "Open to work",
+    playHint: "Watch intro video",
+    sectionTitle: "ABOUT",
+    sectionTitleAccent: "ME",
+    p1a: "I design digital experiences with",
+    p1b: "strategic vision",
+    p1c: "turning ideas into",
+    p1d: "real and scalable interfaces",
+    p2a: "I work in a",
+    p2b: "structured and iterative",
+    p2c: "way, balancing",
+    p2d: "user experience",
+    p2e: "business goals",
+    p2f: "feasibility",
+    p2g: "to build solutions with real impact.",
+    skillsRow1: ["PROACTIVE", "EMPATHETIC", "CREATIVE"],
+    skillsRow2: "GROWTH MINDSET",
+    native: "Native",
+    fluency: "Fluency",
+    spanish: "SPANISH",
+    english: "ENGLISH (B2+)",
+    socialActions: {
+      whatsapp: "Chat now",
+      email: "Quick send",
+      linkedin: "Connect",
+      instagram: "Visit",
+      copy: "Copy",
+      copied: "Copied",
+    },
+    labels: {
+      videoTitle: "Intro video",
+      videoAria: "Watch intro video",
+      floatingVideo: "Intro video",
+      closeVideo: "Close video",
+      minimizeVideo: "Minimize video",
+      expandVideo: "Expand video",
+      englishCertTitle: "English certificate",
+      englishCertAria: "View English certificate",
+    },
+  },
+} as const;
+
 export default function AboutSection() {
+  const { language } = usePreferences();
+  const t = aboutCopyByLanguage[language];
   const portraitRef = useRef<HTMLDivElement>(null);
   const socialsWrapRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<number | null>(null);
@@ -224,6 +312,14 @@ export default function AboutSection() {
     }
   };
 
+  const getSocialActionLabel = (id: string) => {
+    if (id === "whatsapp") return t.socialActions.whatsapp;
+    if (id === "email") return t.socialActions.email;
+    if (id === "linkedin") return t.socialActions.linkedin;
+    if (id === "instagram") return t.socialActions.instagram;
+    return "";
+  };
+
   const onPlayButtonKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -233,7 +329,7 @@ export default function AboutSection() {
 
   return (
     <>
-      <section id="about" className="relative scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
+      <section id="about" className="relative scroll-mt-28 bg-[#0a0a0a] py-14 md:py-20">
         <div className="framer-fade-up mx-auto grid max-w-[1280px] items-stretch gap-12 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-20 xl:px-16">
           <div className="flex h-full flex-col items-center">
             <div className="relative mb-8 flex h-[300px] w-[300px] items-center justify-center md:h-[330px] md:w-[330px]">
@@ -272,7 +368,7 @@ export default function AboutSection() {
                         profileVideoPlaying ? "opacity-100" : "opacity-0"
                       }`}
                       src={inlineVideoSrc}
-                      title="Video presentación Sara Ruiz"
+                      title={t.labels.videoTitle}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
@@ -286,15 +382,15 @@ export default function AboutSection() {
                     onClick={() => startInlineVideo(0)}
                     onKeyDown={onPlayButtonKeyDown}
                     className="absolute inset-0 z-20 cursor-pointer rounded-full"
-                    aria-label="Ver video de presentación"
+                    aria-label={t.labels.videoAria}
                     role="button"
                     tabIndex={0}
-                    title="Ver video presentación"
+                    title={t.playHint}
                   >
                     <span className="absolute inset-0 rounded-full bg-black/0 transition-colors duration-300 group-hover:bg-black/24" />
 
                     <span className="pointer-events-none absolute left-1/2 top-[86%] -translate-x-1/2 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-[10px] font-medium text-white/95 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      Ver video presentación
+                      {t.playHint}
                     </span>
 
                     <span className="play-cta-attention absolute left-1/2 top-[73%] inline-flex h-[74px] w-[74px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#d4ff59]/90 bg-[rgba(8,8,8,0.38)] shadow-[0_14px_28px_rgba(0,0,0,0.48)] backdrop-blur-md transition-all duration-300 group-hover:scale-[1.06] group-hover:bg-[rgba(8,8,8,0.62)]">
@@ -308,8 +404,8 @@ export default function AboutSection() {
                     type="button"
                     onClick={closeVideoPlayers}
                     className="absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white transition-colors hover:border-white/40"
-                    aria-label="Cerrar video"
-                    title="Cerrar video"
+                    aria-label={t.labels.closeVideo}
+                    title={t.labels.closeVideo}
                   >
                     <X size={16} />
                   </button>
@@ -321,12 +417,12 @@ export default function AboutSection() {
               <div className="mt-2 flex flex-col items-center justify-center space-y-2 text-center">
                 <div className="flex items-center justify-center gap-2 text-white/60">
                   <MapPin size={14} className="shrink-0 text-white/55" />
-                  <span className="text-[11px] font-normal uppercase tracking-[0.22em]">Bogotá, Colombia</span>
+                  <span className="text-[11px] font-normal uppercase tracking-[0.22em]">{t.location}</span>
                 </div>
 
                 <div className="flex items-center justify-center gap-2 text-[#d4ff59]">
                   <span className="h-2 w-2 animate-pulse rounded-full bg-[#d4ff59]" />
-                  <span className="text-[11px] font-bold uppercase tracking-[0.22em]">Open to work</span>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.22em]">{t.availability}</span>
                 </div>
               </div>
 
@@ -376,7 +472,7 @@ export default function AboutSection() {
                             className="mt-0.5 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Copy size={12} className="justify-self-center" />
-                            <span className="col-start-2 text-center">{copied ? "Copiado" : "Copiar"}</span>
+                            <span className="col-start-2 text-center">{copied ? t.socialActions.copied : t.socialActions.copy}</span>
                             <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                           </button>
 
@@ -385,7 +481,7 @@ export default function AboutSection() {
                             className="mt-0.5 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                           >
                             <Mail size={12} className="justify-self-center" />
-                            <span className="col-start-2 text-center">Enviar rápido</span>
+                            <span className="col-start-2 text-center">{t.socialActions.email}</span>
                             <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                           </a>
                         </div>
@@ -397,7 +493,7 @@ export default function AboutSection() {
                           className="mt-4 grid w-full grid-cols-[18px_1fr_18px] items-center gap-x-2 whitespace-nowrap rounded-full border border-[#d4ff59]/35 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#d4ff59] hover:text-black"
                         >
                           <ExternalLink size={12} className="justify-self-center" />
-                          <span className="col-start-2 text-center">{social.actionLabel}</span>
+                          <span className="col-start-2 text-center">{getSocialActionLabel(social.id)}</span>
                           <span aria-hidden="true" className="col-start-3 h-[12px] w-[12px] justify-self-center opacity-0" />
                         </a>
                       )}
@@ -410,28 +506,27 @@ export default function AboutSection() {
 
           <div className="flex h-full flex-col">
             <h2 className="section-title">
-              SOBRE <span className="section-title-accent">MÍ</span>
+              {t.sectionTitle} <span className="section-title-accent">{t.sectionTitleAccent}</span>
             </h2>
 
             <div className="mt-6 space-y-7 text-[15px] font-light leading-[1.52] text-white/72 md:text-[18px] xl:text-[22px]">
               <p className="max-w-[820px]">
-                Diseño experiencias digitales con <span className="font-medium text-white/98">visión estratégica</span>,
-                materializando ideas en <span className="font-medium text-white/98">interfaces reales y escalables</span>.
+                {t.p1a} <span className="font-medium text-white/98">{t.p1b}</span>, {t.p1c}{" "}
+                <span className="font-medium text-white/98">{t.p1d}</span>.
               </p>
 
               <p className="max-w-[820px]">
-                Trabajo de forma <span className="font-medium text-white/98">estructurada e iterativa</span>, equilibrando
-                <span className="font-medium text-white/98"> experiencia de usuario</span>,
-                <span className="font-medium text-white/98"> objetivos del negocio</span> y
-                <span className="font-medium text-white/98"> viabilidad</span> para construir soluciones con impacto
-                real.
+                {t.p2a} <span className="font-medium text-white/98">{t.p2b}</span>, {t.p2c}
+                <span className="font-medium text-white/98"> {t.p2d}</span>,
+                <span className="font-medium text-white/98"> {t.p2e}</span> y
+                <span className="font-medium text-white/98"> {t.p2f}</span> {t.p2g}
               </p>
             </div>
 
             <div className="mt-12 w-full max-w-[840px] space-y-5 pt-5 pb-5">
               <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-3 px-1 md:flex-nowrap md:justify-center md:gap-x-5 md:px-2">
                 <SkillStar />
-                {skillRows[0].flatMap((skill) => [
+                {t.skillsRow1.flatMap((skill) => [
                   <span
                     key={`${skill}-label`}
                     className="text-[12px] font-light uppercase tracking-[0.28em] text-[#F199B9] sm:text-[13px] sm:tracking-[0.34em] md:text-[15px] md:tracking-[0.44em]"
@@ -447,7 +542,7 @@ export default function AboutSection() {
                   <SkillStar />
 
                   <span className="flex-1 text-center text-[12px] font-light uppercase tracking-[0.28em] text-[#F199B9] sm:text-[13px] sm:tracking-[0.35em] md:text-[15px] md:tracking-[0.5em]">
-                    {skillRows[1][0]}
+                    {t.skillsRow2}
                   </span>
 
                   <SkillStar />
@@ -458,27 +553,27 @@ export default function AboutSection() {
             <div className="lux-glass language-glass mt-8 w-full max-w-[840px] rounded-[22px] px-8 py-2 md:mt-auto">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-5">
                 <div className="text-center">
-                  <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Nativo</p>
-                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">ESPAÑOL</p>
+                  <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">{t.native}</p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">{t.spanish}</p>
                 </div>
 
                 <div className="h-9 w-px bg-white/10" />
 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">Fluidez</p>
+                    <p className="text-[8px] font-normal uppercase tracking-[0.42em] text-white/34">{t.fluency}</p>
 
                     <button
                       onClick={() => setCertificateOpen(true)}
                       className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full border border-white/10 text-white/45 transition-colors hover:border-[#d4ff59]/35 hover:text-[#d4ff59]"
-                      aria-label="Ver certificado de inglés"
-                      title="Ver certificado"
+                      aria-label={t.labels.englishCertAria}
+                      title={t.labels.englishCertAria}
                     >
                       <LinkIcon size={9} />
                     </button>
                   </div>
 
-                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">INGLÉS (B2+)</p>
+                  <p className="mt-1.5 text-[13px] font-medium tracking-[0.2em] text-white">{t.english}</p>
                 </div>
               </div>
             </div>
@@ -490,14 +585,14 @@ export default function AboutSection() {
         <div className="fixed bottom-5 right-4 z-[140] w-[min(92vw,420px)] md:right-6">
           <div className="overflow-hidden rounded-2xl border border-white/15 bg-[rgba(8,8,8,0.92)] shadow-[0_24px_55px_rgba(0,0,0,0.48)] backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/75">Video presentación</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/75">{t.labels.floatingVideo}</p>
 
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setFloatingMinimized((prev) => !prev)}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:text-white"
-                  aria-label={floatingMinimized ? "Expandir video" : "Minimizar video"}
-                  title={floatingMinimized ? "Expandir" : "Minimizar"}
+                  aria-label={floatingMinimized ? t.labels.expandVideo : t.labels.minimizeVideo}
+                  title={floatingMinimized ? t.labels.expandVideo : t.labels.minimizeVideo}
                 >
                   {floatingMinimized ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
                 </button>
@@ -505,8 +600,8 @@ export default function AboutSection() {
                 <button
                   onClick={closeVideoPlayers}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:text-white"
-                  aria-label="Cerrar video"
-                  title="Cerrar"
+                  aria-label={t.labels.closeVideo}
+                  title={t.labels.closeVideo}
                 >
                   <X size={14} />
                 </button>
@@ -518,7 +613,7 @@ export default function AboutSection() {
                 <iframe
                   className="h-full w-full"
                   src={floatingVideoSrc}
-                  title="Video presentación Sara Ruiz flotante"
+                  title={t.labels.floatingVideo}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
@@ -533,7 +628,7 @@ export default function AboutSection() {
         <div className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 px-6 backdrop-blur-sm">
           <div className="w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/10 bg-[#080808] p-4 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-medium text-white/80">Certificado de inglés</p>
+              <p className="text-sm font-medium text-white/80">{t.labels.englishCertTitle}</p>
               <button
                 onClick={() => setCertificateOpen(false)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:text-white"
@@ -543,7 +638,7 @@ export default function AboutSection() {
             </div>
 
             <div className="h-[70vh] overflow-hidden rounded-[22px] bg-black">
-              <iframe className="h-full w-full" src={certificatePreview} title="Certificado de inglés" allow="autoplay" />
+              <iframe className="h-full w-full" src={certificatePreview} title={t.labels.englishCertTitle} allow="autoplay" />
             </div>
           </div>
         </div>

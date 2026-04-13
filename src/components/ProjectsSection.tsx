@@ -41,7 +41,7 @@ export default function ProjectsSection() {
   const [projectModal, setProjectModal] = useState<{ title: string; href: string } | null>(null);
 
   return (
-    <section id="projects" className="scroll-mt-28 bg-[#0a0a0a] py-16 md:py-20">
+    <section id="projects" className="scroll-mt-28 bg-[#0a0a0a] py-14 md:py-20">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 xl:px-16">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="section-title">
@@ -183,4 +183,3 @@ export default function ProjectsSection() {
     </section>
   );
 }
-
