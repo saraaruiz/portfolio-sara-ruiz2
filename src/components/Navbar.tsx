@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Download, ExternalLink, Menu, X } from "lucide-react";
 import { usePreferences } from "@/context/PreferencesContext";
+import { WHATSAPP_URL } from "@/lib/contact";
 
 const mobileSocials = [
-  { label: "WhatsApp", href: "https://wa.me/573021133071", icon: "/Assets/Body/whatsapp.svg" },
+  { label: "WhatsApp", href: WHATSAPP_URL, icon: "/Assets/Body/whatsapp.svg" },
   { label: "Email", href: "mailto:saruizdi@gmail.com", icon: "/Assets/Body/email.svg" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/sararuiz-ux-ui/", icon: "/Assets/Body/linkedin.svg" },
   { label: "Instagram", href: "https://instagram.com/saridesign__", icon: "/Assets/Body/instagram.svg" },
@@ -25,7 +26,7 @@ export default function Navbar() {
       { label: copy.nav.services, href: "#services" },
       { label: copy.nav.career, href: "#career" },
       { label: copy.nav.testimonials, href: "#testimonials" },
-      { label: contactLabel, href: "#contact" },
+      { label: contactLabel, href: WHATSAPP_URL },
     ],
     [contactLabel, copy.nav.about, copy.nav.career, copy.nav.projects, copy.nav.services, copy.nav.testimonials],
   );
@@ -114,10 +115,13 @@ export default function Navbar() {
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
             {navLinks.map((link) => {
               const isActive = activeHref === link.href;
+              const isExternal = link.href.startsWith("http");
               return (
                 <li key={link.href}>
                   <a
                     href={link.href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noreferrer" : undefined}
                     className={`nav-link-tubelight whitespace-nowrap text-[0.98rem] font-medium uppercase tracking-[0.1em] transition-colors duration-300 ${
                       isActive ? "active text-[#d4ff59]" : "text-white/75 hover:text-white"
                     }`}
@@ -212,10 +216,13 @@ export default function Navbar() {
               <div className="mx-auto w-full max-w-[680px] space-y-7 pt-8 text-center md:space-y-9">
                 {navLinks.map((link) => {
                   const isActive = activeHref === link.href;
+                  const isExternal = link.href.startsWith("http");
                   return (
                     <a
                       key={link.href}
                       href={link.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noreferrer" : undefined}
                       onClick={() => setIsOpen(false)}
                       className={`block text-center text-[1.26rem] font-semibold uppercase leading-none tracking-[0.18em] transition-colors duration-300 focus-visible:outline-none active:scale-[0.99] md:text-[1.5rem] md:tracking-[0.22em] ${
                         isActive ? "text-[#d4ff59]" : "text-white/95 hover:text-white"

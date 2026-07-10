@@ -1,7 +1,9 @@
 ﻿import { usePreferences } from "@/context/PreferencesContext";
 
+import { WHATSAPP_URL } from "@/lib/contact";
+
 const socialIcons = [
-  { label: "WhatsApp", href: "https://wa.me/573021133071", icon: "/Assets/Body/whatsapp.svg" },
+  { label: "WhatsApp", href: WHATSAPP_URL, icon: "/Assets/Body/whatsapp.svg" },
   { label: "Email", href: "mailto:saruizdi@gmail.com", icon: "/Assets/Body/email.svg" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/sararuiz-ux-ui/", icon: "/Assets/Body/linkedin.svg" },
   { label: "Instagram", href: "https://instagram.com/saridesign__", icon: "/Assets/Body/instagram.svg" },
@@ -16,7 +18,7 @@ export default function Footer() {
     { label: copy.nav.services, href: "#services" },
     { label: copy.footer.projects, href: "#projects" },
     { label: copy.nav.testimonials, href: "#testimonials" },
-    { label: copy.footer.talk, href: "#contact" },
+    { label: copy.footer.talk, href: WHATSAPP_URL },
   ];
 
   return (
@@ -59,7 +61,12 @@ export default function Footer() {
                 <ul className="mt-5 space-y-3">
                   {quickLinks.map((link) => (
                     <li key={link.href}>
-                      <a href={link.href} className="text-sm text-white/72 transition-colors hover:text-[#d4ff59]">
+                      <a
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                        className="text-sm text-white/72 transition-colors hover:text-[#d4ff59]"
+                      >
                         {link.label}
                       </a>
                     </li>

@@ -11,15 +11,16 @@ import {
   Maximize2,
 } from "lucide-react";
 import { usePreferences } from "@/context/PreferencesContext";
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from "@/lib/contact";
 
 const socials = [
   {
     id: "whatsapp",
     icon: "/Assets/Body/whatsapp.svg",
     label: "WhatsApp",
-    meta: "+57 302 1133071",
+    meta: WHATSAPP_DISPLAY,
     actionLabel: "Chatear ahora",
-    href: "https://wa.me/573021133071",
+    href: WHATSAPP_URL,
   },
   {
     id: "email",

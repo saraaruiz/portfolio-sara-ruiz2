@@ -4,6 +4,7 @@ import {
   MoreVertical, Phone, Plus, RotateCcw, Video, type LucideIcon,
 } from "lucide-react";
 import { usePreferences } from "@/context/PreferencesContext";
+import { WHATSAPP_URL } from "@/lib/contact";
 
 const DEBUG_SCREEN = false;
 const DESIGN_WIDTH = 224;
@@ -334,7 +335,7 @@ function PhoneScreenUI({ onReset, language }: { onReset: () => void; language: "
                 {pickedReply.response[0]}<br />{pickedReply.response[1]}
                 <MessageMeta time="9:42" />
               </Bubble>
-            <a href="https://wa.me/573021133071" target="_blank" rel="noreferrer" className="heartbeat-cta msg-in ml-[1px] inline-flex w-fit items-center gap-[6px] rounded-full bg-[#25D366] px-[11px] py-[6px] text-[10px] font-semibold text-[#04140d] transition hover:scale-[1.02] active:scale-[0.97]" style={{ animationDelay: "120ms" }}>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="heartbeat-cta msg-in ml-[1px] inline-flex w-fit items-center gap-[6px] rounded-full bg-[#25D366] px-[11px] py-[6px] text-[10px] font-semibold text-[#04140d] transition hover:scale-[1.02] active:scale-[0.97]" style={{ animationDelay: "120ms" }}>
                 <WhatsAppGlyph className="h-[11px] w-[11px]" />
                 {chatCopy.startConversation}
               </a>
