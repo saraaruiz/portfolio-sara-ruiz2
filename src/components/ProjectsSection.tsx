@@ -21,19 +21,19 @@ const projects: Project[] = [
     kind: "site",
   },
   {
-    title: "Sinergia",
-    subtitle: "Landing estrategica orientada a conversion",
-    image: "/Assets/Proyectos/CoverSinergia.png",
-    href: "https://sinergia-website.netlify.app/",
-    kind: "site",
-  },
-  {
     title: "Flowi",
     subtitle: "Demo de producto para comunidad UX/UI",
     image: "/Assets/Proyectos/CoverFlowi.png",
     href: "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu",
     previewHref: "https://www.youtube.com/embed/iIGyGMDSfbo?autoplay=1&rel=0&modestbranding=1",
     kind: "video",
+  },
+  {
+    title: "Sinergia",
+    subtitle: "Landing estrategica orientada a conversion",
+    image: "/Assets/Proyectos/CoverSinergia.png",
+    href: "https://sinergia-website.netlify.app/",
+    kind: "site",
   },
 ];
 
