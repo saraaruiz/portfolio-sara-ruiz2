@@ -31,6 +31,10 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
+*{
+  min-width:0;
+}
+
 img,
 video{
   display:block;
@@ -719,6 +723,10 @@ video{
 }
 
 @media (max-width: 768px){
+  html{
+    scroll-padding-top: 74px;
+  }
+
   .section-title{
     font-size: clamp(1.95rem, 10vw, 2.8rem);
     line-height: 1.04;
@@ -728,6 +736,40 @@ video{
   .section-lead{
     font-size: clamp(.96rem, 4.1vw, 1.1rem);
     line-height: 1.5;
+  }
+
+  .lux-glass,
+  .lux-glass-soft{
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .lux-card:hover{
+    transform: none;
+  }
+
+  .nav-link-tubelight::before{
+    display: none;
+  }
+
+  .stack-fullbleed{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .stack-track{
+    max-width: max-content;
+  }
+}
+
+@media (max-width: 480px){
+  .eyebrow{
+    letter-spacing:0.16em;
+  }
+
+  .hero-intro{
+    padding-top: clamp(74px, 9vh, 92px);
   }
 }
 

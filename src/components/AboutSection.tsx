@@ -330,7 +330,7 @@ export default function AboutSection() {
 
   return (
     <>
-      <section id="about" className="relative scroll-mt-28 bg-[#0a0a0a] py-14 md:py-20">
+      <section id="about" className="relative overflow-hidden scroll-mt-28 bg-[#0a0a0a] py-14 md:py-20">
         <div className="framer-fade-up mx-auto grid max-w-[1280px] items-stretch gap-12 px-6 md:px-10 xl:grid-cols-[400px_minmax(0,1fr)] xl:gap-20 xl:px-16">
           <div className="flex h-full flex-col items-center">
             <div className="relative mb-8 flex h-[300px] w-[300px] items-center justify-center md:h-[330px] md:w-[330px]">

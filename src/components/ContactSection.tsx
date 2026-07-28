@@ -376,15 +376,17 @@ export default function ContactSection() {
 
   const isMobile = viewportWidth < 640;
   const minWidth =
-    viewportWidth < 640 ? "760px" :
-    viewportWidth < 1024 ? "1220px" : "0px";
+    viewportWidth < 390 ? "640px" :
+    viewportWidth < 640 ? "700px" :
+    viewportWidth < 1024 ? "1120px" : "0px";
 
   const shiftX =
-    viewportWidth < 640 ? "-10%" :
-    viewportWidth < 1024 ? "-8%" : "0%";
+    viewportWidth < 390 ? "-18%" :
+    viewportWidth < 640 ? "-14%" :
+    viewportWidth < 1024 ? "-7%" : "0%";
 
   return (
-    <section id="contact" className="relative w-full overflow-hidden bg-[#050505] py-1 md:py-0">
+    <section id="contact" className="relative w-full overflow-hidden bg-[#050505] py-4 sm:py-2 md:py-0">
       <div className="mx-auto w-full max-w-[1800px] px-0 md:px-4 xl:px-6">
         <div
           className="relative isolate mx-auto w-full max-w-[1440px]"

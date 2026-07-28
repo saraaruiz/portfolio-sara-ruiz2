@@ -116,7 +116,7 @@ export default function Hero() {
                 fontSize: "clamp(13px, 2.2vw, 24px)",
                 letterSpacing: "clamp(0.34em, 0.9vw, 1.08em)",
                 display: "inline-block",
-                width: "clamp(260px, 94vw, 900px)",
+                width: "min(900px, calc(100vw - 32px))",
               }}
             >
               {isEnglish ? "UX/UI DESIGNER" : "DISEÑADORA UX/UI"}
@@ -130,7 +130,7 @@ export default function Hero() {
                 fontSize: "clamp(11.2px, 1.42vw, 15px)",
                 letterSpacing: "clamp(0.18em, 0.4vw, 0.52em)",
                 display: "inline-block",
-                width: "clamp(260px, 94vw, 900px)",
+                width: "min(900px, calc(100vw - 32px))",
               }}
             >
               Research · Flows · Product Strategy

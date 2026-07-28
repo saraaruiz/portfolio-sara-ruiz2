@@ -63,7 +63,7 @@ const categoriesByLanguage: Record<"es" | "en", CareerCategory[]> = {
           ],
         },
         {
-          title: "Teleperformance · Representante de Soporte — Cuenta PlayStation",
+          title: "Representante de Soporte — Cuenta PlayStation",
           meta: "Bogotá, Colombia · Atención a usuarios de EE.UU. y Canadá en inglés",
           dates: "Feb. – Abr. 2024",
           bullets: [
@@ -167,7 +167,7 @@ const categoriesByLanguage: Record<"es" | "en", CareerCategory[]> = {
           ],
         },
         {
-          title: "Teleperformance · Support Representative — PlayStation Account",
+          title: "Support Representative — PlayStation Account",
           meta: "Bogotá, Colombia · English support for U.S. and Canada users",
           dates: "Feb. – Apr. 2024",
           bullets: [
