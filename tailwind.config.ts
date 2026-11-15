@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         faith: ["Faith", "serif"],
         sans: ["Montserrat", "sans-serif"],
+        manrope: ["Manrope", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

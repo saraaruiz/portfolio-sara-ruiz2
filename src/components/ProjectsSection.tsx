@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ExternalLink, Hand, MousePointer2, Play, X } from "lucide-react";
 
 import { usePreferences } from "@/context/PreferencesContext";
@@ -10,6 +11,7 @@ type Project = {
   href: string;
   previewHref?: string;
   kind: "site" | "video";
+  caseStudyHref?: string;
 };
 
 const projects: Project[] = [
@@ -27,6 +29,7 @@ const projects: Project[] = [
     href: "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu",
     previewHref: "https://www.youtube.com/embed/iIGyGMDSfbo?autoplay=1&rel=0&modestbranding=1",
     kind: "video",
+    caseStudyHref: "/proyectos/flowi",
   },
   {
     title: "Sinergia",
@@ -46,6 +49,7 @@ const toolLabelsByProject: Record<string, string[]> = {
 export default function ProjectsSection() {
   const { language } = usePreferences();
   const isEnglish = language === "en";
+  const navigate = useNavigate();
 
   const localizedProjects = isEnglish
     ? projects.map((project) => ({
@@ -105,6 +109,10 @@ export default function ProjectsSection() {
                 onClick={(event) => {
                   event.preventDefault();
                   setActive(index);
+                  if (project.caseStudyHref) {
+                    navigate(project.caseStudyHref);
+                    return;
+                  }
                   setProjectModal({ title: project.title, href: project.href, previewHref, kind: project.kind });
                 }}
                 className={`lux-card group relative h-[300px] w-full overflow-hidden rounded-[20px] border border-white/10 transition-[flex,transform] duration-500 ease-out sm:h-[330px] sm:rounded-[22px] md:h-full md:rounded-[24px] ${
@@ -125,10 +133,19 @@ export default function ProjectsSection() {
                 {!isActive && <div className="absolute inset-0 hidden bg-black/22 md:block" aria-hidden="true" />}
 
                 {project.kind === "video" && (
-                  <div className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/88 backdrop-blur-md">
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      setActive(index);
+                      setProjectModal({ title: project.title, href: project.href, previewHref, kind: project.kind });
+                    }}
+                    className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/88 backdrop-blur-md transition-colors hover:bg-black/65"
+                  >
                     <Play size={12} fill="currentColor" />
-                    YouTube
-                  </div>
+                    {isEnglish ? "Watch on YouTube" : "Ver demo en YouTube"}
+                  </button>
                 )}
 
                 <div

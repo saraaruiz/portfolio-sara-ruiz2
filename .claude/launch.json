@@ -2,10 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dev",
+      "name": "portfolio-sara-ruiz2",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 5173
+      "port": 8080
+    },
+    {
+      "name": "fuerza-interior-case",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\Users\\Familia\\Downloads\\fuerza-interior-case-main\\fuerza-interior-case-main", "run", "dev"],
+      "port": 8080
     }
   ]
 }
