@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ExternalLink, Hand, MousePointer2, Play, X } from "lucide-react";
 
+import AudiovisualPhone from "@/components/AudiovisualPhone";
 import { usePreferences } from "@/context/PreferencesContext";
 
 type Project = {
@@ -9,7 +10,7 @@ type Project = {
   image: string;
   href: string;
   previewHref?: string;
-  kind: "site" | "video" | "case";
+  kind: "site" | "video" | "case" | "audiovisual";
   /** Enlace externo a la demo en video (se muestra como "Demo YouTube" en la ventana) */
   demoHref?: string;
 };
@@ -38,12 +39,20 @@ const projects: Project[] = [
     href: "https://sinergia-website.netlify.app/",
     kind: "site",
   },
+  {
+    title: "Audiovisual",
+    subtitle: "Contenido cinematografico para Instagram",
+    image: "/Assets/Proyectos/CoverAudiovisual.jpg",
+    href: "#projects",
+    kind: "audiovisual",
+  },
 ];
 
 const toolLabelsByProject: Record<string, string[]> = {
   "Fuerza Interior": ["Miro", "Figma", "Maze"],
   Sinergia: ["HTML", "CSS", "React", "JavaScript", "MySQL", "Java", "Spring Boot", "Git & GitHub"],
   Flowi: ["UX Research", "UI Design", "PWA", "Demo YouTube"],
+  Audiovisual: ["Higgsfield", "Google Flow", "Edición de video", "Instagram"],
 };
 
 export default function ProjectsSection() {
@@ -58,7 +67,9 @@ export default function ProjectsSection() {
             ? "Emotional wellness platform with micro-habits"
             : project.title === "Flowi"
               ? "Product demo for a UX/UI community"
-              : "Strategic landing page focused on conversion",
+              : project.title === "Audiovisual"
+                ? "Cinematic content for Instagram brands"
+                : "Strategic landing page focused on conversion",
       }))
     : projects;
 
@@ -191,7 +202,7 @@ export default function ProjectsSection() {
           <div className="flex max-h-[94svh] w-full max-w-6xl flex-col overflow-hidden rounded-[22px] border border-white/12 bg-[#090909] p-3 shadow-2xl sm:rounded-[28px] sm:p-4">
             <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
               <p className="min-w-0 truncate text-xs font-medium text-white/85 sm:text-sm">
-                {projectModal.kind === "case" ? "Case study" : isEnglish ? "Project preview" : "Vista previa del proyecto"} · {projectModal.title}
+                {projectModal.kind === "case" ? "Case study" : projectModal.kind === "audiovisual" ? "Audiovisual" : isEnglish ? "Project preview" : "Vista previa del proyecto"} · {projectModal.title}
               </p>
               <button
                 onClick={() => setProjectModal(null)}
@@ -203,13 +214,19 @@ export default function ProjectsSection() {
             </div>
 
             <div className="min-h-0 flex-1 overflow-hidden rounded-[18px] border border-white/10 bg-black sm:rounded-[20px]">
-              <iframe
-                className="h-[62svh] w-full sm:h-[70vh]"
-                src={projectModal.previewHref}
-                title={`${projectModal.title}-preview`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
+              {projectModal.kind === "audiovisual" ? (
+                <div className="flex h-[74svh] w-full items-center justify-center bg-[radial-gradient(90%_70%_at_50%_0%,#2e1065_0%,#0a0a0a_70%)] sm:h-[78vh]">
+                  <AudiovisualPhone />
+                </div>
+              ) : (
+                <iframe
+                  className="h-[62svh] w-full sm:h-[70vh]"
+                  src={projectModal.previewHref}
+                  title={`${projectModal.title}-preview`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              )}
             </div>
 
             <div className="mt-3 flex flex-col gap-2 sm:mt-4 sm:flex-row sm:justify-end sm:gap-3">
@@ -224,15 +241,17 @@ export default function ProjectsSection() {
                   Demo YouTube
                 </a>
               )}
-              <a
-                href={projectModal.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-white"
-              >
-                <ExternalLink size={13} />
-                {projectModal.kind === "case" ? (isEnglish ? "Open full page" : "Abrir página completa") : isEnglish ? "Open in new tab" : "Abrir"}
-              </a>
+              {projectModal.kind !== "audiovisual" && (
+                <a
+                  href={projectModal.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-white"
+                >
+                  <ExternalLink size={13} />
+                  {projectModal.kind === "case" ? (isEnglish ? "Open full page" : "Abrir página completa") : isEnglish ? "Open in new tab" : "Abrir"}
+                </a>
+              )}
               <button
                 onClick={() => setProjectModal(null)}
                 className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-white"
