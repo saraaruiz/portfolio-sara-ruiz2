@@ -13,6 +13,8 @@ type Project = {
   kind: "site" | "video" | "case" | "audiovisual";
   /** Enlace externo a la demo en video (se muestra como "Demo YouTube" en la ventana) */
   demoHref?: string;
+  /** Clave para buscar las etiquetas de herramientas (por defecto, el título) */
+  toolKey?: string;
 };
 
 const projects: Project[] = [
@@ -33,11 +35,13 @@ const projects: Project[] = [
     demoHref: "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu",
   },
   {
-    title: "Sinergia",
-    subtitle: "Landing estrategica orientada a conversion",
-    image: "/Assets/Proyectos/CoverSinergia.png",
-    href: "https://sinergia-website.netlify.app/",
-    kind: "site",
+    title: "Selecto: antes y después",
+    toolKey: "Selecto",
+    subtitle: "Rediseño de un sitio de 2023: de no responsive a un flujo claro",
+    image: "/Assets/Proyectos/selecto/cover.webp",
+    href: "/proyectos/selecto",
+    previewHref: "/proyectos/selecto?embed=1",
+    kind: "case",
   },
   {
     title: "Audiovisual",
@@ -50,7 +54,8 @@ const projects: Project[] = [
 
 const toolLabelsByProject: Record<string, string[]> = {
   "Fuerza Interior": ["Miro", "Figma", "Maze"],
-  Sinergia: ["HTML", "CSS", "React", "JavaScript", "MySQL", "Java", "Spring Boot", "Git & GitHub"],
+  // Los elementos que empiezan con "#" son rótulos de grupo, no etiquetas
+  Selecto: ["#2023", "HTML", "CSS", "JavaScript", "React", "Java", "Spring Boot", "MySQL", "#2026", "Next.js", "Tailwind", "Framer Motion"],
   Flowi: ["UX Research", "UI Design", "PWA", "Demo YouTube"],
   Audiovisual: ["Higgsfield", "Google Flow", "Edición de video", "Instagram"],
 };
@@ -62,8 +67,11 @@ export default function ProjectsSection() {
   const localizedProjects = isEnglish
     ? projects.map((project) => ({
         ...project,
+        title: project.toolKey === "Selecto" ? "Selecto: before and after" : project.title,
         subtitle:
-          project.title === "Fuerza Interior"
+          project.toolKey === "Selecto"
+            ? "Redesign of a 2023 site: from non-responsive to a clear flow"
+            : project.title === "Fuerza Interior"
             ? "Emotional wellness platform with micro-habits"
             : project.title === "Flowi"
               ? "Product demo for a UX/UI community"
@@ -107,7 +115,7 @@ export default function ProjectsSection() {
           {localizedProjects.map((project, index) => {
             const isActive = active === index;
             const previewHref = project.previewHref ?? project.href;
-            const projectToolLabels = toolLabelsByProject[project.title] ?? [];
+            const projectToolLabels = toolLabelsByProject[project.toolKey ?? project.title] ?? [];
 
             return (
               <a
@@ -170,8 +178,13 @@ export default function ProjectsSection() {
                       </p>
 
                       {projectToolLabels.length > 0 && (
-                        <div className="mt-2.5 flex max-h-[72px] flex-wrap items-center gap-1.5 overflow-hidden sm:gap-2 md:max-h-none">
-                          {projectToolLabels.map((tool) => (
+                        <div className={`mt-2.5 flex flex-wrap items-center gap-1.5 overflow-hidden sm:gap-2 ${projectToolLabels.length > 8 ? "" : "max-h-[72px] md:max-h-none"}`}>
+                          {projectToolLabels.map((tool) =>
+                            tool.startsWith("#") ? (
+                              <span key={tool} className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-white/55 first:ml-0 ml-1.5">
+                                {tool.slice(1)}
+                              </span>
+                            ) : (
                             <span
                               key={tool}
                               className="inline-flex items-center rounded-full border border-white/16 bg-[linear-gradient(145deg,rgba(255,255,255,0.09)_0%,rgba(255,255,255,0.02)_100%)] px-2.5 py-1 text-[9.5px] font-medium tracking-[0.03em] text-white/82 backdrop-blur-md sm:px-3 sm:text-[10px]"
@@ -179,7 +192,8 @@ export default function ProjectsSection() {
                             >
                               {tool}
                             </span>
-                          ))}
+                            ),
+                          )}
                         </div>
                       )}
                     </div>
