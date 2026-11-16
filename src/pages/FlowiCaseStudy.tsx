@@ -1142,17 +1142,21 @@ export default function FlowiCaseStudy() {
               </a>
             </div>
 
-            <div className="relative mx-auto h-[660px] w-[320px] max-w-full rounded-[3rem] border-[11px] border-[#16131F] bg-[#16131F] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)]">
+            <div className="relative mx-auto h-[667px] w-[320px] max-w-full rounded-[3rem] border-[11px] border-[#16131F] bg-[#16131F] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)]">
               <div
                 className="pointer-events-none absolute left-1/2 top-1.5 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-[#16131F]"
                 aria-hidden="true"
               />
-              <iframe
-                src={FLOWI_URL}
-                title={c.proto.liveTitle}
-                className="h-full w-full rounded-[2.2rem] bg-white"
-                allow="clipboard-write; fullscreen"
-              />
+              {/* La app se renderiza en un viewport real de celular (390x844) y se escala para caber en el marco */}
+              <div className="h-full w-full overflow-hidden rounded-[2.2rem] bg-white">
+                <iframe
+                  src={FLOWI_URL}
+                  title={c.proto.liveTitle}
+                  className="block border-0 bg-white"
+                  style={{ width: 390, height: 844, transform: "scale(0.764)", transformOrigin: "top left" }}
+                  allow="clipboard-write; fullscreen"
+                />
+              </div>
             </div>
           </div>
 
