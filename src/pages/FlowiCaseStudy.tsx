@@ -61,7 +61,7 @@ const nextStepIcons = [Rocket, Brain, FileText, ShieldCheck];
 
 const teamBase: { name: string; roleKey: string; photo?: string; linkedin?: string }[] = [
   { name: "Sofía Álvarez", roleKey: "lead", photo: "sofia" },
-  { name: "Agustina Marino", roleKey: "researcher", photo: "agustina" },
+  { name: "Agustina Maurino", roleKey: "researcher", photo: "agustina" },
   { name: "Luisa García", roleKey: "generalist", photo: "luisa" },
   { name: "Karina López", roleKey: "writer", photo: "karina" },
   { name: "Belen Vitorino", roleKey: "generalist", photo: "belen" },
@@ -1340,7 +1340,7 @@ export default function FlowiCaseStudy() {
                       alt={member.name}
                       width={56}
                       height={56}
-                      className="h-full w-full scale-[1.15] object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </span>
                 ) : (
