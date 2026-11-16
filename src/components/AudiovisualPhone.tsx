@@ -51,7 +51,7 @@ const REELS: Reel[] = [
     brand: "selecto",
     titleEs: "Reel comercial",
     titleEn: "Commercial reel",
-    src: "/Assets/Audiovisual/selecto/reel-comercial.mov",
+    src: "/Assets/Audiovisual/selecto/reel-comercial.mp4",
     tools: ["Higgsfield", "Edición"],
   },
   {
