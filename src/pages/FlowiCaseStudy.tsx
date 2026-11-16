@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   Brain,
   CheckCircle2,
@@ -88,7 +89,7 @@ const es = {
   },
   stats: [
     { value: "3", label: "Rondas de testing con usuarios reales" },
-    { value: "100%", label: "de los entrevistados abandonó algún tracking manual por agotamiento" },
+    { value: "95%", label: "encontró el botón de registro en el test final (Maze)" },
     { value: "7", label: "Sprints de diseño y validación" },
     { value: "MVP", label: "Validación y listo para escalar" },
   ],
@@ -102,7 +103,7 @@ const es = {
       "Diseñar para el hogar completo, y no para un único usuario, obliga a pensar privacidad, permisos y tono desde el primer wireframe, no como un ajuste posterior.",
     impactTitle: "Impacto del producto",
     impact:
-      "Un flujo de registro iterado con tres rondas de testing con usuarios reales, con historial exportable y una identidad de marca propia lista para escalar más allá del MVP.",
+      "El botón de registro pasó de no ser reconocido por 4 de 5 usuarios a un 95 % de éxito, con historial exportable y una identidad de marca propia lista para escalar más allá del MVP.",
     ctaYoutube: "Ver la demo completa en vivo en YouTube",
     play: "Reproducir video",
     loading: "Cargando video…",
@@ -124,7 +125,7 @@ const es = {
       { label: "Público objetivo", value: "Personas con malestar intestinal y cuidadores de familia" },
       { label: "Estado actual", value: "Producto vivo: MVP desplegado" },
       { label: "Sector", value: "Wellness · Trackeo personal · PWA" },
-      { label: "Mi rol", value: "Researcher: investigación con usuarios y síntesis de hallazgos" },
+      { label: "Mi rol", value: "Researcher: research, testing, diseño y comunicación" },
     ],
     toolsTitle: "Herramientas",
   },
@@ -243,28 +244,43 @@ const es = {
     },
   },
   test: {
-    eyebrow: "Testear — Sprints 6 y 7",
-    title: "Validación con usuarios reales",
-    lowTitle: "Testing de baja fidelidad",
-    lowText: "5 sesiones moderadas por Zoom sobre wireframes en escala de grises, antes de invertir en diseño visual.",
-    low: [
-      { value: "60%", label: "completó el registro rápido sin ayuda (3 de 5)." },
-      { value: "80%", label: "identificó su tipo en la Escala de Bristol (4 de 5)." },
+    eyebrow: "Testear y mejorar — Sprints 3 a 7",
+    title: "De 4 de 5 a 95 %: así mejoró el registro",
+    intro:
+      "Probamos con usuarios reales en tres rondas. El hallazgo más importante fue el botón de registro: cuatro de cada cinco personas no lo reconocían. Iteramos con el equipo y, en el test final, lo encontró el 95 %.",
+    fromLabel: "Punto de partida",
+    fromMeta: "Sprint 3 · Wireframes en baja fidelidad · 5 usuarios por Zoom",
+    from: [
       { value: "4 de 5", label: "no reconocieron el botón “+” como acción principal." },
+      { value: "3 de 5", label: "completaron el registro rápido sin ayuda." },
+      { value: "4 de 5", label: "identificaron su tipo en la Escala de Bristol." },
     ],
-    mazeTitle: "Testing no moderado: Maze",
-    mazeText: "Validamos la estructura en Maze para medir comprensión y éxito en tareas clave.",
-    maze: [
-      { value: "20", label: "participantes respondieron la primera tarea del test no moderado." },
-      { value: "95%", label: "encontró y presionó el botón de registro (tarea 1)." },
-      { value: "93,8%", label: "completó el registro de evacuación (tarea 3)." },
+    toLabel: "Resultado",
+    toMeta: "Sprint 6 · Prototipo en Maze · hasta 20 usuarios",
+    to: [
+      { value: "95%", label: "encontró y presionó el botón de registro." },
+      { value: "93,8%", label: "completó el registro de evacuación." },
+      { value: "80%", label: "encontró fácil de entender el lenguaje." },
     ],
-    mazeCallout: "Hallazgo principal: casi todos lo lograron, pero con muchos clics errados antes de llegar al botón de registro.",
+    mazeCallout: "Pasamos de 4 de 5 usuarios que no reconocían el botón de registro a un 95 % que lo encuentra y lo presiona.",
+    changeTitle: "Qué cambiamos",
+    before: "Antes",
+    after: "Después",
+    changes: [
+      { before: "Solo el símbolo “+” en la barra: no se reconocía como entrada al registro.", after: "Pantalla “Crear registro” con título explícito y etiqueta visible en la navegación." },
+      { before: "Formulario en scroll largo: abandono por abrumamiento.", after: "3 pasos claros con barra de progreso visible en todo momento." },
+      { before: "Campos de texto libre para cantidad y síntomas: alta fricción.", after: "Chips seleccionables: un toque, sin escribir." },
+    ],
     heatTitle: "Mapa de calor · Tarea 1",
     heatTask: "“Encuentra y presiona el botón para iniciar un registro”",
     heatMeta: "Test de prototipo en Maze · 20 respuestas",
-    heatNote: "Los clics se repartieron por toda la pantalla; el punto más fuerte es el botón “Registro” del menú inferior. Las instrucciones de Maze tapaban parte del menú.",
+    heatNote: "El punto de mayor concentración de clics es el botón “Registro” del menú inferior.",
     heatAlt: "Mapa de calor de clics sobre la pantalla de inicio de Flowi en el test de Maze",
+    saysTitle: "Lo que dijeron los participantes de Maze",
+    says: [
+      { value: "60%", label: "lo usaría para sí y para las personas que cuida." },
+      { value: "9 de 16", label: "describieron el registro como fácil, y 9 de 16 como rápido." },
+    ],
     modTitle: "Testing moderado final",
     modText:
       "Validamos con usuarios reales en sesiones moderadas para profundizar en percepciones y emociones: 5 personas, sesiones moderadas.",
@@ -278,6 +294,21 @@ const es = {
       { text: "Me dio más confianza saber que puedo llevar mi información al médico.", who: "Participante 04" },
     ],
     motto: "Diseñamos con datos. Decidimos con empatía.",
+  },
+  mine: {
+    eyebrow: "Mi aporte",
+    title: "Mi caso en Flowi",
+    role: "Diseñadora industrial · Researcher",
+    p1: "Soy Sara Ruiz, diseñadora industrial de profesión, enfocada en experiencias digitales con mirada integral de producto. Cuento con 3 años de formación y práctica. Me interesa identificar necesidades, detectar fricciones y convertirlas en soluciones más claras.",
+    p2: "En el desarrollo de la app Flowi conecté diversos puntos desde el research, el testing, el diseño y la comunicación para transformar hallazgos de usuarios en mejores decisiones de producto.",
+    quote: "La usabilidad no se mide solo por completar una tarea, sino por la claridad con la que el usuario llega a ella.",
+    p3: "Lo vimos en el botón de registro. Uno de los principales retos fue optimizar el registro de las idas al baño, una funcionalidad esencial dentro de la aplicación. En las primeras pruebas, cuatro de cada cinco usuarios no identificaron el botón principal para realizar esta acción. A partir del análisis de su comportamiento y de varias iteraciones junto al equipo, logramos que el flujo alcanzara una tasa de éxito del 95 %.",
+    p4: "Este proyecto reafirmó mi propósito profesional y personal: usar el diseño para crear soluciones humanas que mejoren la vida cotidiana de muchas personas.",
+    fromValue: "4 de 5",
+    fromLabel: "no identificaban el botón",
+    toValue: "95%",
+    toLabel: "tasa de éxito",
+    linkedin: "Conectemos en LinkedIn",
   },
   figma: {
     eyebrow: "Proceso completo",
@@ -326,7 +357,7 @@ const en: typeof es = {
   },
   stats: [
     { value: "3", label: "Rounds of testing with real users" },
-    { value: "100%", label: "of interviewees gave up on manual tracking out of exhaustion" },
+    { value: "95%", label: "found the log button in the final test (Maze)" },
     { value: "7", label: "Design and validation sprints" },
     { value: "MVP", label: "Validated and ready to scale" },
   ],
@@ -340,7 +371,7 @@ const en: typeof es = {
       "Designing for the whole household, not a single user, means thinking about privacy, permissions and tone from the very first wireframe, not as a later adjustment.",
     impactTitle: "Product impact",
     impact:
-      "A logging flow iterated through three rounds of testing with real users, with an exportable history and its own brand identity, ready to scale beyond the MVP.",
+      "The log button went from 4 of 5 users not recognizing it to a 95% success rate, with an exportable history and its own brand identity, ready to scale beyond the MVP.",
     ctaYoutube: "Watch the full live demo on YouTube",
     play: "Play video",
     loading: "Loading video…",
@@ -362,7 +393,7 @@ const en: typeof es = {
       { label: "Target audience", value: "People with gut discomfort and family caregivers" },
       { label: "Current status", value: "Live product: MVP deployed" },
       { label: "Sector", value: "Wellness · Personal tracking · PWA" },
-      { label: "My role", value: "Researcher: user research and synthesis of findings" },
+      { label: "My role", value: "Researcher: research, testing, design and communication" },
     ],
     toolsTitle: "Tools",
   },
@@ -481,28 +512,43 @@ const en: typeof es = {
     },
   },
   test: {
-    eyebrow: "Test — Sprints 6 and 7",
-    title: "Validation with real users",
-    lowTitle: "Low-fidelity testing",
-    lowText: "5 moderated Zoom sessions on grayscale wireframes, before investing in visual design.",
-    low: [
-      { value: "60%", label: "completed quick logging without help (3 of 5)." },
-      { value: "80%", label: "identified their type on the Bristol scale (4 of 5)." },
+    eyebrow: "Test and improve — Sprints 3 to 7",
+    title: "From 4 of 5 to 95%: how logging improved",
+    intro:
+      "We tested with real users in three rounds. The most important finding was the log button: four out of five people did not recognize it. We iterated with the team and, in the final test, 95% found it.",
+    fromLabel: "Starting point",
+    fromMeta: "Sprint 3 · Low-fidelity wireframes · 5 users on Zoom",
+    from: [
       { value: "4 of 5", label: "did not recognize the “+” button as the main action." },
+      { value: "3 of 5", label: "completed quick logging without help." },
+      { value: "4 of 5", label: "identified their type on the Bristol scale." },
     ],
-    mazeTitle: "Unmoderated testing: Maze",
-    mazeText: "We validated the structure in Maze to measure comprehension and success on key tasks.",
-    maze: [
-      { value: "20", label: "participants answered the first task of the unmoderated test." },
-      { value: "95%", label: "found and pressed the log button (task 1)." },
-      { value: "93.8%", label: "completed the bowel log (task 3)." },
+    toLabel: "Result",
+    toMeta: "Sprint 6 · Prototype in Maze · up to 20 users",
+    to: [
+      { value: "95%", label: "found and pressed the log button." },
+      { value: "93.8%", label: "completed the bowel log." },
+      { value: "80%", label: "found the language easy to understand." },
     ],
-    mazeCallout: "Main finding: almost everyone succeeded, but with many misclicks before reaching the log button.",
+    mazeCallout: "We went from 4 of 5 users not recognizing the log button to 95% finding and pressing it.",
+    changeTitle: "What we changed",
+    before: "Before",
+    after: "After",
+    changes: [
+      { before: "Only the “+” symbol in the bar: not recognized as the way into logging.", after: "A “Create log” screen with an explicit title and a visible label in the navigation." },
+      { before: "A long scrolling form: users dropped off, overwhelmed.", after: "3 clear steps with a progress bar always visible." },
+      { before: "Free-text fields for amount and symptoms: high friction.", after: "Selectable chips: one tap, no typing." },
+    ],
     heatTitle: "Heatmap · Task 1",
     heatTask: "“Find and press the button to start a log”",
     heatMeta: "Prototype test in Maze · 20 responses",
-    heatNote: "Clicks spread across the whole screen; the strongest spot is the “Registro” button in the bottom menu. Maze's instructions covered part of the menu.",
+    heatNote: "The strongest concentration of clicks is on the “Registro” button in the bottom menu.",
     heatAlt: "Click heatmap over Flowi's home screen from the Maze test",
+    saysTitle: "What Maze participants said",
+    says: [
+      { value: "60%", label: "would use it for themselves and the people they care for." },
+      { value: "9 of 16", label: "described logging as easy, and 9 of 16 as fast." },
+    ],
     modTitle: "Final moderated testing",
     modText:
       "We validated with real users in moderated sessions to dig deeper into perceptions and emotions: 5 people, moderated sessions.",
@@ -516,6 +562,21 @@ const en: typeof es = {
       { text: "It gave me more confidence to know I can take my information to the doctor.", who: "Participant 04" },
     ],
     motto: "We design with data. We decide with empathy.",
+  },
+  mine: {
+    eyebrow: "My contribution",
+    title: "My case in Flowi",
+    role: "Industrial designer · Researcher",
+    p1: "I'm Sara Ruiz, an industrial designer by training, focused on digital experiences with a whole-product mindset. I have 3 years of training and practice. I'm interested in identifying needs, spotting friction and turning it into clearer solutions.",
+    p2: "While developing the Flowi app I connected many dots across research, testing, design and communication to turn user findings into better product decisions.",
+    quote: "Usability isn't measured only by completing a task, but by how clearly the user gets there.",
+    p3: "We saw it in the log button. One of the main challenges was optimizing the logging of bathroom visits, an essential feature of the app. In the first tests, four out of five users did not identify the main button for this action. Based on the analysis of their behavior and several iterations with the team, we got the flow to a 95% success rate.",
+    p4: "This project reaffirmed my professional and personal purpose: using design to create human solutions that improve the everyday life of many people.",
+    fromValue: "4 of 5",
+    fromLabel: "didn't identify the button",
+    toValue: "95%",
+    toLabel: "success rate",
+    linkedin: "Let's connect on LinkedIn",
   },
   figma: {
     eyebrow: "Full process",
@@ -1221,47 +1282,86 @@ export default function FlowiCaseStudy() {
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
             <SectionEyebrow>{c.test.eyebrow}</SectionEyebrow>
             <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.test.title}</h2>
+            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-[#4B4460]">{c.test.intro}</p>
 
-            <div className="mt-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
-              <h3 className="text-lg font-bold text-[#241F33]">{c.test.lowTitle}</h3>
-              <p className="mt-1 text-sm text-[#4B4460]">{c.test.lowText}</p>
-              <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                {c.test.low.map((item) => (
-                  <div key={item.label} className="rounded-2xl bg-[#F4F2FC] p-5">
-                    <p className="text-2xl font-extrabold text-[#5D56A6]">{item.value}</p>
-                    <p className="mt-1 text-xs text-[#4B4460]">{item.label}</p>
+            <div className="mt-8 grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr]">
+              <div className="rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-7">
+                <p className="text-xs font-bold uppercase tracking-wide text-[#9088B8]">{c.test.fromLabel}</p>
+                <p className="mt-1 text-xs text-[#9088B8]">{c.test.fromMeta}</p>
+                <ul className="mt-5 space-y-4">
+                  {c.test.from.map((item) => (
+                    <li key={item.label} className="flex items-baseline gap-3">
+                      <span className="w-20 shrink-0 text-2xl font-extrabold text-[#6A4FA3]">{item.value}</span>
+                      <span className="text-sm text-[#4B4460]">{item.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex items-center justify-center text-[#5D56A6]" aria-hidden="true">
+                <ArrowRight size={28} className="rotate-90 md:rotate-0" />
+              </div>
+              <div className="rounded-3xl bg-[#5D56A6] p-6 text-white sm:p-7">
+                <p className="text-xs font-bold uppercase tracking-wide text-white/70">{c.test.toLabel}</p>
+                <p className="mt-1 text-xs text-white/70">{c.test.toMeta}</p>
+                <ul className="mt-5 space-y-4">
+                  {c.test.to.map((item) => (
+                    <li key={item.label} className="flex items-baseline gap-3">
+                      <span className="w-20 shrink-0 text-2xl font-extrabold">{item.value}</span>
+                      <span className="text-sm text-white/90">{item.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-2xl bg-[#241F33] p-5 text-center text-sm font-semibold leading-relaxed text-white sm:text-base">
+              {c.test.mazeCallout}
+            </div>
+
+            <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
+              <h3 className="text-lg font-bold text-[#241F33]">{c.test.changeTitle}</h3>
+              <div className="mt-5 space-y-4">
+                {c.test.changes.map((change) => (
+                  <div key={change.after} className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
+                    <div className="rounded-2xl bg-[#F4F2FC] p-4">
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-[#9088B8]">{c.test.before}</p>
+                      <p className="mt-1 text-sm text-[#4B4460]">{change.before}</p>
+                    </div>
+                    <ArrowRight size={20} className="mx-auto rotate-90 text-[#5D56A6] md:rotate-0" aria-hidden="true" />
+                    <div className="rounded-2xl bg-[#E4DFFF] p-4">
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-[#5D56A6]">{c.test.after}</p>
+                      <p className="mt-1 text-sm font-medium text-[#241F33]">{change.after}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
-              <h3 className="text-lg font-bold text-[#241F33]">{c.test.mazeTitle}</h3>
-              <p className="mt-1 text-sm text-[#4B4460]">{c.test.mazeText}</p>
-              <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                {c.test.maze.map((item) => (
-                  <div key={item.label} className="rounded-2xl bg-[#F4F2FC] p-5">
-                    <p className="text-2xl font-extrabold text-[#5D56A6]">{item.value}</p>
-                    <p className="mt-1 text-xs text-[#4B4460]">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-              <figure className="mt-6 overflow-hidden rounded-2xl border border-[#EDE9FB] bg-[#FAF9FF] p-5">
-                <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
-                <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
-                <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
+            <div className="mt-6 grid gap-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8 md:grid-cols-[auto_1fr] md:items-center">
+              <figure className="mx-auto">
                 <img
                   src={`${ASSETS}/maze-heatmap.jpg`}
                   alt={c.test.heatAlt}
                   width={780}
                   height={2004}
-                  className="mx-auto mt-4 w-full max-w-[280px] rounded-xl"
+                  className="w-full max-w-[260px] rounded-xl"
                 />
-                <figcaption className="mx-auto mt-4 max-w-[520px] text-center text-xs leading-relaxed text-[#4B4460]">
-                  {c.test.heatNote}
-                </figcaption>
               </figure>
-              <div className="mt-4 rounded-2xl bg-[#5D56A6] p-5 text-sm font-semibold text-white">{c.test.mazeCallout}</div>
+              <div>
+                <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
+                <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
+                <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[#4B4460]">{c.test.heatNote}</p>
+                <p className="mt-6 text-xs font-bold uppercase tracking-wide text-[#6A4FA3]">{c.test.saysTitle}</p>
+                <ul className="mt-3 space-y-3">
+                  {c.test.says.map((item) => (
+                    <li key={item.label} className="flex items-baseline gap-3">
+                      <span className="w-20 shrink-0 text-xl font-extrabold text-[#5D56A6]">{item.value}</span>
+                      <span className="text-sm text-[#4B4460]">{item.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
@@ -1289,6 +1389,52 @@ export default function FlowiCaseStudy() {
               </div>
             </div>
             <p className="mt-8 text-center text-lg italic text-[#6A4FA3]">{c.test.motto}</p>
+          </div>
+        </section>
+
+        {/* MINE */}
+        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
+          <SectionEyebrow>{c.mine.eyebrow}</SectionEyebrow>
+          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.mine.title}</h2>
+          <div className="mt-8 grid gap-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)] sm:p-10 md:grid-cols-[220px_1fr]">
+            <div className="flex flex-col items-center text-center md:items-start md:text-left">
+              <span className="block h-28 w-28 overflow-hidden rounded-full bg-[#E4DFFF]">
+                <img src={`${ASSETS}/team/sara.jpg`} alt="Sara Ruiz" width={112} height={112} className="h-full w-full object-cover" />
+              </span>
+              <p className="mt-4 text-lg font-extrabold text-[#241F33]">Sara Ruiz</p>
+              <p className="text-sm font-medium text-[#6A4FA3]">{c.mine.role}</p>
+              <a
+                href="https://www.linkedin.com/in/sararuiz-ux-ui/"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#DCD5F5] px-3 py-1.5 text-xs font-semibold text-[#5D56A6] hover:bg-[#F1EEFB]"
+              >
+                <Linkedin size={13} />
+                {c.mine.linkedin}
+              </a>
+              <div className="mt-6 w-full rounded-2xl bg-[#F4F2FC] p-4">
+                <div className="flex items-center justify-center gap-3 md:justify-start">
+                  <div>
+                    <p className="text-xl font-extrabold text-[#6A4FA3]">{c.mine.fromValue}</p>
+                    <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.fromLabel}</p>
+                  </div>
+                  <ArrowRight size={18} className="shrink-0 text-[#5D56A6]" aria-hidden="true" />
+                  <div>
+                    <p className="text-xl font-extrabold text-[#5D56A6]">{c.mine.toValue}</p>
+                    <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.toLabel}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4 text-[15px] leading-relaxed text-[#4B4460]">
+              <p>{c.mine.p1}</p>
+              <p>{c.mine.p2}</p>
+              <blockquote className="border-l-4 border-[#B7ADF0] pl-4 text-lg font-semibold italic leading-snug text-[#3A3350]">
+                “{c.mine.quote}”
+              </blockquote>
+              <p>{c.mine.p3}</p>
+              <p>{c.mine.p4}</p>
+            </div>
           </div>
         </section>
 
