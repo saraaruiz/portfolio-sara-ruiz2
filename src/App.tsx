@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import FlowiCaseStudy from "./pages/FlowiCaseStudy";
 import SelectoCaseStudy from "./pages/SelectoCaseStudy";
+import VerytelCaseStudy from "./pages/VerytelCaseStudy";
 import NotFound from "./pages/NotFound";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
@@ -17,6 +18,7 @@ function Shell() {
         <Route path="/" element={<Index />} />
         <Route path="/proyectos/flowi" element={<FlowiCaseStudy />} />
         <Route path="/proyectos/selecto" element={<SelectoCaseStudy />} />
+        <Route path="/proyectos/verytel" element={<VerytelCaseStudy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!embedded && <FloatingWhatsApp />}

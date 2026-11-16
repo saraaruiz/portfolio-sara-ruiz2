@@ -19,13 +19,6 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Fuerza Interior",
-    subtitle: "Plataforma de bienestar emocional con micro-habitos",
-    image: "/Assets/Proyectos/CoverFuerzaInterior.svg",
-    href: "https://fuerza-interior.pages.dev/",
-    kind: "site",
-  },
-  {
     title: "Flowi",
     subtitle: "Demo de producto para comunidad UX/UI",
     image: "/Assets/Proyectos/CoverFlowi.png",
@@ -44,6 +37,21 @@ const projects: Project[] = [
     kind: "case",
   },
   {
+    title: "Verytel",
+    subtitle: "Design system y 3 landing pages con tokens responsive",
+    image: "/Assets/Proyectos/verytel/cover.webp",
+    href: "/proyectos/verytel",
+    previewHref: "/proyectos/verytel?embed=1",
+    kind: "case",
+  },
+  {
+    title: "Fuerza Interior",
+    subtitle: "Plataforma de bienestar emocional con micro-habitos",
+    image: "/Assets/Proyectos/CoverFuerzaInterior.svg",
+    href: "https://fuerza-interior.pages.dev/",
+    kind: "site",
+  },
+  {
     title: "Audiovisual",
     subtitle: "Contenido cinematografico para Instagram",
     image: "/Assets/Proyectos/CoverAudiovisual.jpg",
@@ -57,6 +65,7 @@ const toolLabelsByProject: Record<string, string[]> = {
   // Los elementos que empiezan con "#" son rótulos de grupo, no etiquetas
   Selecto: ["#2023", "HTML", "CSS", "JavaScript", "React", "Java", "Spring Boot", "MySQL", "#2026", "Next.js", "Tailwind", "Framer Motion"],
   Flowi: ["UX Research", "UI Design", "PWA", "Demo YouTube"],
+  Verytel: ["Figma", "Design system", "Tokens", "WCAG AA", "Auto Layout", "Dev Mode"],
   Audiovisual: ["Higgsfield", "Google Flow", "Edición de video", "Instagram"],
 };
 
@@ -71,7 +80,9 @@ export default function ProjectsSection() {
         subtitle:
           project.toolKey === "Selecto"
             ? "Redesign of a 2023 site: from non-responsive to a clear flow"
-            : project.title === "Fuerza Interior"
+            : project.title === "Verytel"
+              ? "Design system and 3 landing pages with responsive tokens"
+              : project.title === "Fuerza Interior"
             ? "Emotional wellness platform with micro-habits"
             : project.title === "Flowi"
               ? "Product demo for a UX/UI community"
