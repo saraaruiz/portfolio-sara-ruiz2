@@ -14,6 +14,9 @@ import {
   ListChecks,
   Loader2,
   Lock,
+  Maximize2,
+  Minus,
+  Pause,
   Play,
   Quote,
   Rocket,
@@ -22,7 +25,10 @@ import {
   Target,
   UserRound,
   Users,
+  Volume2,
+  VolumeX,
   Wand2,
+  X,
 } from "lucide-react";
 
 import { usePreferences, type AppLanguage } from "@/context/PreferencesContext";
@@ -91,6 +97,14 @@ const es = {
     ctaYoutube: "Ver la demo completa en vivo en YouTube",
     play: "Reproducir video",
     loading: "Cargando video…",
+    pause: "Pausar",
+    resume: "Reproducir",
+    mute: "Silenciar",
+    unmute: "Activar sonido",
+    minimize: "Minimizar",
+    expand: "Expandir",
+    close: "Cerrar video",
+    floating: "Reproduciendo en la ventana flotante",
     videoTitle: "Flowi: proceso, equipo y producto",
   },
   product: {
@@ -257,6 +271,14 @@ const en: typeof es = {
     ctaYoutube: "Watch the full live demo on YouTube",
     play: "Play video",
     loading: "Loading video…",
+    pause: "Pause",
+    resume: "Play",
+    mute: "Mute",
+    unmute: "Unmute",
+    minimize: "Minimize",
+    expand: "Expand",
+    close: "Close video",
+    floating: "Playing in the floating window",
     videoTitle: "Flowi: process, team and product",
   },
   product: {
@@ -405,41 +427,90 @@ function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6A4FA3]">{children}</p>;
 }
 
-/** Video pesado: no descarga nada hasta que la sección está cerca y arranca al primer clic. */
+type VideoLabels = {
+  play: string;
+  loading: string;
+  pause: string;
+  resume: string;
+  mute: string;
+  unmute: string;
+  minimize: string;
+  expand: string;
+  close: string;
+  floating: string;
+};
+
+/**
+ * Video pesado: no descarga nada hasta que la sección está cerca y arranca al primer clic.
+ * Si el usuario baja por la página mientras se reproduce, pasa a una ventana flotante
+ * (silenciar, minimizar, cerrar) para que pueda seguir viéndolo.
+ */
 function LazyVideo({
   src,
   poster,
   title,
-  playLabel,
-  loadingLabel,
+  labels,
 }: {
   src: string;
   poster: string;
   title: string;
-  playLabel: string;
-  loadingLabel: string;
+  labels: VideoLabels;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
   const [buffering, setBuffering] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [inView, setInView] = useState(true);
+  const [floating, setFloating] = useState(false);
+  const [minimized, setMinimized] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
+  // precarga cuando la sección está cerca + detecta si el video salió de la pantalla
   useEffect(() => {
     const node = wrapRef.current;
     const video = ref.current;
     if (!node || !video || typeof IntersectionObserver === "undefined") return;
-    const observer = new IntersectionObserver(
+    const preload = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
           video.preload = "auto";
-          observer.disconnect();
+          preload.disconnect();
         }
       },
       { rootMargin: "400px 0px" },
     );
-    observer.observe(node);
-    return () => observer.disconnect();
+    preload.observe(node);
+    return () => preload.disconnect();
   }, []);
+
+  // ¿sigue visible el espacio original del video? (listener de scroll: funciona en cualquier navegador)
+  useEffect(() => {
+    const node = wrapRef.current;
+    if (!node) return;
+    const check = () => {
+      const rect = node.getBoundingClientRect();
+      setInView(rect.bottom > 60 && rect.top < window.innerHeight);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (inView) {
+      setFloating(false);
+      setMinimized(false);
+      setDismissed(false);
+    } else if (started && playing && !dismissed) {
+      setFloating(true);
+    }
+  }, [inView, started, playing, dismissed]);
 
   const start = () => {
     const video = ref.current;
@@ -450,40 +521,112 @@ function LazyVideo({
     video.play().catch(() => setBuffering(false));
   };
 
+  const togglePlay = () => {
+    const video = ref.current;
+    if (!video) return;
+    if (video.paused) video.play().catch(() => undefined);
+    else video.pause();
+  };
+
+  const toggleMute = () => {
+    const video = ref.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setMuted(video.muted);
+  };
+
+  const closeFloating = () => {
+    ref.current?.pause();
+    setDismissed(true);
+    setFloating(false);
+    setMinimized(false);
+  };
+
+  const iconBtn =
+    "flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25";
+
   return (
     <div ref={wrapRef} className="relative aspect-video w-full bg-black">
-      <video
-        ref={ref}
-        className="h-full w-full"
-        poster={poster}
-        controls={started}
-        playsInline
-        preload="none"
-        title={title}
-        onWaiting={() => setBuffering(true)}
-        onPlaying={() => setBuffering(false)}
-        onCanPlay={() => setBuffering(false)}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      {!started && (
-        <button
-          type="button"
-          onClick={start}
-          aria-label={playLabel}
-          className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors hover:bg-black/20"
-        >
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[#5D56A6] shadow-xl sm:h-20 sm:w-20">
-            <Play size={28} fill="currentColor" className="ml-1" />
-          </span>
-        </button>
-      )}
-      {started && buffering && (
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/35 text-white">
-          <Loader2 className="animate-spin" size={30} />
-          <span className="text-xs font-semibold">{loadingLabel}</span>
+      {floating && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#16131F] text-center text-white/80">
+          <img src={poster} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-20" />
+          <p className="relative text-sm font-semibold">{labels.floating}</p>
         </div>
       )}
+
+      <div
+        className={
+          floating
+            ? "fixed bottom-4 left-4 z-[60] w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/15 bg-black shadow-2xl"
+            : "absolute inset-0"
+        }
+      >
+        {floating && (
+          <div className="flex items-center gap-2 bg-[#241F33] px-3 py-2">
+            <p className="min-w-0 flex-1 truncate text-xs font-semibold text-white">{title}</p>
+            <button type="button" onClick={togglePlay} aria-label={playing ? labels.pause : labels.resume} className={iconBtn}>
+              {playing ? <Pause size={13} fill="currentColor" /> : <Play size={13} fill="currentColor" className="ml-0.5" />}
+            </button>
+            <button type="button" onClick={toggleMute} aria-label={muted ? labels.unmute : labels.mute} className={iconBtn}>
+              {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMinimized((value) => !value)}
+              aria-label={minimized ? labels.expand : labels.minimize}
+              className={iconBtn}
+            >
+              {minimized ? <Maximize2 size={13} /> : <Minus size={14} />}
+            </button>
+            <button type="button" onClick={closeFloating} aria-label={labels.close} className={iconBtn}>
+              <X size={14} />
+            </button>
+          </div>
+        )}
+
+        <div className={floating ? (minimized ? "h-0 overflow-hidden" : "aspect-video w-full") : "h-full w-full"}>
+          <video
+            ref={ref}
+            className="h-full w-full"
+            poster={poster}
+            controls={started}
+            playsInline
+            preload="none"
+            title={title}
+            onWaiting={() => setBuffering(true)}
+            onPlaying={() => {
+              setBuffering(false);
+              setPlaying(true);
+            }}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+            onCanPlay={() => setBuffering(false)}
+            onVolumeChange={(event) => setMuted(event.currentTarget.muted)}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        </div>
+
+        {!started && (
+          <button
+            type="button"
+            onClick={start}
+            aria-label={labels.play}
+            className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors hover:bg-black/20"
+          >
+            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[#5D56A6] shadow-xl sm:h-20 sm:w-20">
+              <Play size={28} fill="currentColor" className="ml-1" />
+            </span>
+          </button>
+        )}
+        {started && buffering && !minimized && (
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/35 text-white">
+            <Loader2 className="animate-spin" size={30} />
+            <span className="text-xs font-semibold">{labels.loading}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -683,8 +826,7 @@ export default function FlowiCaseStudy() {
                 src={`${ASSETS}/resumen.mp4`}
                 poster={`${ASSETS}/resumen-poster.jpg`}
                 title={c.outcome.videoTitle}
-                playLabel={c.outcome.play}
-                loadingLabel={c.outcome.loading}
+                labels={c.outcome}
               />
             </div>
             <a
