@@ -488,6 +488,41 @@ function LazyVideo({
   );
 }
 
+/** Marco de celular con la app real: el iframe usa un viewport de 390x844 y se escala al ancho disponible. */
+function PhoneEmbed({ src, title }: { src: string; title: string }) {
+  const screenRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(298 / 390);
+
+  useEffect(() => {
+    const node = screenRef.current;
+    if (!node) return;
+    const update = () => setScale(node.clientWidth / 390);
+    update();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="relative mx-auto w-[320px] max-w-full rounded-[3rem] border-[11px] border-[#16131F] bg-[#16131F] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)]">
+      <div
+        className="pointer-events-none absolute left-1/2 top-1.5 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-[#16131F]"
+        aria-hidden="true"
+      />
+      <div ref={screenRef} className="w-full overflow-hidden rounded-[2.2rem] bg-white" style={{ height: 844 * scale }}>
+        <iframe
+          src={src}
+          title={title}
+          className="block border-0 bg-white"
+          style={{ width: 390, height: 844, transform: `scale(${scale})`, transformOrigin: "top left" }}
+          allow="clipboard-write; fullscreen"
+        />
+      </div>
+    </div>
+  );
+}
+
 function LanguageToggle({
   language,
   setLanguage,
@@ -792,22 +827,7 @@ export default function FlowiCaseStudy() {
               </a>
             </div>
 
-            <div className="relative mx-auto h-[667px] w-[320px] max-w-full rounded-[3rem] border-[11px] border-[#16131F] bg-[#16131F] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)]">
-              <div
-                className="pointer-events-none absolute left-1/2 top-1.5 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-[#16131F]"
-                aria-hidden="true"
-              />
-              {/* La app se renderiza en un viewport real de celular (390x844) y se escala para caber en el marco */}
-              <div className="h-full w-full overflow-hidden rounded-[2.2rem] bg-white">
-                <iframe
-                  src={FLOWI_URL}
-                  title={c.proto.liveTitle}
-                  className="block border-0 bg-white"
-                  style={{ width: 390, height: 844, transform: "scale(0.764)", transformOrigin: "top left" }}
-                  allow="clipboard-write; fullscreen"
-                />
-              </div>
-            </div>
+            <PhoneEmbed src={FLOWI_URL} title={c.proto.liveTitle} />
           </div>
 
           <div className="mt-12 grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
