@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Binary, Eye, FileCode2, Smartphone, Telescope } from "lucide-react";
+import { ArrowLeft, Binary, Check, CheckCircle2, Eye, FileCode2, Smartphone } from "lucide-react";
 
 import { usePreferences, type AppLanguage } from "@/context/PreferencesContext";
 
@@ -71,13 +71,14 @@ const es = {
     ] as [string, string, string][],
   },
   next: {
-    eyebrow: "Qué falta comprobar",
-    title: "Próximos pasos",
-    intro: "Aún no tengo datos del lado de desarrollo. Mediría:",
+    eyebrow: "Conclusión",
+    title: "Un sistema, tres landings entregadas",
+    intro: "Las tres landings se entregaron en las fechas acordadas y comparten un único design system en Figma, listo para desarrollo.",
     steps: [
-      ["Tiempo de implementación", "Cuánto tardó cada landing en pasar a código."],
-      ["Devoluciones", "Preguntas y correcciones después del handoff."],
-      ["Contraste en producción", "Que los pares corregidos sigan en AA, con revisión automática."],
+      ["Un solo sistema", "Navbar, Footer, botones, formularios e íconos se reutilizan tal cual en A, B y C."],
+      ["Más limpio y accesible", "27 % menos variables duplicadas y contraste corregido a WCAG AA en los tokens."],
+      ["Responsive automático", "El escalado entre Desktop 1440 y Mobile 390 no requiere ajustes manuales."],
+      ["Handoff documentado", "Alcance, nombrado y anotaciones de Dev Mode en el propio archivo."],
     ] as [string, string][],
   },
   footer: "Volver al portafolio",
@@ -145,13 +146,14 @@ const en: typeof es = {
     ],
   },
   next: {
-    eyebrow: "What still needs testing",
-    title: "Next steps",
-    intro: "I do not have data from the development side yet. I would measure:",
+    eyebrow: "Conclusion",
+    title: "One system, three landings delivered",
+    intro: "The three landings were delivered on the agreed dates and share a single Figma design system, ready for development.",
     steps: [
-      ["Implementation time", "How long each landing took to become code."],
-      ["Returns", "Questions and corrections after the handoff."],
-      ["Contrast in production", "That the fixed pairs still pass AA, with an automated check."],
+      ["One system", "Navbar, Footer, buttons, forms and icons are reused as-is across A, B and C."],
+      ["Cleaner and accessible", "27% fewer duplicated variables and contrast fixed to WCAG AA in the tokens."],
+      ["Automatically responsive", "Scaling between Desktop 1440 and Mobile 390 needs no manual tweaks."],
+      ["Documented handoff", "Scope, naming and Dev Mode annotations in the file itself."],
     ],
   },
   footer: "Back to portfolio",
@@ -388,19 +390,21 @@ export default function VerytelCaseStudy() {
           </div>
         </section>
 
-        {/* QUÉ MEDIRÍA */}
+        {/* CONCLUSIÓN */}
         <section className="px-4 pb-14 sm:px-6 sm:pb-20">
-          <div className="mx-auto max-w-[1000px] rounded-3xl border border-amber-300/30 bg-amber-300/[0.06] p-6 sm:p-10">
-            <div className="flex items-center gap-3 text-amber-200">
-              <Telescope size={22} />
+          <div className="mx-auto max-w-[1000px] rounded-3xl border border-emerald-300/30 bg-emerald-300/[0.06] p-6 sm:p-10">
+            <div className="flex items-center gap-3 text-emerald-200">
+              <CheckCircle2 size={22} />
               <Eyebrow>{c.next.eyebrow}</Eyebrow>
             </div>
             <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">{c.next.title}</h2>
             <p className="mt-3 max-w-[760px] text-base leading-relaxed text-white/80">{c.next.intro}</p>
-            <ol className="mt-7 grid gap-4 md:grid-cols-3">
-              {c.next.steps.map(([title, text], i) => (
+            <ol className="mt-7 grid gap-4 sm:grid-cols-2">
+              {c.next.steps.map(([title, text]) => (
                 <li key={title} className="rounded-2xl border border-white/10 bg-black/30 p-5">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-300 text-xs font-bold text-black">{i + 1}</span>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-300 text-black">
+                    <Check size={16} strokeWidth={3} />
+                  </span>
                   <h3 className="mt-3 text-base font-semibold">{title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-white/75">{text}</p>
                 </li>
