@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -22,9 +22,11 @@ import {
   Linkedin,
 } from "lucide-react";
 
-const FLOWI_URL = "https://xui-flowi.netlify.app";
+const FLOWI_URL = "https://cuxui-flowi.netlify.app/login";
+const FIGMA_PROCESS_URL = "https://www.figma.com/design/CMRujLgPhwXOyC98efl8x9/Flowi-App--Copy-?node-id=0-1";
+const FIGMA_EMBED_URL = `https://embed.figma.com/design/CMRujLgPhwXOyC98efl8x9/Flowi-App--Copy-?node-id=0-1&embed-host=share`;
+const ASSETS = "/Assets/Proyectos/Flowi";
 const YOUTUBE_WATCH_URL = "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu";
-const YOUTUBE_EMBED_URL = "https://www.youtube.com/embed/iIGyGMDSfbo?rel=0&modestbranding=1";
 
 const heroChips = ["UX Research", "UI Design", "Product Strategy", "Design System"];
 
@@ -41,10 +43,10 @@ const projectSheet = [
   { label: "Público objetivo", value: "Personas con malestar intestinal y cuidadores de familia" },
   { label: "Estado actual", value: "Producto vivo — MVP desplegado" },
   { label: "Sector", value: "Wellness · Trackeo personal · PWA" },
-  { label: "Mi rol", value: "UX Research, UI Design, Design System — end to end" },
+  { label: "Mi rol", value: "Researcher — investigación con usuarios y síntesis de hallazgos" },
 ];
 
-const tools = ["Figma", "Notion", "Maze", "Lápiz y papel", "Lovable", "Stitch", "Claude"];
+const tools = ["Figma", "Miro", "Notion", "Slack", "GitHub", "Maze", "Lápiz y papel", "Lovable", "Stitch", "Claude"];
 
 const benchmarkApps = [
   {
@@ -178,11 +180,23 @@ const moderatedFindings = [
   { title: "Más confianza para llevar información al médico", description: "El historial exportable fue positivamente valorado por los usuarios." },
 ];
 
-const teamPlaceholder = [
-  { name: "Nombre apellido", role: "Design Lead", linkedin: "#" },
-  { name: "Nombre apellido", role: "UX Research", linkedin: "#" },
-  { name: "Nombre apellido", role: "UI Design", linkedin: "#" },
-  { name: "Nombre apellido", role: "Desarrollo", linkedin: "#" },
+const team: { name: string; role: string; photo?: string; linkedin?: string }[] = [
+  { name: "Sofía Álvarez", role: "Design Lead" },
+  { name: "Agustina Marino", role: "Researcher", photo: "agustina" },
+  { name: "Luisa García", role: "UX Generalista", photo: "luisa" },
+  { name: "Karina López", role: "UX Writer", photo: "karina" },
+  { name: "Belen Vitorino", role: "UX Generalista", photo: "belen" },
+  { name: "Rossana Peñaloza", role: "UI Designer", photo: "rossana" },
+  { name: "Katerine Elera", role: "UX Generalista", photo: "katerine" },
+  { name: "Gabriel da Silva Valer", role: "UI Designer", photo: "gabriel-da-silva" },
+  { name: "Diana García", role: "UX Generalista", photo: "diana" },
+  { name: "Gabriel Sebastián López Illia", role: "Desarrollador", photo: "gabriel-lopez" },
+  { name: "Sara Ruiz", role: "Researcher", photo: "sara", linkedin: "https://www.linkedin.com/in/sararuiz-ux-ui/" },
+];
+
+const participantQuotes = [
+  { text: "Ahora entiendo mejor el flujo, todo se siente más claro y directo.", who: "Participante 02" },
+  { text: "Me dio más confianza saber que puedo llevar mi información al médico.", who: "Participante 04" },
 ];
 
 function StrengthDot({ level }: { level: Strength }) {
@@ -198,8 +212,6 @@ function SectionEyebrow({ children }: { children: React.ReactNode }) {
 }
 
 export default function FlowiCaseStudy() {
-  const [placeholderNotice, setPlaceholderNotice] = useState(true);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -220,23 +232,22 @@ export default function FlowiCaseStudy() {
         </div>
       </header>
 
-      {placeholderNotice && (
-        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2.5 text-center text-xs text-amber-900 sm:text-sm">
-          Página en construcción: algunos datos (equipo, métricas finales) son provisionales hasta confirmar el contenido definitivo.{" "}
-          <button
-            onClick={() => setPlaceholderNotice(false)}
-            className="ml-2 underline underline-offset-2 hover:text-amber-950"
-          >
-            Ocultar
-          </button>
-        </div>
-      )}
 
       <main>
         {/* HERO */}
         <section className="relative overflow-hidden">
-          <div className="relative h-[46vh] min-h-[320px] w-full overflow-hidden sm:h-[52vh] md:h-[58vh]">
-            <img src="/Assets/Proyectos/Flowi/hero-doctor.jpg" alt="Consulta médica con Flowi" className="h-full w-full object-cover" />
+          <div className="relative h-[52vh] min-h-[340px] w-full overflow-hidden sm:h-[60vh] md:h-[68vh]">
+            <video
+              className="h-full w-full object-cover"
+              src={`${ASSETS}/banner.mp4`}
+              poster={`${ASSETS}/banner-poster.jpg`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-label="Video de Flowi: una familia registra sus síntomas y los comparte en consulta médica"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-[#3C2F6B] via-[#3C2F6B]/25 to-transparent" />
             <img
               src="/Assets/Proyectos/Flowi/flowi-lockup.png"
@@ -383,9 +394,10 @@ export default function FlowiCaseStudy() {
 
             <div className="flex items-center justify-center">
               <img
-                src="/Assets/Proyectos/Flowi/frustration.png"
-                alt="Usuaria sintiendo frustración al no saber cómo registrar sus síntomas"
-                className="max-h-[420px] w-auto object-contain"
+                src={`${ASSETS}/problema.webp`}
+                alt="Usuaria abrumada por informes médicos, la escala de Bristol y la falta de privacidad al registrar síntomas"
+                className="w-full max-w-[520px] rounded-3xl object-contain"
+                loading="lazy"
               />
             </div>
           </div>
@@ -646,6 +658,53 @@ export default function FlowiCaseStudy() {
             <img src="/Assets/Proyectos/Flowi/phones-hero.png" alt="Pantallas de registro de Flowi" className="mx-auto w-full max-w-sm object-contain" />
           </div>
 
+          {/* Branding A/B */}
+          <div className="mt-14 grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
+            <div>
+              <h3 className="flex items-center gap-2 text-lg font-bold text-[#241F33]">
+                <Sparkles size={18} className="text-[#6A4FA3]" />
+                Identidad de marca: dos caminos
+              </h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#4B4460]">
+                Exploramos dos propuestas con el mismo símbolo: una verde, cercana a la naturaleza y la calma (A), y una
+                violeta, que comunica confianza, bienestar y cuidado (B). Las evaluamos con criterios de accesibilidad
+                (contraste WCAG AA), claridad, consistencia y tono del producto.
+              </p>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#4B4460]">
+                Elegimos la violeta: se diferencia del azul frío de las apps médicas tradicionales y se siente moderna,
+                humana y cálida. El logo nace de una forma fluida y continua, como el sistema digestivo que Flowi acompaña.
+              </p>
+            </div>
+            <img
+              src={`${ASSETS}/branding-ab.jpg`}
+              alt="Propuestas A (verde) y B (violeta) de la identidad de Flowi aplicadas al home de la app"
+              className="w-full rounded-3xl border border-[#EDE9FB] shadow-sm"
+              loading="lazy"
+            />
+          </div>
+
+          {/* App en vivo */}
+          <div className="mt-14 grid items-center gap-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-10 md:grid-cols-[1fr_auto]">
+            <div>
+              <h3 className="text-lg font-bold text-[#241F33]">Pruébala: la app en vivo</h3>
+              <p className="mt-3 max-w-md text-[15px] leading-relaxed text-[#4B4460]">
+                El MVP final está desplegado como PWA. Navega por el onboarding y el registro directamente aquí, o ábrela en una pestaña nueva para usarla en tu celular.
+              </p>
+              <a
+                href={FLOWI_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#5D56A6] px-5 py-2.5 text-sm font-bold text-white"
+              >
+                Abrir Flowi
+                <ArrowUpRight size={15} />
+              </a>
+            </div>
+            <div className="mx-auto h-[640px] w-[320px] max-w-full overflow-hidden rounded-[2.5rem] border-[10px] border-[#241F33] bg-white shadow-2xl">
+              <iframe src={FLOWI_URL} title="Flowi — app en vivo" className="h-full w-full" loading="lazy" />
+            </div>
+          </div>
+
           {/* UI Kit */}
           <div className="mt-14">
             <h3 className="flex items-center gap-2 text-lg font-bold text-[#241F33]">
@@ -734,8 +793,38 @@ export default function FlowiCaseStudy() {
                   </div>
                 ))}
               </div>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                {participantQuotes.map((q) => (
+                  <figure key={q.who} className="rounded-2xl bg-[#F4F2FC] p-5">
+                    <Quote size={20} className="text-[#B7ADF0]" />
+                    <blockquote className="mt-2 text-sm italic leading-relaxed text-[#3A3350]">“{q.text}”</blockquote>
+                    <figcaption className="mt-2 text-xs font-semibold text-[#5D56A6]">{q.who}</figcaption>
+                  </figure>
+                ))}
+              </div>
             </div>
+            <p className="mt-8 text-center text-lg italic text-[#6A4FA3]">Diseñamos con datos. Decidimos con empatía.</p>
           </div>
+        </section>
+
+        {/* FIGMA */}
+        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
+          <SectionEyebrow>Proceso completo</SectionEyebrow>
+          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">Explora el Figma de trabajo</h2>
+          <p className="mt-3 max-w-2xl text-[15px] text-[#4B4460]">
+            Research, flujos, wireframes, sistema de diseño y prototipos: el archivo donde el equipo trabajó cada sprint.
+          </p>
+          <div className="mt-6 overflow-hidden rounded-3xl border border-[#EDE9FB] bg-white shadow-sm">
+            <iframe src={FIGMA_EMBED_URL} title="Figma de trabajo de Flowi" className="h-[520px] w-full sm:h-[640px]" loading="lazy" allowFullScreen />
+          </div>
+          <a
+            href={FIGMA_PROCESS_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#5D56A6] hover:underline"
+          >
+            Abrir en Figma <ArrowUpRight size={14} />
+          </a>
         </section>
 
         {/* CIERRE Y DEMO PÚBLICA */}
@@ -747,12 +836,14 @@ export default function FlowiCaseStudy() {
             <div className="mt-8 grid gap-8 md:grid-cols-2">
               <div className="overflow-hidden rounded-3xl border border-white/10 bg-black">
                 <div className="aspect-video w-full">
-                  <iframe
-                    src={YOUTUBE_EMBED_URL}
-                    title="Demo pública de Flowi"
+                  <video
                     className="h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
+                    src={`${ASSETS}/resumen.mp4`}
+                    poster={`${ASSETS}/resumen-poster.jpg`}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    title="Flowi: proceso, equipo y producto"
                   />
                 </div>
               </div>
@@ -776,36 +867,61 @@ export default function FlowiCaseStudy() {
                     propia lista para escalar más allá del MVP.
                   </p>
                 </div>
+                <a
+                  href={YOUTUBE_WATCH_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                >
+                  <Play size={14} fill="currentColor" />
+                  Ver la demo en vivo en YouTube
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* TEAM CTAs */}
+        {/* TEAM */}
         <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
           <div className="flex items-center gap-2">
             <Users size={20} className="text-[#6A4FA3]" />
             <h2 className="text-xl font-extrabold text-[#241F33] sm:text-2xl">El equipo</h2>
           </div>
-          <p className="mt-2 max-w-xl text-sm text-[#9088B8]">
-            Placeholder — reemplazar con nombres, fotos y LinkedIn reales del equipo antes de publicar.
+          <p className="mt-2 max-w-xl text-sm text-[#4B4460]">
+            Nuestro objetivo: ayudar a las personas a comprender lo que sienten y a comunicarlo mejor en sus consultas médicas.
           </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {teamPlaceholder.map((member) => (
-              <div key={member.name + member.role} className="rounded-2xl border border-dashed border-[#D8D0F5] bg-white p-5 text-center">
-                <div className="mx-auto h-16 w-16 rounded-full bg-[#F1EEFB]" />
-                <p className="mt-3 text-sm font-bold text-[#241F33]">{member.name}</p>
-                <p className="text-xs text-[#9088B8]">{member.role}</p>
-                <a
-                  href={member.linkedin}
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#EDE9FB] px-3 py-1.5 text-xs font-semibold text-[#5D56A6]"
-                >
-                  <Linkedin size={13} />
-                  LinkedIn
-                </a>
-              </div>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {team.map((member) => (
+              <li key={member.name} className="flex items-center gap-4 rounded-2xl border border-[#EDE9FB] bg-white p-4">
+                {member.photo ? (
+                  <img
+                    src={`${ASSETS}/team/${member.photo}.jpg`}
+                    alt={member.name}
+                    className="h-14 w-14 shrink-0 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#8079D6] text-lg font-bold text-white">
+                    {member.name[0]}
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold leading-snug text-[#241F33]">{member.name}</p>
+                  <p className="text-xs text-[#9088B8]">{member.role}</p>
+                  {member.linkedin && (
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[#5D56A6] hover:underline"
+                    >
+                      <Linkedin size={12} /> LinkedIn
+                    </a>
+                  )}
+                </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       </main>
 
