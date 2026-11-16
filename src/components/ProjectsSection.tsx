@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ExternalLink, Hand, MousePointer2, Play, X } from "lucide-react";
 
 import { usePreferences } from "@/context/PreferencesContext";
@@ -10,8 +9,9 @@ type Project = {
   image: string;
   href: string;
   previewHref?: string;
-  kind: "site" | "video";
-  caseStudyHref?: string;
+  kind: "site" | "video" | "case";
+  /** Enlace externo a la demo en video (se muestra como "Demo YouTube" en la ventana) */
+  demoHref?: string;
 };
 
 const projects: Project[] = [
@@ -26,10 +26,10 @@ const projects: Project[] = [
     title: "Flowi",
     subtitle: "Demo de producto para comunidad UX/UI",
     image: "/Assets/Proyectos/CoverFlowi.png",
-    href: "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu",
-    previewHref: "https://www.youtube.com/embed/iIGyGMDSfbo?autoplay=1&rel=0&modestbranding=1",
-    kind: "video",
-    caseStudyHref: "/proyectos/flowi",
+    href: "/proyectos/flowi",
+    previewHref: "/proyectos/flowi?embed=1",
+    kind: "case",
+    demoHref: "https://www.youtube.com/live/iIGyGMDSfbo?si=cZM6V9KHY8hUrlZu",
   },
   {
     title: "Sinergia",
@@ -43,13 +43,12 @@ const projects: Project[] = [
 const toolLabelsByProject: Record<string, string[]> = {
   "Fuerza Interior": ["Miro", "Figma", "Maze"],
   Sinergia: ["HTML", "CSS", "React", "JavaScript", "MySQL", "Java", "Spring Boot", "Git & GitHub"],
-  Flowi: ["Product demo", "UX/UI", "YouTube Live"],
+  Flowi: ["UX Research", "UI Design", "PWA", "Demo YouTube"],
 };
 
 export default function ProjectsSection() {
   const { language } = usePreferences();
   const isEnglish = language === "en";
-  const navigate = useNavigate();
 
   const localizedProjects = isEnglish
     ? projects.map((project) => ({
@@ -69,6 +68,7 @@ export default function ProjectsSection() {
     href: string;
     previewHref: string;
     kind: Project["kind"];
+    demoHref?: string;
   } | null>(null);
 
   return (
@@ -109,11 +109,13 @@ export default function ProjectsSection() {
                 onClick={(event) => {
                   event.preventDefault();
                   setActive(index);
-                  if (project.caseStudyHref) {
-                    navigate(project.caseStudyHref);
-                    return;
-                  }
-                  setProjectModal({ title: project.title, href: project.href, previewHref, kind: project.kind });
+                  setProjectModal({
+                    title: project.title,
+                    href: project.href,
+                    previewHref,
+                    kind: project.kind,
+                    demoHref: project.demoHref,
+                  });
                 }}
                 className={`lux-card group relative h-[300px] w-full overflow-hidden rounded-[20px] border border-white/10 transition-[flex,transform] duration-500 ease-out sm:h-[330px] sm:rounded-[22px] md:h-full md:rounded-[24px] ${
                   isActive ? "md:flex-[5]" : "md:flex-[1.6]"
@@ -132,20 +134,11 @@ export default function ProjectsSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/24 to-black/6" />
                 {!isActive && <div className="absolute inset-0 hidden bg-black/22 md:block" aria-hidden="true" />}
 
-                {project.kind === "video" && (
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      setActive(index);
-                      setProjectModal({ title: project.title, href: project.href, previewHref, kind: project.kind });
-                    }}
-                    className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/88 backdrop-blur-md transition-colors hover:bg-black/65"
-                  >
+                {project.kind === "case" && (
+                  <div className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/88 backdrop-blur-md">
                     <Play size={12} fill="currentColor" />
-                    {isEnglish ? "Watch on YouTube" : "Ver demo en YouTube"}
-                  </button>
+                    {isEnglish ? "Case study" : "Case study"}
+                  </div>
                 )}
 
                 <div
@@ -156,7 +149,7 @@ export default function ProjectsSection() {
                   <div className="lux-glass-soft mx-auto w-full rounded-[18px] p-3 sm:p-3.5 md:w-[96.5%]">
                     <div className="min-w-0">
                       <p className="text-[10px] uppercase tracking-[0.18em] text-white/60 sm:text-xs">
-                        {project.kind === "video" ? "Demo" : isEnglish ? "Project" : "Proyecto"}
+                        {project.kind === "case" ? "Case study" : isEnglish ? "Project" : "Proyecto"}
                       </p>
                       <h3 className="mt-1.5 text-[1.5rem] font-semibold leading-tight text-white sm:text-[1.7rem] md:text-[1.9rem]">
                         {project.title}
@@ -198,7 +191,7 @@ export default function ProjectsSection() {
           <div className="flex max-h-[94svh] w-full max-w-6xl flex-col overflow-hidden rounded-[22px] border border-white/12 bg-[#090909] p-3 shadow-2xl sm:rounded-[28px] sm:p-4">
             <div className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
               <p className="min-w-0 truncate text-xs font-medium text-white/85 sm:text-sm">
-                {projectModal.kind === "video" ? "Video" : isEnglish ? "Project preview" : "Vista previa del proyecto"} · {projectModal.title}
+                {projectModal.kind === "case" ? "Case study" : isEnglish ? "Project preview" : "Vista previa del proyecto"} · {projectModal.title}
               </p>
               <button
                 onClick={() => setProjectModal(null)}
@@ -220,6 +213,17 @@ export default function ProjectsSection() {
             </div>
 
             <div className="mt-3 flex flex-col gap-2 sm:mt-4 sm:flex-row sm:justify-end sm:gap-3">
+              {projectModal.demoHref && (
+                <a
+                  href={projectModal.demoHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-white"
+                >
+                  <Play size={13} fill="currentColor" />
+                  Demo YouTube
+                </a>
+              )}
               <a
                 href={projectModal.href}
                 target="_blank"
@@ -227,7 +231,7 @@ export default function ProjectsSection() {
                 className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-white"
               >
                 <ExternalLink size={13} />
-                {projectModal.kind === "video" ? "YouTube" : isEnglish ? "Open in new tab" : "Abrir"}
+                {projectModal.kind === "case" ? (isEnglish ? "Open full page" : "Abrir página completa") : isEnglish ? "Open in new tab" : "Abrir"}
               </a>
               <button
                 onClick={() => setProjectModal(null)}
