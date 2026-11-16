@@ -87,8 +87,8 @@ const es = {
     videoLabel: "Video de Flowi: una familia registra sus síntomas y los comparte en consulta médica",
   },
   stats: [
-    { value: "41", label: "Entrevistas con usuarios reales" },
-    { value: "100%", label: "Confirmó el problema" },
+    { value: "3", label: "Rondas de testing con usuarios reales" },
+    { value: "100%", label: "de los entrevistados abandonó algún tracking manual por agotamiento" },
     { value: "7", label: "Sprints de diseño y validación" },
     { value: "MVP", label: "Validación y listo para escalar" },
   ],
@@ -102,7 +102,7 @@ const es = {
       "Diseñar para el hogar completo, y no para un único usuario, obliga a pensar privacidad, permisos y tono desde el primer wireframe, no como un ajuste posterior.",
     impactTitle: "Impacto del producto",
     impact:
-      "Un flujo de registro validado en menos de 5 segundos, con historial exportable y una identidad de marca propia lista para escalar más allá del MVP.",
+      "Un flujo de registro iterado con tres rondas de testing con usuarios reales, con historial exportable y una identidad de marca propia lista para escalar más allá del MVP.",
     ctaYoutube: "Ver la demo completa en vivo en YouTube",
     play: "Reproducir video",
     loading: "Cargando video…",
@@ -115,7 +115,7 @@ const es = {
       "Flowi nace como un proyecto de diseño de producto end-to-end dentro de una comunidad de práctica UX/UI: un equipo de 10 diseñadoras y un desarrollador se propuso resolver un problema real de salud digestiva familiar, cubriendo research, UX, UI y writing a lo largo de siete sprints.",
       "El desafío partió de una oportunidad clara: las personas con malestar intestinal no cuentan con ninguna herramienta pensada para registrar sus síntomas de forma simple, compartirlos en familia y llevarlos a una consulta médica sin vergüenza ni fricción.",
       "El objetivo del MVP era validar que un registro de menos de 5 segundos, sin jerga clínica, podía sostener el hábito más allá de la primera semana, y dejar el producto listo para escalar.",
-      "Como equipo cubrimos el proceso completo: investigación con usuarios reales, arquitectura de información, ideación y wireframes, sistema de diseño y prototipo de alta fidelidad, y dos rondas de testing (moderado y no moderado) antes del handoff a desarrollo.",
+      "Como equipo cubrimos el proceso completo: investigación con usuarios reales, arquitectura de información, ideación y wireframes, sistema de diseño y prototipo de alta fidelidad, y tres rondas de testing con usuarios reales (dos moderadas y una no moderada en Maze) antes del handoff a desarrollo.",
     ],
     sheetTitle: "Ficha técnica",
     sheet: [
@@ -246,30 +246,28 @@ const es = {
     eyebrow: "Testear — Sprints 6 y 7",
     title: "Validación con usuarios reales",
     lowTitle: "Testing de baja fidelidad",
-    lowText: "Validamos la estructura y el flujo principal antes de invertir en diseño visual.",
+    lowText: "5 sesiones moderadas por Zoom sobre wireframes en escala de grises, antes de invertir en diseño visual.",
     low: [
-      { value: "80%", label: "completó la tarea principal." },
-      { value: "3 de 5", label: "usuarios entendieron el acceso al registro." },
-      { value: "Fricción", label: "el texto libre generó fricción en el flujo." },
+      { value: "60%", label: "completó el registro rápido sin ayuda (3 de 5)." },
+      { value: "80%", label: "identificó su tipo en la Escala de Bristol (4 de 5)." },
+      { value: "4 de 5", label: "no reconocieron el botón “+” como acción principal." },
     ],
     mazeTitle: "Testing no moderado: Maze",
     mazeText: "Validamos la estructura en Maze para medir comprensión y éxito en tareas clave.",
     maze: [
-      { value: "40", label: "participantes en total formaron parte del testeo no moderado." },
-      { value: "86%", label: "encontró cómo registrar en el primer intento." },
-      { value: "↓ Tiempo", label: "reducción del tiempo necesario para completar el registro." },
+      { value: "20", label: "participantes respondieron la primera tarea del test no moderado." },
+      { value: "95%", label: "encontró y presionó el botón de registro (tarea 1)." },
+      { value: "93,8%", label: "completó el registro de evacuación (tarea 3)." },
     ],
-    mazeCallout: "La navegación ya no se cuestiona: el esfuerzo se dirige a completar la tarea.",
+    mazeCallout: "Hallazgo principal: casi todos lo lograron, pero con muchos clics errados antes de llegar al botón de registro.",
     heatTitle: "Mapa de calor · Tarea 1",
     heatTask: "“Encuentra y presiona el botón para iniciar un registro”",
     heatMeta: "Test de prototipo en Maze · 20 respuestas",
-    heatLeft: "Lo que vio el participante en su celular",
-    heatRight: "Dónde hicieron clic",
-    heatNote: "Las instrucciones de Maze tapaban el menú inferior, y por eso muchos clics se dispersaron antes de llegar al botón de registro.",
-    heatAlt: "Captura del test en Maze junto al mapa de calor de clics sobre la pantalla de inicio de Flowi",
+    heatNote: "Los clics se repartieron por toda la pantalla; el punto más fuerte es el botón “Registro” del menú inferior. Las instrucciones de Maze tapaban parte del menú.",
+    heatAlt: "Mapa de calor de clics sobre la pantalla de inicio de Flowi en el test de Maze",
     modTitle: "Testing moderado final",
     modText:
-      "Validamos con usuarios reales en sesiones moderadas para profundizar en percepciones y emociones: 6 personas, prototipo funcional, sesiones moderadas.",
+      "Validamos con usuarios reales en sesiones moderadas para profundizar en percepciones y emociones: 5 personas, sesiones moderadas.",
     moderated: [
       { title: "Mayor claridad de flujo", description: "Los usuarios entendieron el camino sin necesidad de ayuda." },
       { title: "Menos dudas al registrar síntomas", description: "El usuario percibe la experiencia de manera simple y natural." },
@@ -327,8 +325,8 @@ const en: typeof es = {
     videoLabel: "Flowi video: a family logs their symptoms and shares them at a medical appointment",
   },
   stats: [
-    { value: "41", label: "Interviews with real users" },
-    { value: "100%", label: "Confirmed the problem" },
+    { value: "3", label: "Rounds of testing with real users" },
+    { value: "100%", label: "of interviewees gave up on manual tracking out of exhaustion" },
     { value: "7", label: "Design and validation sprints" },
     { value: "MVP", label: "Validated and ready to scale" },
   ],
@@ -342,7 +340,7 @@ const en: typeof es = {
       "Designing for the whole household, not a single user, means thinking about privacy, permissions and tone from the very first wireframe, not as a later adjustment.",
     impactTitle: "Product impact",
     impact:
-      "A logging flow validated at under 5 seconds, with an exportable history and its own brand identity, ready to scale beyond the MVP.",
+      "A logging flow iterated through three rounds of testing with real users, with an exportable history and its own brand identity, ready to scale beyond the MVP.",
     ctaYoutube: "Watch the full live demo on YouTube",
     play: "Play video",
     loading: "Loading video…",
@@ -355,7 +353,7 @@ const en: typeof es = {
       "Flowi started as an end-to-end product design project inside a UX/UI practice community: a team of 10 designers and one developer set out to solve a real family digestive health problem, covering research, UX, UI and writing across seven sprints.",
       "The challenge came from a clear opportunity: people with gut discomfort have no tool designed to log their symptoms simply, share them with family and bring them to a medical appointment without shame or friction.",
       "The goal of the MVP was to validate that logging in under 5 seconds, without clinical jargon, could sustain the habit beyond the first week, and leave the product ready to scale.",
-      "As a team we covered the whole process: research with real users, information architecture, ideation and wireframes, design system and high-fidelity prototype, and two rounds of testing (moderated and unmoderated) before the handoff to development.",
+      "As a team we covered the whole process: research with real users, information architecture, ideation and wireframes, design system and high-fidelity prototype, and three rounds of testing with real users (two moderated and one unmoderated in Maze) before the handoff to development.",
     ],
     sheetTitle: "Project sheet",
     sheet: [
@@ -486,30 +484,28 @@ const en: typeof es = {
     eyebrow: "Test — Sprints 6 and 7",
     title: "Validation with real users",
     lowTitle: "Low-fidelity testing",
-    lowText: "We validated the structure and main flow before investing in visual design.",
+    lowText: "5 moderated Zoom sessions on grayscale wireframes, before investing in visual design.",
     low: [
-      { value: "80%", label: "completed the main task." },
-      { value: "3 of 5", label: "users understood how to access logging." },
-      { value: "Friction", label: "free text created friction in the flow." },
+      { value: "60%", label: "completed quick logging without help (3 of 5)." },
+      { value: "80%", label: "identified their type on the Bristol scale (4 of 5)." },
+      { value: "4 of 5", label: "did not recognize the “+” button as the main action." },
     ],
     mazeTitle: "Unmoderated testing: Maze",
     mazeText: "We validated the structure in Maze to measure comprehension and success on key tasks.",
     maze: [
-      { value: "40", label: "participants in total took part in the unmoderated test." },
-      { value: "86%", label: "found how to log on the first attempt." },
-      { value: "↓ Time", label: "reduction in the time needed to complete a log." },
+      { value: "20", label: "participants answered the first task of the unmoderated test." },
+      { value: "95%", label: "found and pressed the log button (task 1)." },
+      { value: "93.8%", label: "completed the bowel log (task 3)." },
     ],
-    mazeCallout: "Navigation is no longer questioned: the effort goes into completing the task.",
+    mazeCallout: "Main finding: almost everyone succeeded, but with many misclicks before reaching the log button.",
     heatTitle: "Heatmap · Task 1",
     heatTask: "“Find and press the button to start a log”",
     heatMeta: "Prototype test in Maze · 20 responses",
-    heatLeft: "What the participant saw on their phone",
-    heatRight: "Where they clicked",
-    heatNote: "Maze's instructions covered the bottom menu, so many clicks scattered before reaching the log button.",
-    heatAlt: "Maze test capture next to the click heatmap over Flowi's home screen",
+    heatNote: "Clicks spread across the whole screen; the strongest spot is the “Registro” button in the bottom menu. Maze's instructions covered part of the menu.",
+    heatAlt: "Click heatmap over Flowi's home screen from the Maze test",
     modTitle: "Final moderated testing",
     modText:
-      "We validated with real users in moderated sessions to dig deeper into perceptions and emotions: 6 people, working prototype, moderated sessions.",
+      "We validated with real users in moderated sessions to dig deeper into perceptions and emotions: 5 people, moderated sessions.",
     moderated: [
       { title: "Clearer flow", description: "Users understood the path without needing help." },
       { title: "Fewer doubts when logging symptoms", description: "Users perceive the experience as simple and natural." },
@@ -1250,24 +1246,20 @@ export default function FlowiCaseStudy() {
                   </div>
                 ))}
               </div>
-              <figure className="mt-6 overflow-hidden rounded-2xl border border-[#EDE9FB] bg-[#FAF9FF]">
-                <div className="px-5 pt-5">
-                  <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
-                  <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
-                  <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
-                </div>
+              <figure className="mt-6 overflow-hidden rounded-2xl border border-[#EDE9FB] bg-[#FAF9FF] p-5">
+                <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
+                <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
+                <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
                 <img
                   src={`${ASSETS}/maze-heatmap.jpg`}
                   alt={c.test.heatAlt}
-                  width={1400}
-                  height={1392}
-                  className="mx-auto mt-4 w-full max-w-[620px] px-2 sm:px-5"
+                  width={780}
+                  height={2004}
+                  className="mx-auto mt-4 w-full max-w-[280px] rounded-xl"
                 />
-                <div className="mx-auto grid max-w-[620px] grid-cols-2 gap-2 px-2 pt-2 sm:gap-4 sm:px-5 text-center text-xs font-semibold text-[#5D56A6]">
-                  <span>{c.test.heatLeft}</span>
-                  <span>{c.test.heatRight}</span>
-                </div>
-                <figcaption className="px-5 pb-5 pt-3 text-center text-xs leading-relaxed text-[#4B4460]">{c.test.heatNote}</figcaption>
+                <figcaption className="mx-auto mt-4 max-w-[520px] text-center text-xs leading-relaxed text-[#4B4460]">
+                  {c.test.heatNote}
+                </figcaption>
               </figure>
               <div className="mt-4 rounded-2xl bg-[#5D56A6] p-5 text-sm font-semibold text-white">{c.test.mazeCallout}</div>
             </div>
