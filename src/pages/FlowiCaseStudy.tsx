@@ -10,12 +10,10 @@ import {
   FileCheck2,
   FileText,
   Frown,
-  Layers,
   Linkedin,
   ListChecks,
   Loader2,
   Lock,
-  MinusCircle,
   Play,
   Quote,
   Rocket,
@@ -25,7 +23,6 @@ import {
   UserRound,
   Users,
   Wand2,
-  XCircle,
 } from "lucide-react";
 
 import { usePreferences, type AppLanguage } from "@/context/PreferencesContext";
@@ -37,15 +34,7 @@ const FIGMA_EMBED_URL =
   "https://embed.figma.com/design/CMRujLgPhwXOyC98efl8x9/Flowi-App--Copy-?node-id=0-1&embed-host=share";
 const ASSETS = "/Assets/Proyectos/Flowi";
 
-type Strength = "fuerte" | "parcial" | "debil";
-
 /* ----------------------------- non-translatable data ----------------------------- */
-
-const benchmarkMatrix: { app: string; scores: Strength[] }[] = [
-  { app: "Cara Care", scores: ["fuerte", "parcial", "debil", "parcial", "debil", "debil", "parcial"] },
-  { app: "Bowelle", scores: ["parcial", "parcial", "debil", "debil", "fuerte", "debil", "debil"] },
-  { app: "Happy Poop", scores: ["fuerte", "debil", "debil", "debil", "debil", "debil", "debil"] },
-];
 
 // Tokens oficiales (archivo Figma "Flowi-color", Material 3)
 const brandColors = [
@@ -82,28 +71,23 @@ const es = {
     chips: ["UX Research", "UI Design", "Product Strategy", "Design System"],
     title: "Para que hablar de lo que pasa en el baño sea tan normal en casa como hablar del clima.",
     subtitle:
-      "Flowi es un proyecto de diseño de producto: equipo de 10 diseñadoras y un desarrollador, cubriendo research, UX, UI y writing en siete sprints. Una app de salud intestinal para toda la familia.",
+      "Flowi es una app de salud intestinal para toda la familia. 10 diseñadoras y un desarrollador, 7 sprints, del research al handoff.",
+    roleLabel: "Mi rol",
+    role: "Researcher · research, testing, diseño y comunicación",
     ctaApp: "Ir a Flowi",
     ctaDemo: "Ver demostración",
     videoLabel: "Video de Flowi: una familia registra sus síntomas y los comparte en consulta médica",
   },
   stats: [
-    { value: "3", label: "Rondas de testing con usuarios reales" },
-    { value: "95%", label: "encontró el botón de registro en el test final (Maze)" },
-    { value: "7", label: "Sprints de diseño y validación" },
-    { value: "MVP", label: "Validación y listo para escalar" },
+    { value: "95%", label: "encontró el botón de registro en el test final" },
+    { value: "3", label: "rondas de testing con usuarios reales" },
+    { value: "7", label: "sprints de diseño y validación" },
+    { value: "MVP", label: "validado y listo para escalar" },
   ],
   outcome: {
     eyebrow: "Resultado",
-    title: "¿Qué logramos con Flowi?",
-    intro:
-      "Dos minutos para ver el proceso, el equipo y el producto: de la investigación con usuarios reales a un MVP validado y funcionando.",
-    learningsTitle: "Aprendizajes del equipo",
-    learnings:
-      "Diseñar para el hogar completo, y no para un único usuario, obliga a pensar privacidad, permisos y tono desde el primer wireframe, no como un ajuste posterior.",
-    impactTitle: "Impacto del producto",
-    impact:
-      "El botón de registro pasó de no ser reconocido por 4 de 5 usuarios a un 95 % de éxito, con historial exportable y una identidad de marca propia lista para escalar más allá del MVP.",
+    title: "Flowi en 2 minutos",
+    intro: "El proceso, el equipo y el producto: de la investigación al MVP validado.",
     ctaYoutube: "Ver la demo completa en vivo en YouTube",
     play: "Reproducir video",
     loading: "Cargando video…",
@@ -111,227 +95,131 @@ const es = {
   },
   product: {
     eyebrow: "El proyecto",
-    title: "Descripción del producto",
-    paragraphs: [
-      "Flowi nace como un proyecto de diseño de producto end-to-end dentro de una comunidad de práctica UX/UI: un equipo de 10 diseñadoras y un desarrollador se propuso resolver un problema real de salud digestiva familiar, cubriendo research, UX, UI y writing a lo largo de siete sprints.",
-      "El desafío partió de una oportunidad clara: las personas con malestar intestinal no cuentan con ninguna herramienta pensada para registrar sus síntomas de forma simple, compartirlos en familia y llevarlos a una consulta médica sin vergüenza ni fricción.",
-      "El objetivo del MVP era validar que un registro de menos de 5 segundos, sin jerga clínica, podía sostener el hábito más allá de la primera semana, y dejar el producto listo para escalar.",
-      "Como equipo cubrimos el proceso completo: investigación con usuarios reales, arquitectura de información, ideación y wireframes, sistema de diseño y prototipo de alta fidelidad, y tres rondas de testing con usuarios reales (dos moderadas y una no moderada en Maze) antes del handoff a desarrollo.",
-    ],
-    sheetTitle: "Ficha técnica",
+    title: "Qué es Flowi",
+    text: "Una app para registrar síntomas digestivos en segundos, compartirlos en familia y llevar un historial claro a la consulta médica, sin vergüenza ni jerga clínica.",
     sheet: [
       { label: "Duración", value: "7 sprints" },
       { label: "Equipo", value: "10 diseñadoras UX/UI + 1 desarrollador" },
-      { label: "Público objetivo", value: "Personas con malestar intestinal y cuidadores de familia" },
-      { label: "Estado actual", value: "Producto vivo: MVP desplegado" },
-      { label: "Sector", value: "Wellness · Trackeo personal · PWA" },
-      { label: "Mi rol", value: "Researcher: research, testing, diseño y comunicación" },
+      { label: "Público", value: "Personas con malestar intestinal y cuidadores de familia" },
+      { label: "Estado", value: "Producto vivo (PWA)" },
     ],
-    toolsTitle: "Herramientas",
   },
   problem: {
-    eyebrow: "Empatizar — Sprint 1",
+    eyebrow: "Empatizar",
     titleA: "La ",
     titleB: "brecha",
     titleC: " entre lo que sientes y lo que puedes decirle a tu médico.",
-    body: "Las personas con problemas digestivos viven en un punto ciego: entre el síntoma y la consulta médica, no tienen ninguna herramienta que las acompañe. Nadie resolvió cómo una familia completa pueda usarla en conjunto, y el lenguaje clínico incomoda tanto que termina siendo el mayor enemigo del hábito de registrar.",
+    body: "Entre el síntoma y la consulta no hay ninguna herramienta que acompañe a las personas, y el lenguaje clínico da tanta vergüenza que termina matando el hábito de registrar.",
     quote:
       "Me siento mal porque tengo la panza hinchada y no quiero salir, no quiero ver a nadie... Es toda una cadena, un ciclo de emociones.",
     quoteWho: "Participante de research",
+    gap: "Ninguna app integra emociones, alimentación y síntomas de forma simple. Ahí está el espacio en blanco.",
     imageAlt: "Usuaria abrumada por informes médicos, la escala de Bristol y la falta de privacidad al registrar síntomas",
-  },
-  benchmark: {
-    eyebrow: "Research",
-    title: "Benchmark",
-    intro: "Analizamos las principales apps del segmento para entender sus aciertos, limitaciones y oportunidades.",
-    pros: "Ventajas",
-    cons: "Desventajas",
-    apps: [
-      { name: "Cara Care", category: "Salud intestinal", pros: "Educación y contenido de calidad.", cons: "Registro poco flexible y experiencia infantilizada para adultos." },
-      { name: "Bowelle", category: "Salud intestinal", pros: "Educación y contenido de calidad.", cons: "Registro poco flexible y experiencia infantilizada para adultos." },
-      { name: "Happy Poop", category: "Salud digestiva", pros: "Gamificación atractiva.", cons: "Enfoque infantil y sin integración de emociones o contexto familiar." },
-    ],
-    columns: ["Registro rápido", "Correlaciones", "Emociones", "Alimentación", "Multiusuario", "Exportar a médico", "Simplicidad"],
-    legend: { fuerte: "Fuerte", parcial: "Parcial", debil: "Débil" },
-    gap1: "Ninguna app integra emociones, alimentación y síntomas de forma fluida, sin sacrificar simplicidad.",
-    gap2: "Ahí está el espacio en blanco.",
-  },
-  solve: {
-    titleA: "Lo que ",
-    titleB: "Flowi",
-    titleC: " tenía que resolver:",
+    solveTitle: "Lo que Flowi tenía que resolver",
     objectives: [
-      { title: "Registro en menos de 5 segundos", description: "Si el registro es más rápido que el agotamiento, el hábito se sostiene más allá de los primeros 7 días." },
-      { title: "Correlaciones automáticas", description: "El usuario no quiere analizar sus propios datos: quiere que la app le diga qué los está causando." },
-      { title: "Historial exportable para el médico", description: "Que la consulta no vuelva a empezar de cero." },
-      { title: "Cero vergüenza, cero jerga clínica", description: "Iconografía y lenguaje que un adolescente pueda usar en público sin incomodidad." },
-      { title: "Privacidad como punto de entrada", description: "Visibilidad familiar para quien cuida, sin exponer a quien es cuidado." },
+      "Registro en menos de 5 segundos",
+      "Correlaciones automáticas",
+      "Historial exportable para el médico",
+      "Cero vergüenza, cero jerga clínica",
+      "Privacidad como punto de entrada",
     ],
-    lead: "Cinco objetivos clave que definieron el rumbo del producto y guiaron cada decisión de diseño.",
-    gaps: [
-      { title: "Apps existentes: clínicas o infantiles", description: "El mercado resuelve para un extremo u otro. Ninguna app fue pensada para una familia con edades mixtas bajo un mismo techo." },
-      { title: "El lenguaje clínico avergüenza", description: "Términos médicos como “Escala de Bristol” generan distancia. La vergüenza compite directamente con la formación del hábito." },
-      { title: "Tracking manual insostenible", description: "Llevar la cuenta a mano se pierde bajo estrés y no escala a más de un miembro del hogar." },
-      { title: "Nadie resuelve lo familiar", description: "Cuidadores necesitan visibilidad de varios miembros del hogar sin invadir la privacidad de cada uno." },
-    ],
-  },
-  define: {
-    eyebrow: "Definir — Sprint 2",
-    titleA: "Convertir el registro diario en un hábito posible y ",
-    titleB: "humano.",
-    p1: "Flowi acompaña al usuario en su rutina digestiva con un sistema simple, empático y motivador.",
-    p2: "Diseñamos una experiencia que reduce la fricción, genera confianza y entrega insights accionables, tanto para quien registra como para quien cuida.",
-  },
-  ia: {
-    eyebrow: "Arquitectura de información",
-    title: "Jerarquía y flujos de Flowi",
-    sitemap: [
-      { title: "Inicio", items: ["Alertas", "Panel personal", "Panel familiar", "Panel simplificado"] },
-      { title: "Actividad / Registros", items: ["Selección de miembro", "Patrones por miembro", "Filtros", "Nivel de detalle"] },
-      { title: "CTA (+)", items: ["Registro rápido", "Registro extendido", "Confirmación"] },
-      { title: "Reportes / Historial", items: ["Historial cronológico", "Selección de rango", "Vista previa", "Exportar datos propios"] },
-      { title: "Usuario", items: ["Configuración personal", "Perfil personal", "Gestión del hogar"] },
-    ],
-  },
-  persona: {
-    eyebrow: "Usuario objetivo",
-    title: "Persona",
-    name: "Cindy, 38 años",
-    role: "Cuidadora familiar · Administradora del hogar",
-    meta: "3 hijos · 1 adulto mayor · SII diagnosticado",
-    goalsTitle: "Objetivos",
-    goals: ["Entender qué le pasa", "Cuidar a su familia", "Llegar preparada a la consulta"],
-    frustrationsTitle: "Frustraciones",
-    frustrations: ["Registrar es tedioso.", "Se siente juzgada.", "Pierde el hábito fácilmente."],
-    needsTitle: "Necesidades",
-    needs: ["Registro simple e inmediato.", "Ver patrones claros.", "Compartir información con su médico."],
-    alt: "Cindy, persona representativa de Flowi",
-    journeyTitle: "Journey map",
-    flowi: "Flowi",
-    journey: [
-      { phase: "Siente el malestar", emotion: "Preocupación", flowi: "Registro inmediato" },
-      { phase: "Intenta registrar", emotion: "Agotamiento", flowi: "Mínima fricción" },
-      { phase: "Abandona el hábito", emotion: "Culpa", flowi: "Recordatorios discretos" },
-      { phase: "Consulta médica", emotion: "Vergüenza", flowi: "Historial exportable" },
-      { phase: "Recae de nuevo", emotion: "Frustración", flowi: "IA identifica correlaciones" },
-    ],
+    personaName: "Cindy, 38 años",
+    personaRole: "Cuidadora familiar · 3 hijos · 1 adulto mayor",
+    goalsTitle: "Objetivo",
+    goal: "Entender qué le pasa",
+    frustrationsTitle: "Frustración",
+    frustration: "Registrar es tedioso",
+    needsTitle: "Necesidad",
+    need: "Registro simple e inmediato",
+    personaAlt: "Cindy, persona representativa de Flowi",
   },
   proto: {
-    eyebrow: "Idear y prototipar — Sprints 3 a 5",
-    title: "Del wireframe al prototipo funcional",
-    intro:
-      "De flujos en baja fidelidad pasamos a un prototipo de alta fidelidad para el registro diario, apoyado en un sistema de diseño propio basado en Material 3.",
-    liveLabel: "Prototipo de alta fidelidad · App en vivo",
-    liveText: "Pruébala aquí mismo: es la app real, desplegada como PWA. Crea un registro, explora el home y el historial.",
-    liveHint: "Si el acceso con Google no abre dentro del celular, entra con email o abre la app en una pestaña nueva.",
+    eyebrow: "Prototipo y marca",
+    title: "De wireframes a una app funcionando",
+    liveLabel: "App en vivo",
+    liveText: "Pruébala aquí mismo: es la app real.",
+    liveHint: "Si el acceso con Google no abre aquí, entra con email o ábrela en una pestaña nueva.",
     liveCta: "Abrir Flowi en pestaña nueva",
     liveTitle: "Flowi: app en vivo",
-    brandTitle: "Identidad de marca: dos caminos",
-    brandP1:
-      "Exploramos dos propuestas con el mismo símbolo: una verde, cercana a la naturaleza y la calma (A), y una violeta, que comunica confianza, bienestar y cuidado (B). Las evaluamos con criterios de accesibilidad (contraste WCAG AA), claridad, consistencia y tono del producto.",
-    brandP2:
-      "Elegimos la violeta: se diferencia del azul frío de las apps médicas tradicionales y se siente moderna, humana y cálida. El logo nace de una forma fluida y continua, como el sistema digestivo que Flowi acompaña.",
+    brandTitle: "Marca: elegimos el violeta",
+    brandText:
+      "Entre una propuesta verde (A) y una violeta (B), elegimos la violeta: transmite confianza y cuidado, y se aleja del azul frío de las apps médicas.",
     brandAlt: "Propuestas A (verde) y B (violeta) de la identidad de Flowi aplicadas al home de la app",
-    uiKitTitle: "UI Kit: basado en Material 3",
-    typography: "Tipografía",
+    uiKitTitle: "UI Kit · Material 3 · Manrope",
     colorNames: {
       primary: "Primary",
       secondary: "Secondary",
       tertiary: "Tertiary",
-      primaryContainer: "Primary Container",
+      primaryContainer: "Container",
       surface: "Surface",
       onSurface: "On Surface",
     },
   },
   test: {
-    eyebrow: "Testear y mejorar — Sprints 3 a 7",
+    eyebrow: "Testear y mejorar",
     title: "De 4 de 5 a 95 %: así mejoró el registro",
-    intro:
-      "Probamos con usuarios reales en tres rondas. El hallazgo más importante fue el botón de registro: cuatro de cada cinco personas no lo reconocían. Iteramos con el equipo y, en el test final, lo encontró el 95 %.",
+    intro: "El hallazgo clave: cuatro de cada cinco personas no reconocían el botón de registro. Iteramos y, en el test final, lo encontró el 95 %.",
     fromLabel: "Punto de partida",
-    fromMeta: "Sprint 3 · Wireframes en baja fidelidad · 5 usuarios por Zoom",
+    fromMeta: "Sprint 3 · wireframes · 5 usuarios por Zoom",
     from: [
-      { value: "4 de 5", label: "no reconocieron el botón “+” como acción principal." },
-      { value: "3 de 5", label: "completaron el registro rápido sin ayuda." },
-      { value: "4 de 5", label: "identificaron su tipo en la Escala de Bristol." },
+      { value: "4 de 5", label: "no reconocieron el botón “+”." },
+      { value: "3 de 5", label: "completaron el registro sin ayuda." },
     ],
     toLabel: "Resultado",
-    toMeta: "Sprint 6 · Prototipo en Maze · hasta 20 usuarios",
+    toMeta: "Sprint 6 · prototipo en Maze · hasta 20 usuarios",
     to: [
       { value: "95%", label: "encontró y presionó el botón de registro." },
       { value: "93,8%", label: "completó el registro de evacuación." },
-      { value: "80%", label: "encontró fácil de entender el lenguaje." },
     ],
-    mazeCallout: "Pasamos de 4 de 5 usuarios que no reconocían el botón de registro a un 95 % que lo encuentra y lo presiona.",
     changeTitle: "Qué cambiamos",
     before: "Antes",
     after: "Después",
     changes: [
-      { before: "Solo el símbolo “+” en la barra: no se reconocía como entrada al registro.", after: "Pantalla “Crear registro” con título explícito y etiqueta visible en la navegación." },
-      { before: "Formulario en scroll largo: abandono por abrumamiento.", after: "3 pasos claros con barra de progreso visible en todo momento." },
-      { before: "Campos de texto libre para cantidad y síntomas: alta fricción.", after: "Chips seleccionables: un toque, sin escribir." },
+      { before: "Solo un “+” en la barra.", after: "Pantalla “Crear registro” con título y etiqueta visible." },
+      { before: "Formulario en scroll largo.", after: "3 pasos con barra de progreso." },
+      { before: "Texto libre para cantidad y síntomas.", after: "Chips: un toque, sin escribir." },
     ],
     heatTitle: "Mapa de calor · Tarea 1",
     heatTask: "“Encuentra y presiona el botón para iniciar un registro”",
-    heatMeta: "Test de prototipo en Maze · 20 respuestas",
+    heatMeta: "Maze · 20 respuestas",
     heatNote: "El punto de mayor concentración de clics es el botón “Registro” del menú inferior.",
     heatAlt: "Mapa de calor de clics sobre la pantalla de inicio de Flowi en el test de Maze",
-    saysTitle: "Lo que dijeron los participantes de Maze",
-    says: [
-      { value: "60%", label: "lo usaría para sí y para las personas que cuida." },
-      { value: "9 de 16", label: "describieron el registro como fácil, y 9 de 16 como rápido." },
+    modTitle: "Testing moderado final · 5 personas",
+    modText: "Entendieron el flujo sin ayuda y valoraron el historial exportable para llevar al médico.",
+    quote: "Me dio más confianza saber que puedo llevar mi información al médico.",
+    quoteWho: "Participante 04",
+  },
+  figma: {
+    title: "Explora el proceso en Figma",
+    open: "Abrir en Figma",
+    iframeTitle: "Figma de trabajo de Flowi",
+  },
+  next: {
+    title: "¿Qué sigue?",
+    steps: [
+      { title: "Escalar el MVP", description: "Más familias para validar el hábito." },
+      { title: "Insights con IA", description: "Correlaciones entre síntomas, comida y emociones." },
+      { title: "Reporte médico validado", description: "Historial exportable revisado con profesionales." },
+      { title: "Privacidad familiar", description: "Roles y permisos más finos." },
     ],
-    modTitle: "Testing moderado final",
-    modText:
-      "Validamos con usuarios reales en sesiones moderadas para profundizar en percepciones y emociones: 5 personas, sesiones moderadas.",
-    moderated: [
-      { title: "Mayor claridad de flujo", description: "Los usuarios entendieron el camino sin necesidad de ayuda." },
-      { title: "Menos dudas al registrar síntomas", description: "El usuario percibe la experiencia de manera simple y natural." },
-      { title: "Más confianza para llevar información al médico", description: "El historial exportable fue positivamente valorado por los usuarios." },
-    ],
-    quotes: [
-      { text: "Ahora entiendo mejor el flujo, todo se siente más claro y directo.", who: "Participante 02" },
-      { text: "Me dio más confianza saber que puedo llevar mi información al médico.", who: "Participante 04" },
-    ],
-    motto: "Diseñamos con datos. Decidimos con empatía.",
+    cta: "Probar Flowi",
   },
   mine: {
     eyebrow: "Mi aporte",
     title: "Mi caso en Flowi",
     role: "Diseñadora industrial · Researcher",
-    p1: "Soy Sara Ruiz, diseñadora industrial de profesión, enfocada en experiencias digitales con mirada integral de producto. Cuento con 3 años de formación y práctica. Me interesa identificar necesidades, detectar fricciones y convertirlas en soluciones más claras.",
-    p2: "En el desarrollo de la app Flowi conecté diversos puntos desde el research, el testing, el diseño y la comunicación para transformar hallazgos de usuarios en mejores decisiones de producto.",
+    p1: "Soy diseñadora industrial, enfocada en experiencias digitales con mirada integral de producto. En Flowi conecté research, testing, diseño y comunicación para convertir hallazgos de usuarios en mejores decisiones.",
     quote: "La usabilidad no se mide solo por completar una tarea, sino por la claridad con la que el usuario llega a ella.",
-    p3: "Lo vimos en el botón de registro. Uno de los principales retos fue optimizar el registro de las idas al baño, una funcionalidad esencial dentro de la aplicación. En las primeras pruebas, cuatro de cada cinco usuarios no identificaron el botón principal para realizar esta acción. A partir del análisis de su comportamiento y de varias iteraciones junto al equipo, logramos que el flujo alcanzara una tasa de éxito del 95 %.",
-    p4: "Este proyecto reafirmó mi propósito profesional y personal: usar el diseño para crear soluciones humanas que mejoren la vida cotidiana de muchas personas.",
+    p2: "Lo vimos en el botón de registro: en las primeras pruebas, cuatro de cada cinco usuarios no lo identificaron. Tras analizar su comportamiento e iterar con el equipo, el flujo alcanzó un 95 % de éxito.",
+    p3: "Este proyecto reafirmó mi propósito: usar el diseño para crear soluciones humanas que mejoren la vida cotidiana de muchas personas.",
     fromValue: "4 de 5",
     fromLabel: "no identificaban el botón",
     toValue: "95%",
     toLabel: "tasa de éxito",
     linkedin: "Conectemos en LinkedIn",
   },
-  figma: {
-    eyebrow: "Proceso completo",
-    title: "Explora el Figma de trabajo",
-    text: "Research, flujos, wireframes, sistema de diseño y prototipos: el archivo donde el equipo trabajó cada sprint.",
-    open: "Abrir en Figma",
-    iframeTitle: "Figma de trabajo de Flowi",
-  },
-  next: {
-    eyebrow: "Cierre",
-    title: "¿Qué sigue para Flowi?",
-    intro: "El MVP validó el problema y la solución. Estos son los próximos pasos para llevarlo más lejos.",
-    steps: [
-      { title: "Escalar el MVP", description: "Ampliar la base de usuarios y familias para seguir validando que el hábito se sostiene más allá de la primera semana." },
-      { title: "Insights con IA", description: "Cruzar síntomas, alimentación y emociones para sugerir correlaciones: la promesa central del producto." },
-      { title: "Reporte médico validado", description: "Revisar el historial exportable con profesionales de la salud para que la consulta nunca empiece de cero." },
-      { title: "Privacidad familiar avanzada", description: "Roles y permisos más finos entre quien cuida y quien es cuidado." },
-    ],
-    cta: "Probar Flowi",
-  },
   team: {
     title: "El equipo",
-    objective: "Nuestro objetivo: ayudar a las personas a comprender lo que sienten y a comunicarlo mejor en sus consultas médicas.",
     roles: {
       lead: "Design Lead",
       researcher: "Researcher",
@@ -341,7 +229,6 @@ const es = {
       dev: "Desarrollador",
     } as Record<string, string>,
   },
-  tools: ["Figma", "FigJam", "Miro", "Notion", "Slack", "Google Meet", "Maze", "Adobe Illustrator", "Stitch", "Lovable", "Claude", "GitHub", "Lápiz y papel"],
 };
 
 const en: typeof es = {
@@ -350,28 +237,23 @@ const en: typeof es = {
     chips: ["UX Research", "UI Design", "Product Strategy", "Design System"],
     title: "So that talking about what happens in the bathroom is as normal at home as talking about the weather.",
     subtitle:
-      "Flowi is a product design project: a team of 10 designers and one developer covering research, UX, UI and writing over seven sprints. A gut health app for the whole family.",
+      "Flowi is a gut health app for the whole family. 10 designers and one developer, 7 sprints, from research to handoff.",
+    roleLabel: "My role",
+    role: "Researcher · research, testing, design and communication",
     ctaApp: "Go to Flowi",
     ctaDemo: "Watch the demo",
     videoLabel: "Flowi video: a family logs their symptoms and shares them at a medical appointment",
   },
   stats: [
-    { value: "3", label: "Rounds of testing with real users" },
-    { value: "95%", label: "found the log button in the final test (Maze)" },
-    { value: "7", label: "Design and validation sprints" },
-    { value: "MVP", label: "Validated and ready to scale" },
+    { value: "95%", label: "found the log button in the final test" },
+    { value: "3", label: "rounds of testing with real users" },
+    { value: "7", label: "design and validation sprints" },
+    { value: "MVP", label: "validated and ready to scale" },
   ],
   outcome: {
     eyebrow: "Outcome",
-    title: "What did we achieve with Flowi?",
-    intro:
-      "Two minutes to see the process, the team and the product: from research with real users to a validated, working MVP.",
-    learningsTitle: "Team learnings",
-    learnings:
-      "Designing for the whole household, not a single user, means thinking about privacy, permissions and tone from the very first wireframe, not as a later adjustment.",
-    impactTitle: "Product impact",
-    impact:
-      "The log button went from 4 of 5 users not recognizing it to a 95% success rate, with an exportable history and its own brand identity, ready to scale beyond the MVP.",
+    title: "Flowi in 2 minutes",
+    intro: "The process, the team and the product: from research to a validated MVP.",
     ctaYoutube: "Watch the full live demo on YouTube",
     play: "Play video",
     loading: "Loading video…",
@@ -379,227 +261,131 @@ const en: typeof es = {
   },
   product: {
     eyebrow: "The project",
-    title: "Product overview",
-    paragraphs: [
-      "Flowi started as an end-to-end product design project inside a UX/UI practice community: a team of 10 designers and one developer set out to solve a real family digestive health problem, covering research, UX, UI and writing across seven sprints.",
-      "The challenge came from a clear opportunity: people with gut discomfort have no tool designed to log their symptoms simply, share them with family and bring them to a medical appointment without shame or friction.",
-      "The goal of the MVP was to validate that logging in under 5 seconds, without clinical jargon, could sustain the habit beyond the first week, and leave the product ready to scale.",
-      "As a team we covered the whole process: research with real users, information architecture, ideation and wireframes, design system and high-fidelity prototype, and three rounds of testing with real users (two moderated and one unmoderated in Maze) before the handoff to development.",
-    ],
-    sheetTitle: "Project sheet",
+    title: "What is Flowi",
+    text: "An app to log digestive symptoms in seconds, share them with family and bring a clear history to the doctor, without shame or clinical jargon.",
     sheet: [
       { label: "Duration", value: "7 sprints" },
       { label: "Team", value: "10 UX/UI designers + 1 developer" },
-      { label: "Target audience", value: "People with gut discomfort and family caregivers" },
-      { label: "Current status", value: "Live product: MVP deployed" },
-      { label: "Sector", value: "Wellness · Personal tracking · PWA" },
-      { label: "My role", value: "Researcher: research, testing, design and communication" },
+      { label: "Audience", value: "People with gut discomfort and family caregivers" },
+      { label: "Status", value: "Live product (PWA)" },
     ],
-    toolsTitle: "Tools",
   },
   problem: {
-    eyebrow: "Empathize — Sprint 1",
+    eyebrow: "Empathize",
     titleA: "The ",
     titleB: "gap",
     titleC: " between what you feel and what you can tell your doctor.",
-    body: "People with digestive issues live in a blind spot: between the symptom and the appointment, they have no tool that accompanies them. Nobody solved how a whole family could use one together, and clinical language is so uncomfortable that it ends up being the biggest enemy of the logging habit.",
+    body: "Between the symptom and the appointment there is no tool that accompanies people, and clinical language is so uncomfortable that it ends up killing the logging habit.",
     quote:
       "I feel bad because my belly is bloated and I don't want to go out, I don't want to see anyone... It's a whole chain, a cycle of emotions.",
     quoteWho: "Research participant",
+    gap: "No app simply integrates emotions, food and symptoms. That is the white space.",
     imageAlt: "A user overwhelmed by medical reports, the Bristol scale and the lack of privacy when logging symptoms",
-  },
-  benchmark: {
-    eyebrow: "Research",
-    title: "Benchmark",
-    intro: "We analyzed the main apps in the segment to understand their strengths, limitations and opportunities.",
-    pros: "Strengths",
-    cons: "Weaknesses",
-    apps: [
-      { name: "Cara Care", category: "Gut health", pros: "Quality education and content.", cons: "Inflexible logging and a childish experience for adults." },
-      { name: "Bowelle", category: "Gut health", pros: "Quality education and content.", cons: "Inflexible logging and a childish experience for adults." },
-      { name: "Happy Poop", category: "Digestive health", pros: "Engaging gamification.", cons: "Child-oriented and no integration of emotions or family context." },
-    ],
-    columns: ["Quick logging", "Correlations", "Emotions", "Food", "Multi-user", "Export to doctor", "Simplicity"],
-    legend: { fuerte: "Strong", parcial: "Partial", debil: "Weak" },
-    gap1: "No app fluidly integrates emotions, food and symptoms without sacrificing simplicity.",
-    gap2: "That is the white space.",
-  },
-  solve: {
-    titleA: "What ",
-    titleB: "Flowi",
-    titleC: " had to solve:",
+    solveTitle: "What Flowi had to solve",
     objectives: [
-      { title: "Logging in under 5 seconds", description: "If logging is faster than exhaustion, the habit lasts beyond the first 7 days." },
-      { title: "Automatic correlations", description: "Users don't want to analyze their own data: they want the app to tell them what is causing it." },
-      { title: "Exportable history for the doctor", description: "So the appointment never starts from scratch." },
-      { title: "Zero shame, zero clinical jargon", description: "Iconography and language a teenager could use in public without discomfort." },
-      { title: "Privacy as the entry point", description: "Family visibility for the caregiver, without exposing the person being cared for." },
+      "Logging in under 5 seconds",
+      "Automatic correlations",
+      "Exportable history for the doctor",
+      "Zero shame, zero clinical jargon",
+      "Privacy as the entry point",
     ],
-    lead: "Five key goals that set the direction of the product and guided every design decision.",
-    gaps: [
-      { title: "Existing apps: clinical or childish", description: "The market solves for one extreme or the other. No app was designed for a family of mixed ages under one roof." },
-      { title: "Clinical language causes shame", description: "Medical terms like “Bristol scale” create distance. Shame competes directly with habit formation." },
-      { title: "Manual tracking is unsustainable", description: "Keeping count by hand falls apart under stress and doesn't scale to more than one household member." },
-      { title: "Nobody solves the family side", description: "Caregivers need visibility into several household members without invading each person's privacy." },
-    ],
-  },
-  define: {
-    eyebrow: "Define — Sprint 2",
-    titleA: "Turn daily logging into a habit that is possible and ",
-    titleB: "human.",
-    p1: "Flowi accompanies users in their digestive routine with a simple, empathetic and motivating system.",
-    p2: "We designed an experience that reduces friction, builds trust and delivers actionable insights, for the person logging and the person caring.",
-  },
-  ia: {
-    eyebrow: "Information architecture",
-    title: "Flowi hierarchy and flows",
-    sitemap: [
-      { title: "Home", items: ["Alerts", "Personal dashboard", "Family dashboard", "Simplified dashboard"] },
-      { title: "Activity / Logs", items: ["Member selection", "Patterns by member", "Filters", "Level of detail"] },
-      { title: "CTA (+)", items: ["Quick log", "Extended log", "Confirmation"] },
-      { title: "Reports / History", items: ["Chronological history", "Range selection", "Preview", "Export own data"] },
-      { title: "User", items: ["Personal settings", "Personal profile", "Household management"] },
-    ],
-  },
-  persona: {
-    eyebrow: "Target user",
-    title: "Persona",
-    name: "Cindy, 38 years old",
-    role: "Family caregiver · Household manager",
-    meta: "3 kids · 1 older adult · diagnosed IBS",
-    goalsTitle: "Goals",
-    goals: ["Understand what is happening to her", "Take care of her family", "Arrive prepared to the appointment"],
-    frustrationsTitle: "Frustrations",
-    frustrations: ["Logging is tedious.", "She feels judged.", "She loses the habit easily."],
-    needsTitle: "Needs",
-    needs: ["Simple, immediate logging.", "Clear patterns.", "Share information with her doctor."],
-    alt: "Cindy, a representative Flowi persona",
-    journeyTitle: "Journey map",
-    flowi: "Flowi",
-    journey: [
-      { phase: "Feels discomfort", emotion: "Worry", flowi: "Instant logging" },
-      { phase: "Tries to log", emotion: "Exhaustion", flowi: "Minimal friction" },
-      { phase: "Drops the habit", emotion: "Guilt", flowi: "Discreet reminders" },
-      { phase: "Medical appointment", emotion: "Shame", flowi: "Exportable history" },
-      { phase: "Relapses", emotion: "Frustration", flowi: "AI finds correlations" },
-    ],
+    personaName: "Cindy, 38 years old",
+    personaRole: "Family caregiver · 3 kids · 1 older adult",
+    goalsTitle: "Goal",
+    goal: "Understand what is happening to her",
+    frustrationsTitle: "Frustration",
+    frustration: "Logging is tedious",
+    needsTitle: "Need",
+    need: "Simple, immediate logging",
+    personaAlt: "Cindy, a representative Flowi persona",
   },
   proto: {
-    eyebrow: "Ideate and prototype — Sprints 3 to 5",
-    title: "From wireframe to working prototype",
-    intro:
-      "From low-fidelity flows we moved to a high-fidelity prototype for daily logging, backed by our own design system based on Material 3.",
-    liveLabel: "High-fidelity prototype · Live app",
-    liveText: "Try it right here: this is the real app, deployed as a PWA. Create a log, explore the home screen and the history.",
-    liveHint: "If Google sign-in doesn't open inside the phone, sign in with email or open the app in a new tab.",
+    eyebrow: "Prototype and brand",
+    title: "From wireframes to a working app",
+    liveLabel: "Live app",
+    liveText: "Try it right here: this is the real app.",
+    liveHint: "If Google sign-in doesn't open here, sign in with email or open the app in a new tab.",
     liveCta: "Open Flowi in a new tab",
     liveTitle: "Flowi: live app",
-    brandTitle: "Brand identity: two paths",
-    brandP1:
-      "We explored two proposals with the same symbol: a green one, close to nature and calm (A), and a violet one, conveying trust, wellbeing and care (B). We evaluated them on accessibility (WCAG AA contrast), clarity, consistency and product tone.",
-    brandP2:
-      "We chose violet: it stands apart from the cold blue of traditional medical apps and feels modern, human and warm. The logo comes from a fluid, continuous shape, like the digestive system Flowi accompanies.",
+    brandTitle: "Brand: we chose violet",
+    brandText:
+      "Between a green proposal (A) and a violet one (B), we chose violet: it conveys trust and care, and stands apart from the cold blue of medical apps.",
     brandAlt: "Flowi brand proposals A (green) and B (violet) applied to the app home screen",
-    uiKitTitle: "UI Kit: based on Material 3",
-    typography: "Typography",
+    uiKitTitle: "UI Kit · Material 3 · Manrope",
     colorNames: {
       primary: "Primary",
       secondary: "Secondary",
       tertiary: "Tertiary",
-      primaryContainer: "Primary Container",
+      primaryContainer: "Container",
       surface: "Surface",
       onSurface: "On Surface",
     },
   },
   test: {
-    eyebrow: "Test and improve — Sprints 3 to 7",
+    eyebrow: "Test and improve",
     title: "From 4 of 5 to 95%: how logging improved",
-    intro:
-      "We tested with real users in three rounds. The most important finding was the log button: four out of five people did not recognize it. We iterated with the team and, in the final test, 95% found it.",
+    intro: "The key finding: four out of five people did not recognize the log button. We iterated and, in the final test, 95% found it.",
     fromLabel: "Starting point",
-    fromMeta: "Sprint 3 · Low-fidelity wireframes · 5 users on Zoom",
+    fromMeta: "Sprint 3 · wireframes · 5 users on Zoom",
     from: [
-      { value: "4 of 5", label: "did not recognize the “+” button as the main action." },
-      { value: "3 of 5", label: "completed quick logging without help." },
-      { value: "4 of 5", label: "identified their type on the Bristol scale." },
+      { value: "4 of 5", label: "did not recognize the “+” button." },
+      { value: "3 of 5", label: "completed logging without help." },
     ],
     toLabel: "Result",
-    toMeta: "Sprint 6 · Prototype in Maze · up to 20 users",
+    toMeta: "Sprint 6 · prototype in Maze · up to 20 users",
     to: [
       { value: "95%", label: "found and pressed the log button." },
       { value: "93.8%", label: "completed the bowel log." },
-      { value: "80%", label: "found the language easy to understand." },
     ],
-    mazeCallout: "We went from 4 of 5 users not recognizing the log button to 95% finding and pressing it.",
     changeTitle: "What we changed",
     before: "Before",
     after: "After",
     changes: [
-      { before: "Only the “+” symbol in the bar: not recognized as the way into logging.", after: "A “Create log” screen with an explicit title and a visible label in the navigation." },
-      { before: "A long scrolling form: users dropped off, overwhelmed.", after: "3 clear steps with a progress bar always visible." },
-      { before: "Free-text fields for amount and symptoms: high friction.", after: "Selectable chips: one tap, no typing." },
+      { before: "Only a “+” in the bar.", after: "A “Create log” screen with a title and a visible label." },
+      { before: "A long scrolling form.", after: "3 steps with a progress bar." },
+      { before: "Free text for amount and symptoms.", after: "Chips: one tap, no typing." },
     ],
     heatTitle: "Heatmap · Task 1",
     heatTask: "“Find and press the button to start a log”",
-    heatMeta: "Prototype test in Maze · 20 responses",
+    heatMeta: "Maze · 20 responses",
     heatNote: "The strongest concentration of clicks is on the “Registro” button in the bottom menu.",
     heatAlt: "Click heatmap over Flowi's home screen from the Maze test",
-    saysTitle: "What Maze participants said",
-    says: [
-      { value: "60%", label: "would use it for themselves and the people they care for." },
-      { value: "9 of 16", label: "described logging as easy, and 9 of 16 as fast." },
+    modTitle: "Final moderated testing · 5 people",
+    modText: "They understood the flow without help and valued the exportable history to bring to the doctor.",
+    quote: "It gave me more confidence to know I can take my information to the doctor.",
+    quoteWho: "Participant 04",
+  },
+  figma: {
+    title: "Explore the process in Figma",
+    open: "Open in Figma",
+    iframeTitle: "Flowi working Figma file",
+  },
+  next: {
+    title: "What's next?",
+    steps: [
+      { title: "Scale the MVP", description: "More families to validate the habit." },
+      { title: "AI-powered insights", description: "Correlations between symptoms, food and emotions." },
+      { title: "Validated medical report", description: "Exportable history reviewed by professionals." },
+      { title: "Family privacy", description: "Finer roles and permissions." },
     ],
-    modTitle: "Final moderated testing",
-    modText:
-      "We validated with real users in moderated sessions to dig deeper into perceptions and emotions: 5 people, moderated sessions.",
-    moderated: [
-      { title: "Clearer flow", description: "Users understood the path without needing help." },
-      { title: "Fewer doubts when logging symptoms", description: "Users perceive the experience as simple and natural." },
-      { title: "More confidence bringing information to the doctor", description: "The exportable history was positively valued by users." },
-    ],
-    quotes: [
-      { text: "Now I understand the flow better, everything feels clearer and more direct.", who: "Participant 02" },
-      { text: "It gave me more confidence to know I can take my information to the doctor.", who: "Participant 04" },
-    ],
-    motto: "We design with data. We decide with empathy.",
+    cta: "Try Flowi",
   },
   mine: {
     eyebrow: "My contribution",
     title: "My case in Flowi",
     role: "Industrial designer · Researcher",
-    p1: "I'm Sara Ruiz, an industrial designer by training, focused on digital experiences with a whole-product mindset. I have 3 years of training and practice. I'm interested in identifying needs, spotting friction and turning it into clearer solutions.",
-    p2: "While developing the Flowi app I connected many dots across research, testing, design and communication to turn user findings into better product decisions.",
+    p1: "I'm an industrial designer focused on digital experiences with a whole-product mindset. In Flowi I connected research, testing, design and communication to turn user findings into better decisions.",
     quote: "Usability isn't measured only by completing a task, but by how clearly the user gets there.",
-    p3: "We saw it in the log button. One of the main challenges was optimizing the logging of bathroom visits, an essential feature of the app. In the first tests, four out of five users did not identify the main button for this action. Based on the analysis of their behavior and several iterations with the team, we got the flow to a 95% success rate.",
-    p4: "This project reaffirmed my professional and personal purpose: using design to create human solutions that improve the everyday life of many people.",
+    p2: "We saw it in the log button: in the first tests, four out of five users didn't identify it. After analyzing their behavior and iterating with the team, the flow reached a 95% success rate.",
+    p3: "This project reaffirmed my purpose: using design to create human solutions that improve the everyday life of many people.",
     fromValue: "4 of 5",
     fromLabel: "didn't identify the button",
     toValue: "95%",
     toLabel: "success rate",
     linkedin: "Let's connect on LinkedIn",
   },
-  figma: {
-    eyebrow: "Full process",
-    title: "Explore the working Figma file",
-    text: "Research, flows, wireframes, design system and prototypes: the file where the team worked through every sprint.",
-    open: "Open in Figma",
-    iframeTitle: "Flowi working Figma file",
-  },
-  next: {
-    eyebrow: "Closing",
-    title: "What's next for Flowi?",
-    intro: "The MVP validated the problem and the solution. These are the next steps to take it further.",
-    steps: [
-      { title: "Scale the MVP", description: "Grow the base of users and families to keep validating that the habit lasts beyond the first week." },
-      { title: "AI-powered insights", description: "Cross symptoms, food and emotions to suggest correlations: the core promise of the product." },
-      { title: "Validated medical report", description: "Review the exportable history with health professionals so appointments never start from scratch." },
-      { title: "Advanced family privacy", description: "Finer roles and permissions between the caregiver and the person being cared for." },
-    ],
-    cta: "Try Flowi",
-  },
   team: {
     title: "The team",
-    objective: "Our goal: help people understand what they feel and communicate it better in their medical appointments.",
     roles: {
       lead: "Design Lead",
       researcher: "Researcher",
@@ -609,18 +395,11 @@ const en: typeof es = {
       dev: "Developer",
     } as Record<string, string>,
   },
-  tools: ["Figma", "FigJam", "Miro", "Notion", "Slack", "Google Meet", "Maze", "Adobe Illustrator", "Stitch", "Lovable", "Claude", "GitHub", "Pen and paper"],
 };
 
 const copyByLanguage: Record<AppLanguage, typeof es> = { es, en };
 
 /* --------------------------------- components --------------------------------- */
-
-function StrengthDot({ level, label }: { level: Strength; label: string }) {
-  if (level === "fuerte") return <CheckCircle2 size={18} className="text-[#5D56A6]" aria-label={label} />;
-  if (level === "parcial") return <MinusCircle size={18} className="text-[#9C93D6]" aria-label={label} />;
-  return <XCircle size={18} className="text-[#D8D4EC]" aria-label={label} />;
-}
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6A4FA3]">{children}</p>;
@@ -822,6 +601,9 @@ export default function FlowiCaseStudy() {
                 {c.hero.title}
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">{c.hero.subtitle}</p>
+              <p className="mt-3 text-sm text-white/85">
+                <span className="font-bold text-white">{c.hero.roleLabel}:</span> {c.hero.role}
+              </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <a
                   href={FLOWI_URL}
@@ -857,350 +639,147 @@ export default function FlowiCaseStudy() {
 
         {/* OUTCOME + VIDEO */}
         <section id="demo" className="bg-[#241F33] py-14 text-white sm:py-20">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto max-w-[900px] px-4 sm:px-6">
             <SectionEyebrow>{c.outcome.eyebrow}</SectionEyebrow>
             <h2 className="mt-3 text-2xl font-extrabold sm:text-3xl">{c.outcome.title}</h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/75">{c.outcome.intro}</p>
-
-            <div className="mt-8 grid items-start gap-8 md:grid-cols-[1.35fr_1fr]">
-              <div className="overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-                <LazyVideo
-                  src={`${ASSETS}/resumen.mp4`}
-                  poster={`${ASSETS}/resumen-poster.jpg`}
-                  title={c.outcome.videoTitle}
-                  playLabel={c.outcome.play}
-                  loadingLabel={c.outcome.loading}
-                />
-              </div>
-
-              <div className="space-y-5 text-[15px] leading-relaxed text-white/80">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-white/50">{c.outcome.learningsTitle}</p>
-                  <p className="mt-1.5">{c.outcome.learnings}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-white/50">{c.outcome.impactTitle}</p>
-                  <p className="mt-1.5">{c.outcome.impact}</p>
-                </div>
-                <a
-                  href={YOUTUBE_WATCH_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
-                >
-                  <Play size={14} fill="currentColor" />
-                  {c.outcome.ctaYoutube}
-                </a>
-              </div>
+            <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-white/75">{c.outcome.intro}</p>
+            <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+              <LazyVideo
+                src={`${ASSETS}/resumen.mp4`}
+                poster={`${ASSETS}/resumen-poster.jpg`}
+                title={c.outcome.videoTitle}
+                playLabel={c.outcome.play}
+                loadingLabel={c.outcome.loading}
+              />
             </div>
+            <a
+              href={YOUTUBE_WATCH_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+            >
+              <Play size={14} fill="currentColor" />
+              {c.outcome.ctaYoutube}
+            </a>
           </div>
         </section>
 
-        {/* PRODUCT DESCRIPTION + SHEET */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-14">
+        {/* PRODUCT */}
+        <section className="mx-auto max-w-[1000px] px-4 py-14 sm:px-6 sm:py-20">
+          <div className="grid gap-8 md:grid-cols-[1.2fr_1fr] md:gap-12">
             <div>
               <SectionEyebrow>{c.product.eyebrow}</SectionEyebrow>
               <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.product.title}</h2>
-              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-[#4B4460]">
-                {c.product.paragraphs.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-              </div>
+              <p className="mt-4 text-base leading-relaxed text-[#4B4460]">{c.product.text}</p>
             </div>
-
-            <div className="rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)] sm:p-8">
-              <h3 className="text-sm font-bold uppercase tracking-wide text-[#6A4FA3]">{c.product.sheetTitle}</h3>
-              <dl className="mt-5 space-y-4">
-                {c.product.sheet.map((row) => (
-                  <div key={row.label} className="border-b border-[#F1EEFB] pb-4 last:border-0 last:pb-0">
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-[#9088B8]">{row.label}</dt>
-                    <dd className="mt-1 text-sm font-medium text-[#241F33]">{row.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <h4 className="mt-6 text-xs font-bold uppercase tracking-wide text-[#6A4FA3]">{c.product.toolsTitle}</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {c.tools.map((tool) => (
-                  <span key={tool} className="rounded-full bg-[#F1EEFB] px-3 py-1.5 text-xs font-semibold text-[#5D56A6]">
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <dl className="rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)]">
+              {c.product.sheet.map((row) => (
+                <div key={row.label} className="border-b border-[#F1EEFB] py-3 first:pt-0 last:border-0 last:pb-0">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-[#9088B8]">{row.label}</dt>
+                  <dd className="mt-0.5 text-sm font-medium text-[#241F33]">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
-        {/* EMPATHIZE */}
+        {/* PROBLEM */}
         <section className="bg-[#EFECFB] py-14 sm:py-20">
-          <div className="mx-auto grid max-w-[1100px] gap-10 px-4 sm:px-6 md:grid-cols-2 md:gap-14">
-            <div>
-              <SectionEyebrow>{c.problem.eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 text-2xl font-extrabold leading-tight text-[#241F33] sm:text-3xl md:text-[2rem]">
-                {c.problem.titleA}
-                <span className="text-[#6A4FA3]">{c.problem.titleB}</span>
-                {c.problem.titleC}
-              </h2>
-              <p className="mt-5 text-[15px] leading-relaxed text-[#4B4460]">{c.problem.body}</p>
-              <blockquote className="relative mt-7 rounded-2xl bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)]">
-                <Quote className="text-[#D8D0F5]" size={28} />
-                <p className="mt-2 text-base italic leading-relaxed text-[#3A3350]">“{c.problem.quote}”</p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-[#9088B8]">{c.problem.quoteWho}</p>
-              </blockquote>
-            </div>
-            <div className="flex items-center justify-center">
-              <img
-                src={`${ASSETS}/problema.webp`}
-                alt={c.problem.imageAlt}
-                className="w-full max-w-[520px] rounded-3xl object-contain"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* BENCHMARK */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <SectionEyebrow>{c.benchmark.eyebrow}</SectionEyebrow>
-          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.benchmark.title}</h2>
-          <p className="mt-3 max-w-2xl text-[15px] text-[#4B4460]">{c.benchmark.intro}</p>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {c.benchmark.apps.map((app) => (
-              <div key={app.name} className="rounded-2xl border border-[#EDE9FB] bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-[#241F33]">{app.name}</h3>
-                <p className="text-xs font-medium text-[#9088B8]">{app.category}</p>
-                <div className="mt-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#5D56A6]">{c.benchmark.pros}</p>
-                  <p className="mt-1 text-sm text-[#4B4460]">{app.pros}</p>
-                </div>
-                <div className="mt-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#B0538B]">{c.benchmark.cons}</p>
-                  <p className="mt-1 text-sm text-[#4B4460]">{app.cons}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 overflow-x-auto rounded-2xl border border-[#EDE9FB] bg-white">
-            <table className="w-full min-w-[720px] border-collapse text-sm">
-              <thead>
-                <tr className="border-b border-[#F1EEFB] bg-[#FAF9FF] text-left text-xs font-bold uppercase tracking-wide text-[#9088B8]">
-                  <th className="px-4 py-3">App</th>
-                  {c.benchmark.columns.map((col) => (
-                    <th key={col} className="px-3 py-3 text-center">
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {benchmarkMatrix.map((row) => (
-                  <tr key={row.app} className="border-b border-[#F1EEFB] last:border-0">
-                    <td className="px-4 py-3 font-semibold text-[#241F33]">{row.app}</td>
-                    {row.scores.map((score, i) => (
-                      <td key={i} className="px-3 py-3">
-                        <div className="flex justify-center">
-                          <StrengthDot level={score} label={c.benchmark.legend[score]} />
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex flex-wrap items-center gap-4 border-t border-[#F1EEFB] px-4 py-3 text-xs text-[#9088B8]">
-              <span className="inline-flex items-center gap-1.5">
-                <CheckCircle2 size={14} className="text-[#5D56A6]" /> {c.benchmark.legend.fuerte}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <MinusCircle size={14} className="text-[#9C93D6]" /> {c.benchmark.legend.parcial}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <XCircle size={14} className="text-[#D8D4EC]" /> {c.benchmark.legend.debil}
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-2xl bg-[#5D56A6] p-6 text-white sm:p-7">
-            <p className="text-base font-semibold leading-relaxed sm:text-lg">
-              {c.benchmark.gap1}
-              <br />
-              {c.benchmark.gap2}
-            </p>
-          </div>
-        </section>
-
-        {/* WHAT FLOWI HAD TO SOLVE */}
-        <section className="bg-[#F4F2FC] py-14 sm:py-20">
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-            <div className="grid gap-10 md:grid-cols-[1fr_0.9fr]">
+            <div className="grid gap-10 md:grid-cols-2 md:gap-14">
               <div>
-                <h2 className="text-2xl font-extrabold leading-tight text-[#241F33] sm:text-3xl">
-                  {c.solve.titleA}
-                  <span className="text-[#6A4FA3]">{c.solve.titleB}</span>
-                  {c.solve.titleC}
+                <SectionEyebrow>{c.problem.eyebrow}</SectionEyebrow>
+                <h2 className="mt-3 text-2xl font-extrabold leading-tight text-[#241F33] sm:text-3xl">
+                  {c.problem.titleA}
+                  <span className="text-[#6A4FA3]">{c.problem.titleB}</span>
+                  {c.problem.titleC}
                 </h2>
-                <ol className="mt-8 space-y-4">
-                  {c.solve.objectives.map((objective, index) => {
+                <p className="mt-5 text-[15px] leading-relaxed text-[#4B4460]">{c.problem.body}</p>
+                <blockquote className="mt-6 rounded-2xl bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)]">
+                  <Quote className="text-[#D8D0F5]" size={26} />
+                  <p className="mt-2 text-base italic leading-relaxed text-[#3A3350]">“{c.problem.quote}”</p>
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-[#9088B8]">{c.problem.quoteWho}</p>
+                </blockquote>
+                <p className="mt-5 text-sm font-semibold leading-relaxed text-[#5D56A6]">{c.problem.gap}</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <img
+                  src={`${ASSETS}/problema.webp`}
+                  alt={c.problem.imageAlt}
+                  className="w-full max-w-[460px] rounded-3xl object-contain"
+                />
+              </div>
+            </div>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+              <div className="rounded-3xl border border-[#DCD5F5] bg-white/70 p-6">
+                <h3 className="text-lg font-bold text-[#241F33]">{c.problem.solveTitle}</h3>
+                <ol className="mt-4 space-y-3">
+                  {c.problem.objectives.map((title, index) => {
                     const Icon = objectiveIcons[index];
                     return (
-                      <li
-                        key={objective.title}
-                        className="flex gap-4 rounded-2xl border border-[#EDE9FB] bg-white p-4 shadow-sm sm:p-5"
-                      >
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#5D56A6] text-sm font-bold text-white">
+                      <li key={title} className="flex items-center gap-3">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#5D56A6] text-xs font-bold text-white">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <Icon size={16} className="text-[#6A4FA3]" />
-                            <p className="text-sm font-bold text-[#241F33]">{objective.title}</p>
-                          </div>
-                          <p className="mt-1 text-sm leading-relaxed text-[#4B4460]">{objective.description}</p>
-                        </div>
+                        <Icon size={16} className="shrink-0 text-[#6A4FA3]" />
+                        <span className="text-sm font-semibold text-[#241F33]">{title}</span>
                       </li>
                     );
                   })}
                 </ol>
               </div>
-              <div className="flex flex-col justify-center">
-                <p className="text-lg font-semibold leading-relaxed text-[#3A3350]">{c.solve.lead}</p>
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  {c.solve.gaps.map((gap) => (
-                    <div key={gap.title} className="rounded-2xl border border-[#DCD5F5] bg-white/60 p-5">
-                      <p className="text-sm font-bold text-[#5D56A6]">{gap.title}</p>
-                      <p className="mt-1.5 text-xs leading-relaxed text-[#4B4460]">{gap.description}</p>
-                    </div>
-                  ))}
+
+              <div className="rounded-3xl border border-[#EDE9FB] bg-white p-6">
+                <div className="flex items-center gap-4">
+                  <span className="block h-16 w-16 shrink-0 overflow-hidden rounded-full bg-[#E4DFFF]">
+                    <img
+                      src={`${ASSETS}/persona-cindy.jpg`}
+                      alt={c.problem.personaAlt}
+                      width={64}
+                      height={64}
+                      className="h-full w-full object-cover object-top"
+                    />
+                  </span>
+                  <div>
+                    <p className="font-extrabold text-[#241F33]">{c.problem.personaName}</p>
+                    <p className="text-xs text-[#6A4FA3]">{c.problem.personaRole}</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* DEFINE */}
-        <section className="bg-[#5D56A6] py-14 text-white sm:py-16">
-          <div className="mx-auto grid max-w-[1100px] gap-8 px-4 sm:px-6 md:grid-cols-[1fr_1px_1fr] md:gap-10">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/70">{c.define.eyebrow}</p>
-              <h2 className="mt-3 text-2xl font-extrabold leading-tight sm:text-3xl">
-                {c.define.titleA}
-                <span className="text-[#D8D0F5]">{c.define.titleB}</span>
-              </h2>
-            </div>
-            <div className="hidden bg-white/25 md:block" />
-            <div className="space-y-4 text-[15px] leading-relaxed text-white/85">
-              <p>{c.define.p1}</p>
-              <p>{c.define.p2}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* IA */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <SectionEyebrow>{c.ia.eyebrow}</SectionEyebrow>
-          <h2 className="mt-3 flex items-center gap-2 text-2xl font-extrabold text-[#241F33] sm:text-3xl">
-            <Layers size={22} className="text-[#6A4FA3]" />
-            {c.ia.title}
-          </h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {c.ia.sitemap.map((branch) => (
-              <div key={branch.title} className="rounded-2xl border border-[#EDE9FB] bg-white p-5">
-                <p className="rounded-full bg-[#5D56A6] px-3 py-1.5 text-center text-xs font-bold uppercase tracking-wide text-white">
-                  {branch.title}
-                </p>
-                <ul className="mt-4 space-y-2">
-                  {branch.items.map((item) => (
-                    <li key={item} className="rounded-lg bg-[#F4F2FC] px-3 py-2 text-xs font-medium text-[#4B4460]">
-                      {item}
-                    </li>
-                  ))}
+                <ul className="mt-5 space-y-3 text-sm text-[#4B4460]">
+                  <li className="flex items-start gap-2">
+                    <Target size={15} className="mt-0.5 shrink-0 text-[#5D56A6]" />
+                    <span>
+                      <b className="text-[#241F33]">{c.problem.goalsTitle}:</b> {c.problem.goal}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Frown size={15} className="mt-0.5 shrink-0 text-[#B0538B]" />
+                    <span>
+                      <b className="text-[#241F33]">{c.problem.frustrationsTitle}:</b> {c.problem.frustration}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ListChecks size={15} className="mt-0.5 shrink-0 text-[#5D56A6]" />
+                    <span>
+                      <b className="text-[#241F33]">{c.problem.needsTitle}:</b> {c.problem.need}
+                    </span>
+                  </li>
                 </ul>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* PERSONA + JOURNEY */}
-        <section className="bg-[#F4F2FC] py-14 sm:py-20">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-            <SectionEyebrow>{c.persona.eyebrow}</SectionEyebrow>
-            <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.persona.title}</h2>
-
-            <div className="mt-8 grid gap-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-sm sm:p-8 md:grid-cols-[220px_1fr]">
-              <div className="flex flex-col items-center text-center md:items-start md:text-left">
-                <img
-                  src={`${ASSETS}/persona-cindy.jpg`}
-                  alt={c.persona.alt}
-                  className="h-40 w-40 rounded-full object-cover object-top shadow-md"
-                />
-                <h3 className="mt-4 text-xl font-extrabold text-[#241F33]">{c.persona.name}</h3>
-                <p className="text-sm font-medium text-[#6A4FA3]">{c.persona.role}</p>
-                <p className="mt-2 text-xs text-[#9088B8]">{c.persona.meta}</p>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-3">
-                <div>
-                  <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[#5D56A6]">
-                    <Target size={14} /> {c.persona.goalsTitle}
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-sm text-[#4B4460]">
-                    {c.persona.goals.map((g) => (
-                      <li key={g}>• {g}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[#B0538B]">
-                    <Frown size={14} /> {c.persona.frustrationsTitle}
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-sm text-[#4B4460]">
-                    {c.persona.frustrations.map((f) => (
-                      <li key={f}>• {f}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[#5D56A6]">
-                    <ListChecks size={14} /> {c.persona.needsTitle}
-                  </p>
-                  <ul className="mt-2 space-y-1.5 text-sm text-[#4B4460]">
-                    {c.persona.needs.map((n) => (
-                      <li key={n}>• {n}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-10">
-              <h3 className="text-lg font-bold text-[#241F33]">{c.persona.journeyTitle}</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-5">
-                {c.persona.journey.map((step, index) => (
-                  <div key={step.phase} className="rounded-2xl border border-[#EDE9FB] bg-white p-4">
-                    <p className="text-xs font-bold text-[#9088B8]">0{index + 1}</p>
-                    <p className="mt-1 text-sm font-bold text-[#241F33]">{step.phase}</p>
-                    <p className="text-xs italic text-[#B0538B]">{step.emotion}</p>
-                    <div className="mt-3 rounded-lg bg-[#F4F2FC] px-2.5 py-2 text-xs font-medium text-[#5D56A6]">
-                      {c.persona.flowi}: {step.flowi}
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </section>
 
-        {/* IDEATE / PROTOTYPE */}
+        {/* PROTOTYPE */}
         <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
           <SectionEyebrow>{c.proto.eyebrow}</SectionEyebrow>
           <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.proto.title}</h2>
-          <p className="mt-3 max-w-2xl text-[15px] text-[#4B4460]">{c.proto.intro}</p>
 
-          {/* Live app inside a phone */}
           <div className="mt-8 grid items-center gap-8 rounded-3xl bg-[#5D56A6] p-6 sm:p-10 md:grid-cols-[1fr_auto]">
             <div className="text-white">
               <p className="text-sm font-bold uppercase tracking-wide text-white/70">{c.proto.liveLabel}</p>
-              <p className="mt-3 max-w-md text-lg font-semibold leading-relaxed">{c.proto.liveText}</p>
+              <p className="mt-3 max-w-md text-xl font-semibold leading-relaxed">{c.proto.liveText}</p>
               <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">{c.proto.liveHint}</p>
               <a
                 href={FLOWI_URL}
@@ -1231,15 +810,22 @@ export default function FlowiCaseStudy() {
             </div>
           </div>
 
-          {/* Branding */}
-          <div className="mt-14 grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
+          <div className="mt-12 grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
             <div>
               <h3 className="flex items-center gap-2 text-lg font-bold text-[#241F33]">
                 <Sparkles size={18} className="text-[#6A4FA3]" />
                 {c.proto.brandTitle}
               </h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-[#4B4460]">{c.proto.brandP1}</p>
-              <p className="mt-3 text-[15px] leading-relaxed text-[#4B4460]">{c.proto.brandP2}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#4B4460]">{c.proto.brandText}</p>
+              <p className="mt-6 text-xs font-bold uppercase tracking-wide text-[#6A4FA3]">{c.proto.uiKitTitle}</p>
+              <div className="mt-3 grid grid-cols-6 overflow-hidden rounded-xl border border-[#EDE9FB]">
+                {brandColors.map((color) => (
+                  <div key={color.hex} title={`${c.proto.colorNames[color.key]} ${color.hex}`}>
+                    <div className="h-12" style={{ backgroundColor: color.hex }} />
+                    <p className="bg-white py-1 text-center text-[9px] font-semibold text-[#4B4460]">{color.hex}</p>
+                  </div>
+                ))}
+              </div>
             </div>
             <img
               src={`${ASSETS}/branding-ab.jpg`}
@@ -1249,43 +835,17 @@ export default function FlowiCaseStudy() {
               className="w-full rounded-3xl border border-[#EDE9FB] bg-white shadow-sm"
             />
           </div>
-
-          {/* UI kit */}
-          <div className="mt-14">
-            <h3 className="flex items-center gap-2 text-lg font-bold text-[#241F33]">
-              <Sparkles size={18} className="text-[#6A4FA3]" />
-              {c.proto.uiKitTitle}
-            </h3>
-            <div className="mt-6 grid gap-5 md:grid-cols-[1fr_1.6fr]">
-              <div className="rounded-2xl bg-[#5D56A6] p-6 text-white">
-                <p className="text-xs font-bold uppercase tracking-wide text-white/70">{c.proto.typography}</p>
-                <p className="mt-2 text-4xl font-extrabold">Manrope</p>
-                <p className="mt-3 text-sm text-white/80">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Ññ 0123456789</p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {brandColors.map((color) => (
-                  <div key={color.hex} className="overflow-hidden rounded-2xl border border-[#EDE9FB]">
-                    <div className="h-20" style={{ backgroundColor: color.hex }} />
-                    <div className="bg-white px-3 py-2">
-                      <p className="text-[11px] font-bold text-[#241F33]">{color.hex}</p>
-                      <p className="text-[10px] text-[#9088B8]">{c.proto.colorNames[color.key]}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* TEST */}
         <section className="bg-[#F4F2FC] py-14 sm:py-20">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto max-w-[1000px] px-4 sm:px-6">
             <SectionEyebrow>{c.test.eyebrow}</SectionEyebrow>
             <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.test.title}</h2>
-            <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-[#4B4460]">{c.test.intro}</p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#4B4460]">{c.test.intro}</p>
 
             <div className="mt-8 grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr]">
-              <div className="rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-7">
+              <div className="rounded-3xl border border-[#EDE9FB] bg-white p-6">
                 <p className="text-xs font-bold uppercase tracking-wide text-[#9088B8]">{c.test.fromLabel}</p>
                 <p className="mt-1 text-xs text-[#9088B8]">{c.test.fromMeta}</p>
                 <ul className="mt-5 space-y-4">
@@ -1300,7 +860,7 @@ export default function FlowiCaseStudy() {
               <div className="flex items-center justify-center text-[#5D56A6]" aria-hidden="true">
                 <ArrowRight size={28} className="rotate-90 md:rotate-0" />
               </div>
-              <div className="rounded-3xl bg-[#5D56A6] p-6 text-white sm:p-7">
+              <div className="rounded-3xl bg-[#5D56A6] p-6 text-white">
                 <p className="text-xs font-bold uppercase tracking-wide text-white/70">{c.test.toLabel}</p>
                 <p className="mt-1 text-xs text-white/70">{c.test.toMeta}</p>
                 <ul className="mt-5 space-y-4">
@@ -1314,140 +874,63 @@ export default function FlowiCaseStudy() {
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl bg-[#241F33] p-5 text-center text-sm font-semibold leading-relaxed text-white sm:text-base">
-              {c.test.mazeCallout}
-            </div>
-
-            <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
+            <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6">
               <h3 className="text-lg font-bold text-[#241F33]">{c.test.changeTitle}</h3>
-              <div className="mt-5 space-y-4">
+              <div className="mt-4 space-y-3">
                 {c.test.changes.map((change) => (
-                  <div key={change.after} className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
-                    <div className="rounded-2xl bg-[#F4F2FC] p-4">
-                      <p className="text-[11px] font-bold uppercase tracking-wide text-[#9088B8]">{c.test.before}</p>
-                      <p className="mt-1 text-sm text-[#4B4460]">{change.before}</p>
+                  <div key={change.after} className="grid gap-2 md:grid-cols-[1fr_auto_1fr] md:items-center">
+                    <div className="rounded-xl bg-[#F4F2FC] px-4 py-3">
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#9088B8]">{c.test.before}</p>
+                      <p className="text-sm text-[#4B4460]">{change.before}</p>
                     </div>
-                    <ArrowRight size={20} className="mx-auto rotate-90 text-[#5D56A6] md:rotate-0" aria-hidden="true" />
-                    <div className="rounded-2xl bg-[#E4DFFF] p-4">
-                      <p className="text-[11px] font-bold uppercase tracking-wide text-[#5D56A6]">{c.test.after}</p>
-                      <p className="mt-1 text-sm font-medium text-[#241F33]">{change.after}</p>
+                    <ArrowRight size={18} className="mx-auto rotate-90 text-[#5D56A6] md:rotate-0" aria-hidden="true" />
+                    <div className="rounded-xl bg-[#E4DFFF] px-4 py-3">
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#5D56A6]">{c.test.after}</p>
+                      <p className="text-sm font-medium text-[#241F33]">{change.after}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="mt-6 grid gap-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8 md:grid-cols-[auto_1fr] md:items-center">
-              <figure className="mx-auto">
-                <img
-                  src={`${ASSETS}/maze-heatmap.jpg`}
-                  alt={c.test.heatAlt}
-                  width={780}
-                  height={2004}
-                  className="w-full max-w-[260px] rounded-xl"
-                />
-              </figure>
+            <div className="mt-6 grid gap-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 md:grid-cols-[auto_1fr] md:items-center">
+              <img
+                src={`${ASSETS}/maze-heatmap.jpg`}
+                alt={c.test.heatAlt}
+                width={780}
+                height={2004}
+                className="mx-auto w-full max-w-[220px] rounded-xl"
+              />
               <div>
                 <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
                 <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
                 <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
                 <p className="mt-3 text-sm leading-relaxed text-[#4B4460]">{c.test.heatNote}</p>
-                <p className="mt-6 text-xs font-bold uppercase tracking-wide text-[#6A4FA3]">{c.test.saysTitle}</p>
-                <ul className="mt-3 space-y-3">
-                  {c.test.says.map((item) => (
-                    <li key={item.label} className="flex items-baseline gap-3">
-                      <span className="w-20 shrink-0 text-xl font-extrabold text-[#5D56A6]">{item.value}</span>
-                      <span className="text-sm text-[#4B4460]">{item.label}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
 
-            <div className="mt-6 rounded-3xl border border-[#EDE9FB] bg-white p-6 sm:p-8">
-              <h3 className="text-lg font-bold text-[#241F33]">{c.test.modTitle}</h3>
-              <p className="mt-1 text-sm text-[#4B4460]">{c.test.modText}</p>
-              <div className="mt-5 divide-y divide-[#F1EEFB]">
-                {c.test.moderated.map((finding) => (
-                  <div key={finding.title} className="flex items-start gap-3 py-4 first:pt-0 last:pb-0">
-                    <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#5D56A6]" />
-                    <div>
-                      <p className="text-sm font-bold text-[#241F33]">{finding.title}</p>
-                      <p className="text-xs text-[#4B4460]">{finding.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {c.test.quotes.map((q) => (
-                  <figure key={q.who} className="rounded-2xl bg-[#F4F2FC] p-5">
-                    <Quote size={20} className="text-[#B7ADF0]" />
-                    <blockquote className="mt-2 text-sm italic leading-relaxed text-[#3A3350]">“{q.text}”</blockquote>
-                    <figcaption className="mt-2 text-xs font-semibold text-[#5D56A6]">{q.who}</figcaption>
-                  </figure>
-                ))}
-              </div>
-            </div>
-            <p className="mt-8 text-center text-lg italic text-[#6A4FA3]">{c.test.motto}</p>
-          </div>
-        </section>
-
-        {/* MINE */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <SectionEyebrow>{c.mine.eyebrow}</SectionEyebrow>
-          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.mine.title}</h2>
-          <div className="mt-8 grid gap-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)] sm:p-10 md:grid-cols-[220px_1fr]">
-            <div className="flex flex-col items-center text-center md:items-start md:text-left">
-              <span className="block h-28 w-28 overflow-hidden rounded-full bg-[#E4DFFF]">
-                <img src={`${ASSETS}/team/sara.jpg`} alt="Sara Ruiz" width={112} height={112} className="h-full w-full object-cover" />
-              </span>
-              <p className="mt-4 text-lg font-extrabold text-[#241F33]">Sara Ruiz</p>
-              <p className="text-sm font-medium text-[#6A4FA3]">{c.mine.role}</p>
-              <a
-                href="https://www.linkedin.com/in/sararuiz-ux-ui/"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#DCD5F5] px-3 py-1.5 text-xs font-semibold text-[#5D56A6] hover:bg-[#F1EEFB]"
-              >
-                <Linkedin size={13} />
-                {c.mine.linkedin}
-              </a>
-              <div className="mt-6 w-full rounded-2xl bg-[#F4F2FC] p-4">
-                <div className="flex items-center justify-center gap-3 md:justify-start">
-                  <div>
-                    <p className="text-xl font-extrabold text-[#6A4FA3]">{c.mine.fromValue}</p>
-                    <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.fromLabel}</p>
-                  </div>
-                  <ArrowRight size={18} className="shrink-0 text-[#5D56A6]" aria-hidden="true" />
-                  <div>
-                    <p className="text-xl font-extrabold text-[#5D56A6]">{c.mine.toValue}</p>
-                    <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.toLabel}</p>
-                  </div>
+                <div className="mt-6 border-t border-[#F1EEFB] pt-5">
+                  <p className="flex items-center gap-2 text-sm font-bold text-[#241F33]">
+                    <CheckCircle2 size={16} className="text-[#5D56A6]" />
+                    {c.test.modTitle}
+                  </p>
+                  <p className="mt-1 text-sm text-[#4B4460]">{c.test.modText}</p>
+                  <blockquote className="mt-3 rounded-xl bg-[#F4F2FC] p-4 text-sm italic text-[#3A3350]">
+                    “{c.test.quote}”
+                    <span className="mt-1 block text-xs font-semibold not-italic text-[#5D56A6]">{c.test.quoteWho}</span>
+                  </blockquote>
                 </div>
               </div>
-            </div>
-            <div className="space-y-4 text-[15px] leading-relaxed text-[#4B4460]">
-              <p>{c.mine.p1}</p>
-              <p>{c.mine.p2}</p>
-              <blockquote className="border-l-4 border-[#B7ADF0] pl-4 text-lg font-semibold italic leading-snug text-[#3A3350]">
-                “{c.mine.quote}”
-              </blockquote>
-              <p>{c.mine.p3}</p>
-              <p>{c.mine.p4}</p>
             </div>
           </div>
         </section>
 
         {/* FIGMA */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <SectionEyebrow>{c.figma.eyebrow}</SectionEyebrow>
-          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.figma.title}</h2>
-          <p className="mt-3 max-w-2xl text-[15px] text-[#4B4460]">{c.figma.text}</p>
-          <div className="mt-6 overflow-hidden rounded-3xl border border-[#EDE9FB] bg-white shadow-sm">
+        <section className="mx-auto max-w-[1000px] px-4 py-14 sm:px-6 sm:py-16">
+          <h2 className="text-xl font-extrabold text-[#241F33] sm:text-2xl">{c.figma.title}</h2>
+          <div className="mt-5 overflow-hidden rounded-3xl border border-[#EDE9FB] bg-white shadow-sm">
             <iframe
               src={FIGMA_EMBED_URL}
               title={c.figma.iframeTitle}
-              className="h-[520px] w-full sm:h-[640px]"
+              className="h-[460px] w-full sm:h-[560px]"
               loading="lazy"
               allowFullScreen
             />
@@ -1463,21 +946,19 @@ export default function FlowiCaseStudy() {
         </section>
 
         {/* NEXT STEPS */}
-        <section className="bg-[#241F33] py-14 text-white sm:py-20">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-            <SectionEyebrow>{c.next.eyebrow}</SectionEyebrow>
-            <h2 className="mt-3 text-2xl font-extrabold sm:text-3xl">{c.next.title}</h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/75">{c.next.intro}</p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="bg-[#241F33] py-14 text-white sm:py-16">
+          <div className="mx-auto max-w-[1000px] px-4 sm:px-6">
+            <h2 className="text-2xl font-extrabold sm:text-3xl">{c.next.title}</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {c.next.steps.map((step, index) => {
                 const Icon = nextStepIcons[index];
                 return (
                   <div key={step.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#5D56A6]">
-                      <Icon size={18} />
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#5D56A6]">
+                      <Icon size={17} />
                     </span>
-                    <p className="mt-4 text-sm font-bold">{step.title}</p>
-                    <p className="mt-1.5 text-xs leading-relaxed text-white/70">{step.description}</p>
+                    <p className="mt-3 text-sm font-bold">{step.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-white/70">{step.description}</p>
                   </div>
                 );
               })}
@@ -1486,7 +967,7 @@ export default function FlowiCaseStudy() {
               href={FLOWI_URL}
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#5D56A6]"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-[#5D56A6]"
             >
               {c.next.cta}
               <ArrowUpRight size={16} />
@@ -1494,44 +975,70 @@ export default function FlowiCaseStudy() {
           </div>
         </section>
 
-        {/* TEAM */}
-        <section className="mx-auto max-w-[1100px] px-4 py-14 sm:px-6 sm:py-20">
-          <div className="flex items-center gap-2">
-            <Users size={20} className="text-[#6A4FA3]" />
-            <h2 className="text-xl font-extrabold text-[#241F33] sm:text-2xl">{c.team.title}</h2>
+        {/* MINE */}
+        <section className="mx-auto max-w-[1000px] px-4 py-14 sm:px-6 sm:py-20">
+          <SectionEyebrow>{c.mine.eyebrow}</SectionEyebrow>
+          <h2 className="mt-3 text-2xl font-extrabold text-[#241F33] sm:text-3xl">{c.mine.title}</h2>
+          <div className="mt-8 grid gap-8 rounded-3xl border border-[#EDE9FB] bg-white p-6 shadow-[0_20px_50px_-30px_rgba(93,86,166,0.35)] sm:p-10 md:grid-cols-[200px_1fr]">
+            <div className="flex flex-col items-center text-center md:items-start md:text-left">
+              <span className="block h-24 w-24 overflow-hidden rounded-full bg-[#E4DFFF]">
+                <img src={`${ASSETS}/team/sara.jpg`} alt="Sara Ruiz" width={96} height={96} className="h-full w-full object-cover" />
+              </span>
+              <p className="mt-4 text-lg font-extrabold text-[#241F33]">Sara Ruiz</p>
+              <p className="text-sm font-medium text-[#6A4FA3]">{c.mine.role}</p>
+              <a
+                href="https://www.linkedin.com/in/sararuiz-ux-ui/"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#DCD5F5] px-3 py-1.5 text-xs font-semibold text-[#5D56A6] hover:bg-[#F1EEFB]"
+              >
+                <Linkedin size={13} />
+                {c.mine.linkedin}
+              </a>
+              <div className="mt-5 flex w-full items-center justify-center gap-3 rounded-2xl bg-[#F4F2FC] p-4 md:justify-start">
+                <div>
+                  <p className="text-xl font-extrabold text-[#6A4FA3]">{c.mine.fromValue}</p>
+                  <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.fromLabel}</p>
+                </div>
+                <ArrowRight size={18} className="shrink-0 text-[#5D56A6]" aria-hidden="true" />
+                <div>
+                  <p className="text-xl font-extrabold text-[#5D56A6]">{c.mine.toValue}</p>
+                  <p className="text-[11px] leading-tight text-[#4B4460]">{c.mine.toLabel}</p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4 text-[15px] leading-relaxed text-[#4B4460]">
+              <p>{c.mine.p1}</p>
+              <blockquote className="border-l-4 border-[#B7ADF0] pl-4 text-lg font-semibold italic leading-snug text-[#3A3350]">
+                “{c.mine.quote}”
+              </blockquote>
+              <p>{c.mine.p2}</p>
+              <p>{c.mine.p3}</p>
+            </div>
           </div>
-          <p className="mt-2 max-w-xl text-sm text-[#4B4460]">{c.team.objective}</p>
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        </section>
+
+        {/* TEAM */}
+        <section className="mx-auto max-w-[1000px] px-4 pb-14 sm:px-6 sm:pb-20">
+          <div className="flex items-center gap-2">
+            <Users size={18} className="text-[#6A4FA3]" />
+            <h2 className="text-lg font-extrabold text-[#241F33] sm:text-xl">{c.team.title}</h2>
+          </div>
+          <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {teamBase.map((member) => (
-              <li key={member.name} className="flex items-center gap-4 rounded-2xl border border-[#EDE9FB] bg-white p-4">
-                {member.photo ? (
-                  <span className="block h-14 w-14 shrink-0 overflow-hidden rounded-full bg-[#E4DFFF]">
-                    <img
-                      src={`${ASSETS}/team/${member.photo}.jpg`}
-                      alt={member.name}
-                      width={56}
-                      height={56}
-                      className="h-full w-full object-cover"
-                    />
-                  </span>
-                ) : (
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#8079D6] text-lg font-bold text-white">
-                    {member.name[0]}
-                  </span>
-                )}
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold leading-snug text-[#241F33]">{member.name}</p>
-                  <p className="text-xs text-[#9088B8]">{c.team.roles[member.roleKey]}</p>
-                  {member.linkedin && (
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[#5D56A6] hover:underline"
-                    >
-                      <Linkedin size={12} /> LinkedIn
-                    </a>
-                  )}
+              <li key={member.name} className="flex items-center gap-3 rounded-2xl border border-[#EDE9FB] bg-white p-3">
+                <span className="block h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[#E4DFFF]">
+                  <img
+                    src={`${ASSETS}/team/${member.photo}.jpg`}
+                    alt={member.name}
+                    width={44}
+                    height={44}
+                    className="h-full w-full object-cover"
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-snug text-[#241F33]">{member.name}</p>
+                  <p className="text-[11px] text-[#9088B8]">{c.team.roles[member.roleKey]}</p>
                 </div>
               </li>
             ))}
