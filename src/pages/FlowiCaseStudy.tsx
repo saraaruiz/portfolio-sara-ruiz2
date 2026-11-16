@@ -260,6 +260,13 @@ const es = {
       { value: "↓ Tiempo", label: "reducción del tiempo necesario para completar el registro." },
     ],
     mazeCallout: "La navegación ya no se cuestiona: el esfuerzo se dirige a completar la tarea.",
+    heatTitle: "Mapa de calor · Tarea 1",
+    heatTask: "“Encuentra y presiona el botón para iniciar un registro”",
+    heatMeta: "Test de prototipo en Maze · 20 respuestas",
+    heatLeft: "Lo que vio el participante en su celular",
+    heatRight: "Dónde hicieron clic",
+    heatNote: "Las instrucciones de Maze tapaban el menú inferior, y por eso muchos clics se dispersaron antes de llegar al botón de registro.",
+    heatAlt: "Captura del test en Maze junto al mapa de calor de clics sobre la pantalla de inicio de Flowi",
     modTitle: "Testing moderado final",
     modText:
       "Validamos con usuarios reales en sesiones moderadas para profundizar en percepciones y emociones: 6 personas, prototipo funcional, sesiones moderadas.",
@@ -493,6 +500,13 @@ const en: typeof es = {
       { value: "↓ Time", label: "reduction in the time needed to complete a log." },
     ],
     mazeCallout: "Navigation is no longer questioned: the effort goes into completing the task.",
+    heatTitle: "Heatmap · Task 1",
+    heatTask: "“Find and press the button to start a log”",
+    heatMeta: "Prototype test in Maze · 20 responses",
+    heatLeft: "What the participant saw on their phone",
+    heatRight: "Where they clicked",
+    heatNote: "Maze's instructions covered the bottom menu, so many clicks scattered before reaching the log button.",
+    heatAlt: "Maze test capture next to the click heatmap over Flowi's home screen",
     modTitle: "Final moderated testing",
     modText:
       "We validated with real users in moderated sessions to dig deeper into perceptions and emotions: 6 people, working prototype, moderated sessions.",
@@ -1236,6 +1250,25 @@ export default function FlowiCaseStudy() {
                   </div>
                 ))}
               </div>
+              <figure className="mt-6 overflow-hidden rounded-2xl border border-[#EDE9FB] bg-[#FAF9FF]">
+                <div className="px-5 pt-5">
+                  <p className="text-sm font-bold text-[#241F33]">{c.test.heatTitle}</p>
+                  <p className="mt-1 text-sm italic text-[#4B4460]">{c.test.heatTask}</p>
+                  <p className="mt-0.5 text-xs text-[#9088B8]">{c.test.heatMeta}</p>
+                </div>
+                <img
+                  src={`${ASSETS}/maze-heatmap.jpg`}
+                  alt={c.test.heatAlt}
+                  width={1400}
+                  height={1392}
+                  className="mx-auto mt-4 w-full max-w-[620px] px-2 sm:px-5"
+                />
+                <div className="mx-auto grid max-w-[620px] grid-cols-2 gap-2 px-2 pt-2 sm:gap-4 sm:px-5 text-center text-xs font-semibold text-[#5D56A6]">
+                  <span>{c.test.heatLeft}</span>
+                  <span>{c.test.heatRight}</span>
+                </div>
+                <figcaption className="px-5 pb-5 pt-3 text-center text-xs leading-relaxed text-[#4B4460]">{c.test.heatNote}</figcaption>
+              </figure>
               <div className="mt-4 rounded-2xl bg-[#5D56A6] p-5 text-sm font-semibold text-white">{c.test.mazeCallout}</div>
             </div>
 
