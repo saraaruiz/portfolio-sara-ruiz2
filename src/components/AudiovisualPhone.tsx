@@ -55,6 +55,13 @@ const REELS: Reel[] = [
     tools: ["Higgsfield", "Edición"],
   },
   {
+    brand: "selecto",
+    titleEs: "Rifa de noviembre",
+    titleEn: "November raffle",
+    src: "/Assets/Audiovisual/selecto/cris-rifa-noviembre.mp4",
+    tools: ["Edición"],
+  },
+  {
     brand: "dlmd",
     titleEs: "El futuro de tu piel",
     titleEn: "The future of your skin",
