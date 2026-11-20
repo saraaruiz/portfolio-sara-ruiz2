@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bookmark, Film, Heart, MessageCircle, Send, Volume2, VolumeX } from "lucide-react";
+import { Bookmark, Film, Heart, MessageCircle, Play, Send, Volume2, VolumeX } from "lucide-react";
 
 import { usePreferences } from "@/context/PreferencesContext";
 
@@ -98,23 +98,84 @@ const REELS: Reel[] = [
   },
 ];
 
+// Safari y todos los navegadores de iPhone exigen que el servidor responda a descargas parciales (HTTP 206).
+// El hosting actual no lo hace, así que en WebKit se baja el archivo completo y se reproduce desde memoria.
+// "?blob=1" en la URL fuerza este modo para probarlo en otros navegadores.
+const needsBlob = (() => {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  const iOS = /iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const safari = /^((?!chrome|chromium|android).)*safari/i.test(ua);
+  const forced = new URLSearchParams(window.location.search).get("blob") === "1";
+  return iOS || safari || forced;
+})();
+
 function ReelItem({
   reel,
   muted,
   isEnglish,
   index,
   total,
+  feedRef,
 }: {
   reel: Reel;
   muted: boolean;
   isEnglish: boolean;
   index: number;
   total: number;
+  feedRef: React.RefObject<HTMLDivElement>;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const [missing, setMissing] = useState(false);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(false);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  // Solo se descarga el reel visible y los vecinos, para no saturar la conexión del celular
+  const [near, setNear] = useState(index === 0);
+  const [loading, setLoading] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const [useBlob, setUseBlob] = useState(needsBlob);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
   const brand = BRANDS[reel.brand];
+
+  // Modo "archivo completo": se descarga el video entero y se reproduce desde memoria
+  useEffect(() => {
+    if (!near || !useBlob) return;
+    let cancelled = false;
+    let url: string | null = null;
+    setBlobUrl(null);
+    setLoading(true);
+    fetch(reel.src)
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.blob();
+      })
+      .then((blob) => {
+        if (!blob.type.startsWith("video")) throw new Error("not a video");
+        if (cancelled) return;
+        url = URL.createObjectURL(blob);
+        setBlobUrl(url);
+      })
+      .catch(() => {
+        if (!cancelled) setFailed(true);
+      });
+    return () => {
+      cancelled = true;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [near, useBlob, reel.src, attempt]);
+
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box) return;
+    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && setNear(true), {
+      root: feedRef.current,
+      rootMargin: "100% 0px",
+    });
+    io.observe(box);
+    return () => io.disconnect();
+  }, [feedRef]);
 
   // Reproduce solo el reel que está a la vista
   useEffect(() => {
@@ -122,6 +183,7 @@ function ReelItem({
     if (!video) return;
     const io = new IntersectionObserver(
       ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
         if (entry.isIntersecting) void video.play().catch(() => undefined);
         else video.pause();
       },
@@ -129,27 +191,60 @@ function ReelItem({
     );
     io.observe(video);
     return () => io.disconnect();
-  }, []);
+  }, [attempt, failed]);
+
+  // iOS exige que el atributo "muted" esté en el elemento para permitir el autoplay
+  useEffect(() => {
+    if (ref.current) ref.current.muted = muted;
+  }, [muted, near, attempt, blobUrl]);
 
   return (
-    <div className="relative h-full w-full shrink-0 snap-start snap-always overflow-hidden bg-black">
-      {missing ? (
+    <div ref={boxRef} className="relative h-full w-full shrink-0 snap-start snap-always overflow-hidden bg-black">
+      {failed ? (
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-8 text-center text-white"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-8 text-center text-white"
           style={{ background: `linear-gradient(160deg, ${brand.from}, ${brand.to})` }}
         >
           <Film size={28} />
-          <p className="text-xs font-semibold">{isEnglish ? "Video coming soon" : "Video próximamente"}</p>
+          <p className="text-xs font-semibold">{isEnglish ? "The video could not load" : "No se pudo cargar el video"}</p>
+          <button
+            onClick={() => {
+              setFailed(false);
+              setLoading(true);
+              setAttempt((n) => n + 1);
+            }}
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-black"
+          >
+            {isEnglish ? "Retry" : "Reintentar"}
+          </button>
         </div>
       ) : (
         <video
+          key={attempt}
           ref={ref}
-          src={reel.src}
+          src={near ? (useBlob ? (blobUrl ?? undefined) : reel.src) : undefined}
           loop
           muted={muted}
           playsInline
-          preload={index < 2 ? "auto" : "metadata"}
-          onError={() => setMissing(true)}
+          preload={near ? "auto" : "none"}
+          onLoadStart={() => setLoading(true)}
+          onWaiting={() => setLoading(true)}
+          onCanPlay={(e) => {
+            setLoading(false);
+            // si el reel ya estaba a la vista cuando terminó de cargar, arranca solo
+            if (visibleRef.current) void e.currentTarget.play().catch(() => undefined);
+          }}
+          onPlaying={() => setLoading(false)}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onError={() => {
+            if (!near) return;
+            // si la descarga directa falla, se reintenta descargando el archivo completo
+            if (!useBlob) {
+              setLoading(true);
+              setUseBlob(true);
+            } else setFailed(true);
+          }}
           onClick={(e) => {
             const v = e.currentTarget;
             if (v.paused) void v.play();
@@ -157,6 +252,20 @@ function ReelItem({
           }}
           className="absolute inset-0 h-full w-full cursor-pointer object-cover"
         />
+      )}
+
+      {!playing && !loading && !failed && near && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black/45 backdrop-blur-md">
+            <Play size={24} className="ml-0.5 fill-white text-white" />
+          </span>
+        </div>
+      )}
+
+      {loading && !failed && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <span className="h-9 w-9 animate-spin rounded-full border-2 border-white/25 border-t-white" aria-label={isEnglish ? "Loading" : "Cargando"} />
+        </div>
       )}
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/80 to-transparent" />
@@ -222,7 +331,7 @@ export default function AudiovisualPhone() {
             className="flex h-full w-full snap-y snap-mandatory flex-col overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {REELS.map((reel, i) => (
-              <ReelItem key={reel.src} reel={reel} muted={muted} isEnglish={isEnglish} index={i} total={REELS.length} />
+              <ReelItem key={reel.src} reel={reel} muted={muted} isEnglish={isEnglish} index={i} total={REELS.length} feedRef={feedRef} />
             ))}
           </div>
 
